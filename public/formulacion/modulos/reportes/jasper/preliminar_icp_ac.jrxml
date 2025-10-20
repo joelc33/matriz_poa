@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="preliminar_icp_ac" language="groovy" pageWidth="842" pageHeight="595000" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d669bfe2-b682-4c8a-8907-750d8b471a96">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="id_ejercicio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$P{id_ejercicio}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select t25.id as ejercicio,
+	ma.ej_ac as ejecutor,
+	ma.se as sector,
+	ma.pro as proyecto,
+	ma.sub as subproyecto,
+	ma.act as actividad,
+	t47.monto_calc as monto,
+	t52.nombre as ac_nombre,
+	t24.tx_ejecutor as ac_ej_nombre,
+	t53.nombre as ae_nombre,
+	ma.ej_ae as ae_ej_id,
+	t24a.tx_ejecutor as ae_ej_nombre
+from mantenimiento.tab_ejercicio_fiscal as t25
+	join mapa_acs as ma on ma.ef = t25.id
+	left join t46_acciones_centralizadas as t46
+		on ma.ac = t46.id_accion
+		and ma.ej_ac = t46.id_ejecutor
+		and ma.se = (
+			select co_sector
+			from t18_sectores
+			where co_sectores = t46.id_subsector
+				and edo_reg
+		)
+		and t46.edo_reg
+	left join t47_ac_accion_especifica as t47
+		on ma.ac = (
+			select id_accion
+			from t46_acciones_centralizadas
+			where id = t47.id_accion_centralizada
+		)
+		and ma.ej_ae = t47.id_ejecutor
+		and ma.ae = (
+			select numero
+			from t53_ac_ae_predefinidas
+			where id = t47.id_accion
+				and padre = ma.ac
+		)
+		and t47.edo_reg
+	left join mantenimiento.tab_ejecutores as t24
+		on t24.id_ejecutor = ma.ej_ac
+		and t24.in_activo
+	left join mantenimiento.tab_ejecutores as t24a
+		on t24a.id_ejecutor = ma.ej_ae
+		and t24a.in_activo
+	left join t52_ac_predefinidas as t52 on t52.id = ma.ac
+	left join t53_ac_ae_predefinidas as t53
+		on t53.numero = ma.ae
+		and t53.padre = ma.ac
+where --t25.in_activo and
+	ma.edo_reg
+	and t25.id = 2016
+order by 1, 2, 3, 4, 6;]]>
+	</queryString>
+	<field name="ejercicio" class="java.math.BigDecimal"/>
+	<field name="ejecutor" class="java.lang.String"/>
+	<field name="sector" class="java.lang.String"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="subproyecto" class="java.lang.String"/>
+	<field name="actividad" class="java.lang.String"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<field name="ac_nombre" class="java.lang.String"/>
+	<field name="ac_ej_nombre" class="java.lang.String"/>
+	<field name="ae_nombre" class="java.lang.String"/>
+	<field name="ae_ej_id" class="java.lang.String"/>
+	<field name="ae_ej_nombre" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="734" y="40" width="65" height="20" uuid="a304b40d-5056-480f-acd3-e6d2bf8ccf07"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre del Ejecutor de la AE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="669" y="40" width="65" height="20" uuid="1b44800d-4e74-4319-a864-9cd9fa540fa4"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ejecutor de la AE"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="195" y="40" width="65" height="20" uuid="8c9046b4-5dec-4aa2-afab-3caa44f1ab7f"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Proyecto"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="474" y="40" width="65" height="20" uuid="cae13577-eeca-4254-90c4-93071c273773"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre de la AC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="325" y="40" width="65" height="20" uuid="03e6df9c-7e4d-481f-a3be-029861e93287"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Actividad"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="390" y="40" width="85" height="20" uuid="fa5e6247-4322-4955-9477-a8a69b83c80e"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Monto Registrado"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="40" width="65" height="20" uuid="a7b85e65-0277-43f4-a779-5681eaa73bfe"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ejercicio"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="260" y="40" width="65" height="20" uuid="590c59ad-4834-45d0-9e08-65e322b6b908"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Subproyecto"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="130" y="40" width="65" height="20" uuid="fb2e6385-87d2-4e95-a89a-71f70d8e0d89"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sector"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="604" y="40" width="65" height="20" uuid="78b20cd1-9016-49d6-bd13-cd286cecb0d3"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre del Ejecutor de la AC"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="65" y="40" width="65" height="20" uuid="42732792-7c76-433e-abe5-bdcdf1b850eb"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ejecutor"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="539" y="40" width="65" height="20" uuid="a0e3bf02-7808-4b08-974a-fa5fa1363579"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre de la AE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="802" height="24" uuid="d772c028-97a3-4a10-b881-cad70742dc71"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Preliminar ICP de Acciones Centralizadas"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="22" splitType="Prevent">
+			<frame>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="802" height="22" isPrintWhenDetailOverflows="true" uuid="a0d70705-d05a-4282-a519-61f1e78eb15b"/>
+				<elementGroup>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="65" y="0" width="65" height="22" uuid="58c25667-5599-4b83-b553-0ea6f451ecfe"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ejecutor}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="390" y="0" width="85" height="22" uuid="d037e0ab-ba7f-4b49-92ab-1118a5ed7bca"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="474" y="0" width="65" height="22" uuid="576075ff-0584-496b-8efd-435ba2f1ef22"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ac_nombre}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="539" y="0" width="65" height="22" uuid="bd95a85f-c383-473f-9e3f-f91ab66f3d11"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_nombre}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="325" y="0" width="65" height="22" uuid="2a8c37d4-6a18-4d05-a918-49e5bf0a7122"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="260" y="0" width="65" height="22" uuid="7bfcdc4e-c4e9-4c6c-a34e-76fc921202c1"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{subproyecto}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="734" y="0" width="65" height="22" uuid="e4f0fcb8-0497-47b6-b841-6e4db954ba69"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_ej_nombre}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="195" y="0" width="65" height="22" uuid="a0ec422b-dc68-4f46-aae4-6888ef671790"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{proyecto}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="65" height="22" uuid="ab2e75a5-9845-4612-91cc-78f98d7dccd2"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ejercicio}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="669" y="0" width="65" height="22" uuid="7ebe4170-0653-4ee7-b0a5-ae06455dd7c7"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_ej_id}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="604" y="0" width="65" height="22" uuid="d7a2521c-f999-4253-b06d-d33f0221e920"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ac_ej_nombre}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="130" y="0" width="65" height="22" uuid="1bf75deb-0014-4597-8e48-1a58d2307c62"/>
+						<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.0"/>
+							<topPen lineWidth="0.25"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
+					</textField>
+				</elementGroup>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,3 @@
+# exclusion de extensiones de archivos o archivo
+*.*~
+matriz/.env

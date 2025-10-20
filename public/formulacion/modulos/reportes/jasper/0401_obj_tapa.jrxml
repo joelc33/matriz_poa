@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="771" pageHeight="591" orientation="Landscape" columnWidth="771" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/produccion/formulacion/modulos/reportes/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT $P{id_ejercicio} as id_ejercicio;]]>
+	</queryString>
+	<field name="id_ejercicio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="10" width="772" height="25" uuid="c2fa7a2b-a8a1-42ee-9bb1-266875e33d14"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLAN OPERATIVO ANUAL ESTATAL (POA "+$F{id_ejercicio}+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="45" width="767" height="20" uuid="a53d991d-7c28-4c6c-95e2-4ba859ca64ff"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[4. DISTRIBUCIÓN GRÁFICA DE LOS PROYECTOS POR OBJETIVO HISTÓRICO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="102" splitType="Prevent">
+			<subreport>
+				<reportElement x="35" y="2" width="200" height="100" uuid="46a70050-ae7a-4483-ab3b-b96003ac1882"/>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$F{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0401_obj_tapa_datos.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="410" y="2" width="200" height="100" uuid="7b14512d-9f4b-4674-8f75-1b61ebd93bd9"/>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$F{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0401_obj_tapa_grafico.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Prevent"/>
+	</summary>
+</jasperReport>

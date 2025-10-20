@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="770" pageHeight="590" orientation="Landscape" columnWidth="770" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/produccion/formulacion/modulos/reportes/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT distinct vi.id_obj_historico ,  ob.tx_descripcion as descripcion
+  FROM t32_proyecto_vinculos vi
+	LEFT JOIN t20_planes ob ON ob.co_objetivo_historico = vi.id_obj_historico and ob.nu_nivel=1 and ob.edo_reg
+  where vi.edo_reg and vi.id_obj_historico <>''
+ORDER BY vi.id_obj_historico;]]>
+	</queryString>
+	<field name="id_obj_historico" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<group name="objetivos">
+		<groupExpression><![CDATA[$F{id_obj_historico}]]></groupExpression>
+	</group>
+	<group name="OBJ" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{id_obj_historico}]]></groupExpression>
+		<groupHeader>
+			<band height="47">
+				<staticText>
+					<reportElement x="4" y="2" width="766" height="20" uuid="a53d991d-7c28-4c6c-95e2-4ba859ca64ff"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[4. DISTRIBUCIÓN GRÁFICA DE LOS PROYECTOS POR OBJETIVO HISTÓRICO]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="19" y="22" width="732" height="25" uuid="980c230a-787d-4b99-8698-b2052980aacc"/>
+					<box topPadding="5" leftPadding="5" bottomPadding="3" rightPadding="5"/>
+					<textElement textAlignment="Justified">
+						<font fontName="DejaVu Sans" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="10" width="770" height="25" uuid="f891e985-3581-455f-9b79-0f0df0e39c23"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLAN OPERATIVO ANUAL ESTATAL (POA "+$P{id_ejercicio}+")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<subreport>
+				<reportElement x="9" y="7" width="224" height="14" uuid="741923af-b64b-4570-9d6f-5d6aa2f99962"/>
+				<subreportParameter name="ID_OBJ">
+					<subreportParameterExpression><![CDATA[$F{id_obj_historico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$P{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0402_obj_detal_datos.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="409" y="7" width="200" height="14" uuid="36185714-0d11-4f8c-8df0-aa9622b2aa8a"/>
+				<subreportParameter name="ID_OBJ">
+					<subreportParameterExpression><![CDATA[$F{id_obj_historico}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$P{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0402_obj_detal_grafico.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="375" pageHeight="792" columnWidth="375" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="co_municipio" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  distinct mu.co_estado, mu.co_municipio, mu.tx_municipio, pr.id_proyecto, pr.nombre
+  FROM t13_municipio mu
+  LEFT JOIN t34_proyecto_localizacion_nacional ln ON  ln.co_municipio=mu.co_municipio AND ln.edo_reg
+  INNER JOIN t26_proyectos pr ON  pr.id_proyecto=ln.id_proyecto  AND pr.id_ejercicio = $P{id_ejercicio}
+  AND pr.edo_reg
+  where mu.co_estado=23 AND mu.co_municipio=$P{co_municipio}
+  order by mu.co_municipio, pr.id_proyecto;]]>
+	</queryString>
+	<field name="co_estado" class="java.lang.Long"/>
+	<field name="co_municipio" class="java.lang.Long"/>
+	<field name="tx_municipio" class="java.lang.String"/>
+	<field name="id_proyecto" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement positionType="Float" x="51" y="1" width="231" height="17" uuid="a5c8aefd-795c-48b9-85c2-098ee3f35db1"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROYECTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="11" y="1" width="40" height="17" uuid="b7a5a51d-4f97-4f8d-9feb-1a7cea92a120"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COD.]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="Float" x="10" y="0" width="352" height="1" uuid="0e646610-446c-47a1-9837-050de49fcfaa"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="10" y="0" width="352" height="19" uuid="4ef9c475-fcf5-4115-9dc7-4a8cdbcd3266"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="DejaVu Sans" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>"+$F{id_proyecto} + "</b> - " + $F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch">
+			<line>
+				<reportElement positionType="Float" x="10" y="0" width="352" height="1" uuid="92f0551c-16a8-4966-b2aa-c136bdd30af2"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relacion_formulacion" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe0c446e-b1ee-4cb5-981a-80fd3adfa5e3">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ejecutor" class="java.lang.String">
+		<defaultValueExpression><![CDATA['%']]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT t46.id_ejercicio as ejercicio, t46.id_ejecutor as ej_id, t24.tx_ejecutor as ej_nombre,
+	sp_ejecutor_ac_monto( t46.id_ejercicio::text, t46.id_ejecutor ) as ej_monto,
+	sp_ejecutor_ac_monto_calc( t46.id_ejercicio::text, t46.id_ejecutor ) as ej_monto_calc,
+		(select count(*) as ac_registradas from t46_acciones_centralizadas WHERE id_ejercicio = t46.id_ejercicio and id_ejecutor = t46.id_ejecutor) as ac_registradas,
+	t46.id_accion as ac_id,
+	de_nombre as ac_nombre, t53.numero as ae_id, t53.nombre as ae_nombre, t46.monto as ac_monto, coalesce(t46.monto_calc, 0) as ac_monto_calc,
+	(select count(*) as ac_max from mantenimiento.tab_ac_predefinida) as ac_max,
+	 (select count(t53.nu_numero) as ae_max
+			from mantenimiento.tab_ac_predefinida as t52
+				inner join mantenimiento.tab_ac_ae_predefinida as t53 on t53.id_padre = t52.id
+				where t52.id = t46.id_accion
+		) as ae_max,
+	(select t46.id is not null as ac_existe
+		from t46_acciones_centralizadas as t46i	where
+		t46i.id_ejercicio = t46.id_ejercicio and t46i.id_ejecutor = t46.id_ejecutor and t46i.id_accion = t46.id_accion
+
+	) as ac_existe,
+	(select count(*) as ae_registradas from t47_ac_accion_especifica WHERE id_accion_centralizada = t46.id) as ae_registradas,
+	t47.monto as ae_monto,
+	t47.monto_calc as ae_monto_calc,
+	(select count(*) as mt_registradas from t69_metas_ac WHERE id_accion_centralizada = t69.id_accion_centralizada and co_ac_acc_espec = t69.co_ac_acc_espec) as mt_registradas,
+	codigo as mt_codigo,
+	(case when char_length(t69.nb_meta) < 180 then t69.nb_meta else substring(t69.nb_meta from 1 for 177) || '...' end) as mt_nombre,
+	monto_cargado_ac_ae_meta(co_metas) AS mt_monto,
+	(select sum(monto) as ac_ae_monto from t47_ac_accion_especifica WHERE id_accion_centralizada = t46.id and edo_reg is true) as ac_ae_monto,
+	(select sum(monto) as ac_ae_monto_calc from t54_ac_ae_partidas WHERE id_accion_centralizada = t47.id_accion_centralizada and edo_reg is true) as ac_ae_monto_calc,
+	(select sum(monto) as ef_monto from t46_acciones_centralizadas WHERE id_ejercicio = t46.id_ejercicio and edo_reg is true) as ef_monto,
+	(select sum(mo_presupuesto) as ef_monto_calc from t70_metas_ac_detalle as t700
+	inner join t69_metas_ac as t699 on t699.co_metas = t700.co_metas
+	inner join t47_ac_accion_especifica as t477 on t477.id_accion_centralizada = t699.id_accion_centralizada and t477.id_accion = t699.co_ac_acc_espec
+	inner join t46_acciones_centralizadas as t466 on t466.id = t477.id_accion_centralizada
+	WHERE id_ejercicio = t46.id_ejercicio and t466.edo_reg is true and t477.edo_reg is true and t699.edo_reg is true and t700.edo_reg is true) as ef_monto_calc
+	FROM t69_metas_ac as t69
+	inner join t47_ac_accion_especifica as t47 on t47.id_accion_centralizada = t69.id_accion_centralizada and t47.id_accion = t69.co_ac_acc_espec
+	inner join t53_ac_ae_predefinidas as t53 on t53.id = t47.id_accion
+	inner join t46_acciones_centralizadas as t46 on t46.id = t47.id_accion_centralizada
+	inner join mantenimiento.tab_ac_predefinida as t52 on t52.id = t46.id_accion
+	inner join mantenimiento.tab_ejecutores as t24 on t46.id_ejecutor = t24.id_ejecutor
+	WHERE t46.id_ejercicio::text = $P{id_ejercicio}
+	and t69.edo_reg is true
+	order by t46.id_ejecutor, t46.id_accion, t53.numero, codigo ASC]]>
+	</queryString>
+	<field name="ejercicio" class="java.math.BigDecimal"/>
+	<field name="ej_id" class="java.lang.String"/>
+	<field name="ej_nombre" class="java.lang.String"/>
+	<field name="ej_monto" class="java.math.BigDecimal"/>
+	<field name="ej_monto_calc" class="java.math.BigDecimal"/>
+	<field name="ac_registradas" class="java.lang.Long"/>
+	<field name="ac_id" class="java.lang.Integer"/>
+	<field name="ac_nombre" class="java.lang.String"/>
+	<field name="ae_id" class="java.lang.Integer"/>
+	<field name="ae_nombre" class="java.lang.String"/>
+	<field name="ac_monto" class="java.math.BigDecimal"/>
+	<field name="ac_monto_calc" class="java.math.BigDecimal"/>
+	<field name="ac_max" class="java.lang.Long"/>
+	<field name="ae_max" class="java.lang.Long"/>
+	<field name="ac_existe" class="java.lang.Boolean"/>
+	<field name="ae_registradas" class="java.lang.Long"/>
+	<field name="ae_monto" class="java.math.BigDecimal"/>
+	<field name="ae_monto_calc" class="java.math.BigDecimal"/>
+	<field name="mt_registradas" class="java.lang.Long"/>
+	<field name="mt_codigo" class="java.lang.String"/>
+	<field name="mt_nombre" class="java.lang.String"/>
+	<field name="mt_monto" class="java.math.BigDecimal"/>
+	<field name="ac_ae_monto" class="java.math.BigDecimal"/>
+	<field name="ac_ae_monto_calc" class="java.math.BigDecimal"/>
+	<field name="ef_monto" class="java.math.BigDecimal"/>
+	<field name="ef_monto_calc" class="java.math.BigDecimal"/>
+	<variable name="ac_declarado_SUM" class="java.math.BigDecimal" resetType="Group" resetGroup="ac" incrementType="Group" incrementGroup="ac" calculation="Sum">
+		<variableExpression><![CDATA[$V{ac_declarado_SUM} + ($F{ae_monto} != null ? $F{ae_monto} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="ac_calc_SUM" class="java.math.BigDecimal" resetType="Group" resetGroup="ac" incrementType="Group" incrementGroup="ac" calculation="Sum">
+		<variableExpression><![CDATA[$V{ac_calc_SUM} + ($F{ae_monto_calc} != null ? $F{ae_monto_calc} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="ej_declarado_SUM" class="java.math.BigDecimal" resetType="Group" resetGroup="ejecutor" incrementType="Group" incrementGroup="ejecutor" calculation="Sum">
+		<variableExpression><![CDATA[$V{ej_declarado_SUM} + ($F{ae_monto} != null ? $F{ae_monto} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="ej_calc_SUM" class="java.math.BigDecimal" resetType="Group" resetGroup="ejecutor" incrementType="Group" incrementGroup="ejecutor" calculation="Sum">
+		<variableExpression><![CDATA[$V{ej_calc_SUM} + ($F{ae_monto_calc} != null ? $F{ae_monto_calc} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="ejer_declarado_SUM" class="java.math.BigDecimal" incrementType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{ejer_declarado_SUM} + ($F{ae_monto} != null ? $F{ae_monto} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="ejer_calc_SUM" class="java.math.BigDecimal" incrementType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{ejer_calc_SUM} + ($F{ae_monto_calc} != null ? $F{ae_monto_calc} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="ae_calc_SUM" class="java.math.BigDecimal" resetType="Group" resetGroup="ae" incrementType="Group" incrementGroup="ae" calculation="Sum">
+		<variableExpression><![CDATA[$V{ae_calc_SUM} + ($F{mt_monto} != null ? $F{mt_monto} : 0)]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="ejecutor" minHeightToStartNewPage="140">
+		<groupExpression><![CDATA[$F{ej_id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField isStretchWithOverflow="true">
+					<reportElement x="69" y="8" width="466" height="20" isPrintWhenDetailOverflows="true" uuid="e0741a31-3bdc-425e-8534-f3c974aeb691"/>
+					<box topPadding="2" leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Top" markup="none">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ej_id} + " - " + $F{ej_nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="8" width="69" height="20" uuid="5ed06449-6228-49a2-a0f0-8ffabd27772d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Ejecutor: ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="422" y="0" width="133" height="20" uuid="10fff3eb-9390-4a70-855d-ba033abb37af"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>A.A.C.C. registradas:</b> " + $F{ac_registradas} + " / " + $F{ac_max}]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement x="0" y="0" width="405" height="20" uuid="41bde9b4-71a1-4fb8-95ca-2406c9dae0b5">
+						<printWhenExpression><![CDATA[$V{ej_declarado_SUM} > 0]]></printWhenExpression>
+					</reportElement>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="305" y="0" width="80" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ej_monto_calc}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="196" y="0" width="109" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["\u03a3 mnts. registrados A.C.: "]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="109" y="0" width="80" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="9"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ej_monto}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="0" y="0" width="109" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="9" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["\u03a3 mnts. declarados A.C.: "]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="385" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ej_monto} != $F{ej_monto_calc} ? "X" : null]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="ac" minHeightToStartNewPage="150">
+		<groupExpression><![CDATA[$F{ac_id}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField isBlankWhenNull="true">
+					<reportElement x="535" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+					<box topPadding="0" leftPadding="1" rightPadding="1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[!$F{ac_existe} ? "X" : null]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="535" height="20" uuid="61f392c9-2d01-4dbc-bf05-750905e57263"/>
+					<box topPadding="2" leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
+						<leftPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.0"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="html">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>Acción Centralizada:</b> " + $F{ac_id} + " - " +$F{ac_nombre}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="ac" isBlankWhenNull="true">
+					<reportElement isPrintRepeatedValues="false" x="127" y="20" width="300" height="20" isRemoveLineWhenBlank="true" uuid="a52e02ec-1218-4883-adcd-4865d753e3a1">
+						<printWhenExpression><![CDATA[$F{ac_existe} && ($F{ae_registradas} == 0)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["-- Sin Acciones Específicas Registradas --"]]></textFieldExpression>
+				</textField>
+				<frame>
+					<reportElement isPrintRepeatedValues="false" x="20" y="20" width="515" height="20" printWhenGroupChanges="ac" uuid="bc2b1d04-369e-4d8d-99f5-0cf5c4de7066">
+						<printWhenExpression><![CDATA[$F{ae_registradas} > 0]]></printWhenExpression>
+					</reportElement>
+					<textField evaluationTime="Group" evaluationGroup="ac">
+						<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="0" width="335" height="20" uuid="a52e02ec-1218-4883-adcd-4865d753e3a1"/>
+						<textElement verticalAlignment="Middle" markup="none">
+							<font size="11" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{ac_COUNT} > 1 ? "Acciones Específicas" : "Acción Específica"]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement x="335" y="0" width="90" height="20" uuid="e7dd3f00-8b6f-4d47-9d46-60f497d3b623"/>
+						<box leftPadding="1" bottomPadding="1" rightPadding="1">
+							<bottomPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[monto declarado]]></text>
+					</staticText>
+					<staticText>
+						<reportElement x="425" y="0" width="90" height="20" uuid="e7dd3f00-8b6f-4d47-9d46-60f497d3b623"/>
+						<box leftPadding="1" bottomPadding="1" rightPadding="1">
+							<bottomPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<text><![CDATA[monto registrado]]></text>
+					</staticText>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="40">
+				<printWhenExpression><![CDATA[$F{ac_existe}]]></printWhenExpression>
+				<frame>
+					<reportElement x="45" y="20" width="461" height="20" uuid="84541a00-0bb1-4c98-9c5c-6a7248966f85">
+						<printWhenExpression><![CDATA[$F{ac_monto} > 0]]></printWhenExpression>
+					</reportElement>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="218" y="0" width="122" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["\u03a3 mnts. registrados A.E.: "]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="412" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ac_ae_monto_calc} != $F{ac_monto_calc} ? "X" : null]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="341" y="0" width="70" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ac_ae_monto_calc}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="189" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ac_monto} != $F{ac_ae_monto_calc} ? "X" : null]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="119" y="0" width="70" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ac_ae_monto}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="0" y="0" width="119" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["\u03a3 mnts. declarados A.E.: "]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="45" y="0" width="461" height="20" uuid="a901f00e-ed85-4cd5-995a-d9a0b4f91183"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="0" y="0" width="119" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b">
+							<printWhenExpression><![CDATA[true]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["mnt. declarado A.C.: "]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="119" y="0" width="70" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ac_monto}]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="412" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ac_monto} != $F{ac_monto_calc} ? "X" : null]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="218" y="0" width="122" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b">
+							<printWhenExpression><![CDATA[true]]></printWhenExpression>
+						</reportElement>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["mnt. registrado A.C.: "]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="341" y="0" width="70" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[($F{ac_monto_calc} != null ? $F{ac_monto_calc} : 0)]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="ae" minHeightToStartNewPage="85">
+		<groupExpression><![CDATA[$F{ae_id}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<frame>
+					<reportElement x="20" y="0" width="535" height="20" uuid="aafc6038-508e-458e-9117-9f489edd226c">
+						<printWhenExpression><![CDATA[$F{ae_id} != null]]></printWhenExpression>
+					</reportElement>
+					<textField isBlankWhenNull="true">
+						<reportElement x="515" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+						<box topPadding="4" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_monto} != $F{ae_monto_calc} ? "X" : null]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="425" y="0" width="90" height="20" uuid="11c70af7-b787-4bac-9072-05eeb9ad4110"/>
+						<box topPadding="4" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[($F{ae_monto_calc} != null ? $F{ae_monto_calc} : 0)]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="335" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="a5ecb2ef-84e0-43f3-8100-485d51720570"/>
+						<box topPadding="4" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_monto}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement stretchType="RelativeToTallestObject" x="25" y="0" width="310" height="20" uuid="a063a8b4-c409-4809-9587-788c52033fc3"/>
+						<box topPadding="4" leftPadding="1" rightPadding="1"/>
+						<textElement verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_nombre}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="0" y="0" width="25" height="20" uuid="91cf9a84-9d60-497b-b613-5d8a3b5d463e"/>
+						<box topPadding="4" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle"/>
+						<textFieldExpression><![CDATA[$F{ae_id} + " - "]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<printWhenExpression><![CDATA[$F{mt_registradas} > 0]]></printWhenExpression>
+				<frame>
+					<reportElement x="138" y="0" width="417" height="20" uuid="84541a00-0bb1-4c98-9c5c-6a7248966f85"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="177" y="0" width="130" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="7" isBold="true"/>
+						</textElement>
+						<textFieldExpression><![CDATA["\u03a3 mnts. registrados A: "]]></textFieldExpression>
+					</textField>
+					<textField isBlankWhenNull="true">
+						<reportElement x="396" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1"/>
+						<textElement textAlignment="Center" verticalAlignment="Middle">
+							<font size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ae_monto_calc} != $V{ae_calc_SUM} ? "X" : null]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement x="307" y="0" width="89" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+						<box topPadding="2" leftPadding="1" rightPadding="1">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{ae_calc_SUM}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="51" width="554" height="24" uuid="f381021a-9904-4275-a3d8-ea83235f2c5f"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Relación de Formulación " + $F{ejercicio}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="42" uuid="8dab4ce6-8d07-4efb-889e-b0c46a3d0934"/>
+				<image scaleImage="RetainShape" isUsingCache="true">
+					<reportElement x="0" y="2" width="554" height="40" uuid="cc6c7c5e-96cc-43e3-9245-0db069b7a976"/>
+					<imageExpression><![CDATA["cintillo_"+$P{id_ejercicio}+".jpg"]]></imageExpression>
+				</image>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Immediate">
+			<printWhenExpression><![CDATA[$F{mt_registradas} > 0]]></printWhenExpression>
+			<frame>
+				<reportElement x="20" y="0" width="535" height="20" uuid="aafc6038-508e-458e-9117-9f489edd226c">
+					<printWhenExpression><![CDATA[$F{ae_id} != null]]></printWhenExpression>
+				</reportElement>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="425" y="0" width="90" height="20" uuid="a5ecb2ef-84e0-43f3-8100-485d51720570"/>
+					<box topPadding="2" leftPadding="1" rightPadding="1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mt_monto} ? $F{mt_monto} : 0]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="50" y="0" width="375" height="20" uuid="a063a8b4-c409-4809-9587-788c52033fc3"/>
+					<box topPadding="2" leftPadding="1" rightPadding="1"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mt_nombre}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="25" y="0" width="25" height="20" uuid="91cf9a84-9d60-497b-b613-5d8a3b5d463e"/>
+					<box topPadding="2" leftPadding="1" rightPadding="1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mt_codigo} + " - "]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="28" uuid="00930210-de9c-4127-93d4-64e403663105"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textField>
+					<reportElement x="32" y="0" width="390" height="28" uuid="ab67ea05-11b5-42a0-b541-c902191003c7"/>
+					<textElement verticalAlignment="Middle">
+						<paragraph leftIndent="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Palacio de los Cóndores, Plaza Bolívar, Maracaibo, Estado Zulia, Venezuela"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="439" y="8" width="79" height="20" uuid="0ad27c93-db88-4dba-878b-ce06f6d17d0e"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement x="523" y="8" width="31" height="20" uuid="75f66265-0d8c-47e1-80eb-48eddbecfbb4"/>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="24" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{ejecutor_COUNT} > 1]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="-10" y="2" width="148" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+				<box topPadding="2" leftPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\u03a3 mnts. declarados Ejecutores: "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="522" y="0" width="20" height="20" forecolor="#FF0000" uuid="907fc2ac-f799-405c-a66e-579026fcc2c7"/>
+				<box topPadding="2" leftPadding="1" rightPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ef_monto} != $F{ef_monto_calc} ? "X" : null]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="139" y="1" width="98" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+				<box topPadding="2" leftPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ef_monto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="413" y="0" width="108" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+				<box topPadding="2" leftPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ef_monto_calc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="268" y="2" width="140" height="20" uuid="bbb94b7f-9e60-465e-928f-d23e11c2118b"/>
+				<box topPadding="2" leftPadding="1" rightPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\u03a3 mnts. registrados Ejecutores: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

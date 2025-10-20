@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="770" pageHeight="590" orientation="Landscape" columnWidth="770" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/produccion/formulacion/modulos/reportes/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT tf.co_tipo_recurso, tr.tx_tipo_recurso
+  FROM t26_proyectos pr
+  LEFT JOIN t62_proyecto_distribucion di ON di.id_proyecto = pr.id_proyecto  AND di.edo_reg
+  LEFT JOIN t61_tipo_fondo tf ON tf.co_tipo_fondo = di.co_tipo_fondo AND tf.edo_reg
+  LEFT JOIN t60_tipo_recurso tr ON tr.co_tipo_recurso = tf.co_tipo_recurso AND tr.edo_reg
+  WHERE pr.id_ejercicio=$P{id_ejercicio} AND pr.edo_reg  AND di.mo_fondo>0 AND di.edo_reg is true
+  ORDER BY co_tipo_recurso;]]>
+	</queryString>
+	<field name="co_tipo_recurso" class="java.lang.Long"/>
+	<field name="tx_tipo_recurso" class="java.lang.String"/>
+	<group name="grp_finncmnto" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{co_tipo_recurso}]]></groupExpression>
+		<groupHeader>
+			<band height="47">
+				<staticText>
+					<reportElement x="4" y="2" width="766" height="20" uuid="a53d991d-7c28-4c6c-95e2-4ba859ca64ff"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[6. DISTRIBUCIÓN GRÁFICA DE LOS PROYECTOS POR FUENTE DE FINANCIAMIENTO]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="19" y="22" width="732" height="25" uuid="52dcad16-3d58-4837-b914-38f098d77328"/>
+					<box topPadding="5" leftPadding="5" bottomPadding="3" rightPadding="5"/>
+					<textElement textAlignment="Justified">
+						<font fontName="DejaVu Sans" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{co_tipo_recurso}+" - "+$F{tx_tipo_recurso}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="10" width="770" height="25" uuid="f891e985-3581-455f-9b79-0f0df0e39c23"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLAN OPERATIVO ANUAL ESTATAL (POA "+$P{id_ejercicio}+")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<subreport>
+				<reportElement x="10" y="0" width="200" height="22" uuid="8d2b19cd-6343-4fe3-988b-c86c3678f182"/>
+				<subreportParameter name="id_tipo_recurso">
+					<subreportParameterExpression><![CDATA[$F{co_tipo_recurso}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$P{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0602_fnn_detal_datos.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="410" y="0" width="200" height="22" uuid="4200833c-5e0e-4b47-acfb-e65fb214a010"/>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$P{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_tipo_recurso">
+					<subreportParameterExpression><![CDATA[$F{co_tipo_recurso}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0602_fnn_detal_grafico.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

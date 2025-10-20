@@ -1,0 +1,1289 @@
+(function(Ext, Reingsys, async, paqueteComunJS, opcionPlanificador) {
+    Ext.define('AccionCentralizada.Tab', {
+        extend: 'Ext.TabPanel',
+        xtype: 'accion_centralizada',
+        constructor: function(config) {
+            var self = this;
+
+            var forma = Ext.create(
+                Ext.apply({
+                    xtype: 'accion_centralizada_forma',
+                    autoHeight: true,
+                    autoWidth: true,
+                    padre: self
+                }, config.frm)
+            );
+
+            config = Ext.apply({
+                autoHeight: true,
+                autoWidth: true,
+                enableTabScroll: true,
+                activeTab: 0,
+		border: false,
+                items: [
+                    forma
+                ]
+            }, config);
+
+            this.callParent(arguments);
+        }
+    });
+
+    Ext.define('AccionCentralizada.Forma', {
+        extend: 'Ext.form.FormPanel',
+        xtype: 'accion_centralizada_forma',
+        constructor: function(config) {
+            var self = this,
+                ancho = 400;
+
+            var ac = config.ac;
+
+            this.store_accion = new Ext.data.JsonStore({
+                proxy: new Ext.data.HttpProxy({
+                    url: 'formulacion/modulos/seguimiento_ac/funcion.php'
+                }),
+                baseParams: {
+                    op: 2
+                },
+                root: 'data',
+                fields: [
+                    'id', {
+                        name: 'de_nombre',
+                        convert: function(v, r) {
+                            return r.id + ' - ' + r.de_nombre;
+                        }
+                    }
+                ]
+            });
+
+            this.store_ejecutor = new Ext.data.JsonStore({
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                root: 'data',
+		baseParams: {
+                    op: 3
+                },
+                fields: ['id_ejecutor', 'tx_ejecutor']
+            });
+
+            this.store_situacion = new Ext.data.JsonStore({
+                proxy: new Ext.data.HttpProxy({
+                    url: 'formulacion/modulos/seguimiento_ac/funcion.php'
+                }),
+                baseParams: {
+                    op: 4
+                },
+                root: 'data',
+                fields: [
+                    'co_situacion_presupuestaria',
+                    'tx_situacion_presupuestaria'
+                ]
+            });
+
+            this.store_sector = new Ext.data.JsonStore({
+                proxy: new Ext.data.HttpProxy({
+                    url: 'formulacion/modulos/seguimiento_ac/funcion.php'
+                }),
+                baseParams: {
+                    op: 5
+                },
+                root: 'data',
+                fields: ['co_sector', 'tx_descripcion']
+            });
+
+            this.store_subsector = new Ext.data.JsonStore({
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                root: 'data',
+                baseParams: {
+                    op: 6
+                },
+                fields: ['co_sectores', 'co_sub_sector', 'tx_sub_sector']
+            });
+
+            this.fieldset1 = new Ext.form.FieldSet({
+                defaults: {
+                    width: ancho,
+                },
+                items: [{
+                    xtype: 'hidden',
+                    name: 'id'
+                }, {
+                    xtype: 'hidden',
+                    name: 'id_ejercicio',
+                }, {
+                    xtype: 'textfield',
+                    fieldLabel: '1.0. CÓDIGO DE LA ACCIÓN CENTRALIZADA',
+                    name: 'nu_codigo',
+                    readOnly: true,
+                    style: 'background:#c9c9c9;'
+                }, {
+                    xtype: 'textfield',
+                    fieldLabel: '1.1. CÓDIGO DEL SISTEMA',
+                    name: 'co_sistema',
+                    readOnly: true,
+                    style: 'background:#c9c9c9;'
+                }, {
+                    xtype: 'combo',
+                    store: this.store_accion,
+                    fieldLabel: '1.2. TIPO DE ACCIÓN',
+                    valueField: 'id',
+                    displayField: 'de_nombre',
+                    hiddenName: 'id_accion',
+                    autoSelect: true,
+                    forceSelection: true,
+                    allowBlank: false,
+                    emptyText: 'Seleccione el tipo de Acción Centralizada',
+                    triggerAction: 'all',
+                    mode: 'local'
+                }, {
+                    xtype: 'textarea',
+                    fieldLabel: '1.3. DESCRIPCIÓN',
+                    name: 'descripcion',
+                    allowBlank: false,
+                    height: 100,
+                    maxLength: 200
+                }, {
+                    xtype: 'combo',
+                    fieldLabel: '1.4. UNIDAD EJECUTORA RESPONSABLE',
+                    store: this.store_ejecutor,
+                    valueField: 'id_ejecutor',
+                    displayField: 'tx_ejecutor',
+                    hiddenName: 'id_ejecutor',
+                    emptyText: 'Seleccione Unidad Ejecutora',
+                    allowBlank: false,
+                    readOnly: ac.es_local,
+                    style: ac.es_local ? 'background:#c9c9c9;' : '',
+                    typeAhead: true,
+                    forceSelection: true,
+                    resizable: true,
+                    triggerAction: 'all',
+                    mode: 'local',
+		    itemSelector: 'div.search-item',
+		    tpl: new Ext.XTemplate('<tpl for="."><div class="search-item"><div class="desc">{tx_ejecutor}</div></div></tpl>'),
+                }, {
+                    xtype: 'textarea',
+                    fieldLabel: '1.4.1. MISION',
+                    name: 'inst_mision',
+                    allowBlank: false,
+                    height: 60,
+                    maxLength: 600
+                }, {
+                    xtype: 'textarea',
+                    fieldLabel: '1.4.2. VISION',
+                    name: 'inst_vision',
+                    allowBlank: false,
+                    height: 60,
+                    maxLength: 600
+                }, {
+                    xtype: 'textarea',
+                    fieldLabel: '1.4.3. OBJETIVOS DE LA INSTITUCION',
+                    name: 'inst_objetivos',
+                    allowBlank: false,
+                    height: 100,
+                    maxLength: 3000
+                }]
+            });
+
+            this.co_sector = new Ext.form.ComboBox({
+                fieldLabel: '1.5.1. SECTOR',
+                store: this.store_sector,
+                typeAhead: true,
+                valueField: 'co_sector',
+                displayField: 'tx_descripcion',
+                hiddenName: 'co_sector',
+                forceSelection: true,
+                resizable: true,
+                triggerAction: 'all',
+                emptyText: 'Seleccione Sector',
+                mode: 'local',
+                allowBlank: false,
+                listeners: {
+                    change: function() {
+                        self.store_subsector.load({
+                            params: {
+                                co_sector: this.getValue()
+                            }
+                        });
+                    },
+                    beforeselect: function() {
+                        self.co_sub_sector.clearValue();
+                    }
+                }
+            });
+
+            this.co_sub_sector = new Ext.form.ComboBox({
+                fieldLabel: '1.5.2. SUB-SECTOR',
+                store: this.store_subsector,
+                typeAhead: true,
+                valueField: 'co_sectores',
+                displayField: 'tx_sub_sector',
+                hiddenName: 'id_subsector',
+                forceSelection: true,
+                resizable: true,
+                triggerAction: 'all',
+                emptyText: 'Seleccione Sub Sector',
+                selectOnFocus: true,
+                mode: 'local',
+                allowBlank: false
+            });
+
+            this.fieldset2 = new Ext.form.FieldSet({
+                title: '1.5. CLASIFICACIÓN SECTORIAL',
+                defaults: {
+                    width: ancho,
+                },
+                items: [
+                    this.co_sector,
+                    this.co_sub_sector
+                ]
+            });
+
+            this.validarFecha = function() {
+                var sd = self.fecha_inicio.getValue();
+                var ed = self.fecha_fin.getValue();
+                if (sd <= ed) {
+                    return true;
+                }
+                Ext.Msg.alert('Notificación',
+                    'La Fecha de Inicio no debe <br>ser Mayor que la Fecha de Culminación');
+                return false;
+            };
+
+            this.fecha_inicio = new Ext.form.DateField({
+                fieldLabel: '1.6. FECHA DE INICIO',
+                name: 'fecha_inicio',
+                width: 100,
+                allowBlank: false,
+                format: 'd-m-Y',
+                value: config.ac.fecha_inicio,
+                minValue: config.ac.fecha_inicio,
+                maxValue: config.ac.fecha_fin,
+                validationEvent: 'change',
+                validator: this.validarFecha
+            });
+
+            this.fecha_fin = new Ext.form.DateField({
+                fieldLabel: '1.7. FECHA DE CULMINACIÓN',
+                name: 'fecha_fin',
+                width: 100,
+                allowBlank: false,
+                format: 'd-m-Y',
+                value: config.ac.fecha_fin,
+                minValue: config.ac.fecha_inicio,
+                maxValue: config.ac.fecha_fin,
+                validationEvent: 'change',
+                validator: this.validarFecha
+            });
+
+            this.fieldset3 = new Ext.form.FieldSet({
+                defaults: {
+                    width: ancho,
+                },
+                items: [
+                    this.fecha_inicio,
+                    this.fecha_fin,
+                    {
+                        xtype: 'combo',
+                        fieldLabel: '1.8. SITUACIÓN PRESUPUESTARIA',
+                        store: this.store_situacion,
+                        typeAhead: true,
+                        valueField: 'co_situacion_presupuestaria',
+                        displayField: 'tx_situacion_presupuestaria',
+                        hiddenName: 'co_situacion_presupuestaria',
+                        forceSelection: true,
+                        resizable: true,
+                        triggerAction: 'all',
+                        emptyText: 'Seleccione Situacion Presupuestaria...',
+                        selectOnFocus: true,
+                        mode: 'local',
+                        allowBlank: false
+                    }, {
+                        xtype: 'numberfield',
+                        fieldLabel: '1.9. MONTO TOTAL (BS.)',
+                        name: 'monto',
+                        allowBlank: false,
+                        allowDecimals: false,
+                        minLength: 1,
+                        maxLength: 12,
+                        allowNegative: false,
+                        emptyText: '0',
+                    }, {
+			xtype: 'numberfield',
+			fieldLabel: '1.9.1. POBLACIÓN A BENEFICIAR',
+			name: 'nu_po_beneficiar',
+                        allowBlank: false,
+                        allowDecimals: false,
+                        minLength: 1,
+                        maxLength: 12,
+                        allowNegative: false,
+                        emptyText: '0',
+		    }, {
+			xtype: 'numberfield',
+			fieldLabel: '1.9.2. EMPLEOS PREVISTOS',
+			name: 'nu_em_previsto',
+                        allowBlank: false,
+                        allowDecimals: false,
+                        minLength: 1,
+                        maxLength: 12,
+                        allowNegative: false,
+                        emptyText: '0',
+		    }, {
+			xtype: 'textarea',
+			fieldLabel: '1.9.3. RESULTADOS ESPERADOS',
+			name: 'tx_re_esperado',
+			allowBlank: false,
+			height: 60,
+			maxLength: 600
+                    }
+                ]
+            });
+
+            config = Ext.apply({
+                detalles: false,
+                title: '1. DATOS BÁSICOS',
+                deferredRender: false,
+                autoWidth: true,
+                autoHeight: true,
+		border: false,
+                padding: '10px',
+                labelWidth: 200,
+                labelSeparator: '',
+                labelAlign: 'right',
+                items: [
+                    self.fieldset1,
+                    self.fieldset2,
+                    self.fieldset3
+                ],
+                bbar: [
+                    '->', {
+                        formBind: true,
+                        text: 'Guardar',
+                        iconCls: 'icon-guardar',
+                        handler: function() {
+                            var forma = self.getForm();
+                            if (!forma.isValid()) {
+                                Ext.Msg.alert("Alerta",
+                                    "Debe ingresar los campos en rojo");
+                                return false;
+                            }
+                            var enviarCambios = function() {
+                                forma.submit({
+                                    method: 'POST',
+                                    url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                                    params: {
+                                        op: 99
+                                    },
+                                    waitMsg: 'Enviando datos, por favor espere..',
+                                    waitTitle: 'Enviando',
+                                    failure: function(form, action) {
+                                        Ext.MessageBox.alert('Error en transacción',
+                                            action.result.msg);
+                                    },
+                                    success: function(form, action) {
+                                        if (action.result.success) {
+                                            Ext.MessageBox.show({
+                                                title: 'Mensaje',
+                                                msg: action.result.msg,
+                                                closable: false,
+                                                icon: Ext.MessageBox.INFO,
+                                                resizable: false,
+                                                animEl: document.body,
+                                                buttons: Ext.MessageBox.OK
+                                            });
+                                            //FIXME no...
+                                            listaAcS.main.store_lista.reload();
+                                        } else {
+                                            Ext.MessageBox.alert('Error en transacción',
+                                                action.result.msg);
+                                        }
+                                    }
+                                });
+                            };
+
+                            if (!!ac.id && (forma.getValues().id_accion !== ac.id_accion)) {
+                                Ext.Msg.confirm('Atención',
+                                    'Cambiar el Tipo de Acción de la AC, implica borrar'
+                                    + ' (para mantener la consistencia), la información'
+                                    + ' de las AE cargadas. ¿Desea continuar?',
+                                    function(res) {
+                                        if ( res === 'yes' ) {
+                                            enviarCambios();
+                                        }
+                                    }
+                                ).setIcon(Ext.MessageBox.WARNING);
+                            } else {
+                                enviarCambios();
+                            }
+                        }
+                    }
+                ]
+            }, config);
+
+            this.callParent(arguments);
+
+            if ( self.ac.bloqueado ) {
+                Reingsys.util.deshabilitarForma(self);
+            }
+
+            var intermedio = function(nombre) {
+                return function(cb) {
+                    self['store_' + nombre].load({
+                        callback: function(r, op, scs) {
+                            cb(scs ? null : nombre);
+                        }
+                    });
+                };
+            };
+
+            this.on('beforerender', function() {
+                self.crearTabsAdicionales();
+                async.parallel([
+                        intermedio( 'accion'),
+                        intermedio( 'ejecutor'),
+                        intermedio( 'situacion'),
+                        function(cb) {
+                            async.series([
+                                    function(cb) {
+                                        self.store_sector.load({
+                                            callback: function(r, op, scs) {
+                                                self.co_sector.setValue(
+                                                    self.ac.co_sector
+                                                );
+                                                cb(scs ? null : 'sector');
+                                            }
+                                        });
+                                    },
+                                    function(cb) {
+                                        if (self.ac.co_sector) {
+                                            self.store_subsector.load({
+                                                params: {
+                                                    co_sector: self.ac.co_sector
+                                                },
+                                                callback: function(r, op, scs) {
+                                                    self.co_sub_sector.setValue(
+                                                        self.ac.id_subsector
+                                                    );
+                                                    cb(scs ? null : 'sub-sector');
+                                                }
+                                            });
+                                        } else {
+                                            cb(null);
+                                        }
+                                    },
+                                ],
+                                function(err) {
+                                    cb(err);
+                                });
+                        },
+                    ],
+                    function(err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            self.getForm().setValues(self.ac);
+                        }
+                    });
+            });
+        },
+        crearTabsAdicionales: function() {
+            var i, lista;
+            if (!!this.ac.nu_codigo && !this.detalles) {
+                lista = [{
+                    xtype: 'accion_centralizada_vinculos',
+                    title: '2. VINCULACIÓN CON LOS PLANES'
+                }, {
+                    xtype: 'accion_centralizada_localizacion',
+                    title: '3. LOCALIZACIÓN'
+                }, {
+                    xtype: 'accion_centralizada_responsables',
+                    title: '4. RESPONSABLES'
+                }, {
+                    xtype: 'accion_especifica',
+                    title: '5. ACCIONES ESPECÍFICAS',
+                }];
+                for (i = 0; i < lista.length; i++) {
+                    this.padre.insert(i + 1, Ext.create(
+                        Ext.apply(lista[i], {
+                            'ac': this.ac
+                        })
+                    ));
+                }
+                this.detalles = true;
+            }
+        }
+    });
+
+    Ext.apply(Ext.form.VTypes, {
+        phoneMask: /[\d\-\+]/,
+        phoneText: 'No es un número telefónico válido. Debe estar en formato +NN-NNNN-NNNNNNN, los símbolos "+" y "-", el código de área y de país son opcionales',
+        phone: function(v) {
+            //Números de Venezuela...
+            return (/^((((\+)(\d{2})|(\d{2}))(\-)?)(\d{4}(\-)?)|(\d{4}(\-)?))?(\d{7})$/).test(v);
+        },
+        cedulaMask: /[\dVEve\-]/,
+        cedulaText: 'No es un formato de cédula válido. Ejemplos: V123456, e-231654, V-123456',
+        cedula: function(v) {
+            return (/^[VvEe](\-)?(\d{4,8})$/).test(v);
+        }
+    });
+
+    Ext.define('AccionCentralizada.Responsables', {
+        extend: 'Ext.Panel',
+        xtype: 'accion_centralizada_responsables',
+        constructor: function(config) {
+            var self = this;
+
+            var comunes = [{
+                xtype: 'textfield',
+                name: 'nombres',
+                fieldLabel: 'Nombre',
+                minLength: 4,
+                maxLength: 80,
+                allowBlank: false
+            }, {
+                xtype: 'textfield',
+                vtype: 'cedula',
+                name: 'cedula',
+                fieldLabel: 'Cédula',
+                allowBlank: false
+            }, {
+                xtype: 'textfield',
+                name: 'cargo',
+                fieldLabel: 'Cargo',
+                minLength: 4,
+                maxLength: 50,
+                allowBlank: false
+            }, {
+                xtype: 'textfield',
+                vtype: 'email',
+                name: 'correo',
+                fieldLabel: 'Correo electrónico',
+                maxLength: 50,
+                allowBlank: false
+            }, {
+                xtype: 'textfield',
+                vtype: 'phone',
+                name: 'telefono',
+                fieldLabel: 'Teléfono',
+                allowBlank: false
+            }, {
+                xtype: 'textfield',
+                name: 'unidad',
+                fieldLabel: 'Unidad de Adscripción',
+                minLength: 4,
+                maxLength: 50,
+                allowBlank: false
+            }];
+
+            var tipos = {
+                realizador: {
+                    nombre: 'Realizado por',
+                    campos: comunes
+                },
+                registrador: {
+                    nombre: 'Registrado por',
+                    campos: comunes
+                },
+                autorizador: {
+                    nombre: 'Autorizado por',
+                    campos: comunes
+                }
+            };
+
+            var itemes = Object.keys(tipos).map(function(k) {
+                var v = tipos[k];
+                var fs = {
+                    xtype: 'fieldset',
+                    title: v.nombre,
+                    defaults: {
+                        width: 320
+                    }
+                };
+                var items = v.campos.map(function(i) {
+                    //en algún lado hay que clonarlo
+                    var n = Ext.apply({}, i);
+                    n.name = k + '_' + n.name;
+                    return n;
+                });
+
+                fs.items = items;
+                return fs;
+            });
+
+            this.actualizar = 'f';
+
+            this.forma = Ext.create({
+                xtype: 'form',
+                bbar: [
+                    '->', {
+                        text: 'Guardar',
+                        iconCls: 'icon-guardar',
+                        handler: function(btn) {
+                            var forma = self.forma.getForm();
+                            if (!forma.isValid()) {
+                                Ext.Msg.alert('Alerta',
+                                    'Existen campos con valores inválidos');
+                                return false;
+                            }
+                            forma.submit({
+                                method: 'POST',
+                                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                                params: {
+                                    op: 23,
+                                    id_accion_centralizada: self.ac.nu_codigo,
+                                    up: self.actualizar
+                                },
+                                waitMsg: 'Enviando datos, por favor espere..',
+                                waitTitle: 'Enviando',
+                                failure: function(form, action) {
+                                    Ext.MessageBox.alert('Error en transacción',
+                                        action.result.msg);
+                                },
+                                success: function(form, action) {
+                                    if (action.result.success) {
+                                        Ext.MessageBox.show({
+                                            icon: Ext.MessageBox.INFO,
+                                            title: 'Mensaje',
+                                            msg: action.result.msg,
+                                            closable: true,
+                                            buttons: Ext.MessageBox.OK
+                                        });
+                                        self.actualizar = 't';
+                                    }
+                                }
+                            });
+                        }
+                    }
+                ],
+                padding: '10px 4px',
+                autoWidth: true,
+		border: false,
+                labelWidth: 150,
+                labelSeparator: '',
+                labelAlign: 'right',
+                labelStyle: 'font-weight:bold;',
+                items: itemes
+            });
+
+            config = Ext.apply({
+                title: 'Responsables',
+                items: [
+                    this.forma
+                ]
+            }, config);
+
+            this.callParent(arguments);
+
+            if ( self.ac.bloqueado ) {
+                Reingsys.util.deshabilitarForma(self.forma);
+            }
+
+            Ext.Ajax.request({
+                method: 'POST',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                params: {
+                    op: 22,
+                    id: self.ac.nu_codigo,
+                },
+                success: function(result) {
+                    var obj = Ext.util.JSON.decode(result.responseText);
+                    if (obj.success) {
+                        if ( obj.data ) {
+                            self.actualizar = 't';
+                            self.forma.getForm().setValues(obj.data);
+                        }
+                    }
+                },
+                failure: function() {
+                    Ext.Msg.alert('Ocurrió un error contactando al servidor');
+                }
+            });
+        }
+    });
+
+    Ext.define('AccionCentralizada.Vinculos', {
+        extend: 'Ext.Panel',
+        xtype: 'accion_centralizada_vinculos',
+        constructor: function(config) {
+            var self = this;
+
+            this.actualizar = 'f';
+
+            this.st_co_nodo = Ext.create({
+                xtype: 'jsonstore',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                root: 'data',
+		baseParams: {
+			op: 16
+		},
+                fields: [
+                    'co_nodo', 'tx_nodo'
+                ]
+            });
+
+            this.co_co_nodo = Ext.create({
+                xtype: 'superboxselect',
+                fieldLabel: 'NUDOS CRÍTICOS',
+                store: self.st_co_nodo,
+                typeAhead: true,
+                allowQueryAll : false,
+                valueField: 'co_nodo',
+                displayField: 'tx_nodo',
+                hiddenName: 'co_nodo[]',
+                forceSelection: true,
+                resizable: true,
+                triggerAction: 'all',
+                emptyText: 'Seleccione Nodo',
+                selectOnFocus: true,
+		itemSelector: 'div.search-item',
+		tpl: new Ext.XTemplate('<tpl for="."><div class="search-item"><div class="desc">{tx_nodo}</div></div></tpl>'),
+                mode: 'local',
+                hideOnSelect: false,
+            });
+
+            var combos_n = [{
+                nombre: 'Objetivo Histórico',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+		op: 8,
+                valor: 'co_objetivo_historico',
+                mostrar: 'tx_objetivo_historico'
+            },{
+                nombre: 'Objetivo Nacional',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_objetivo_nacional',
+		op: 9,
+                mostrar:'tx_objetivo_nacional'
+            },{
+                nombre: 'Objetivo Estratégico',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_objetivo_estrategico',
+		op: 10,
+                mostrar: 'tx_objetivo_estrategico'
+            },{
+                nombre: 'Objetivo General',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_objetivo_general',
+		op: 11,
+                mostrar: 'tx_objetivo_general'
+            }];
+
+            var combos = [{
+                nombre: 'Área Estratégica',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_area_estrategica',
+		op: 12,
+                mostrar: 'tx_area_estrategica'
+            }, {
+                nombre: 'Ámbito',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_ambito_zulia',
+		op: 13,
+                mostrar: 'tx_ambito_zulia',
+            }, {
+                nombre: 'Objetivo',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_objetivo_zulia',
+		op: 14,
+                mostrar: 'tx_objetivo_zulia'
+            }, {
+                nombre: 'Macroproblema',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                valor: 'co_macroproblema',
+		op: 15,
+                mostrar: 'tx_macroproblema'
+            }];
+
+            var cbxs = [];
+            var cbxs_n = [];
+
+            var crearCreaCombos = function( combos ) {
+                return function(e){
+                    self['st_' + e.valor] = Ext.create({
+                        xtype: 'jsonstore',
+                        url: e.url,
+                        root: 'data',
+	                baseParams: {
+                    		op: e.op
+                	},
+                        fields: [e.mostrar, e.valor]
+                    });
+                    var combo = Ext.create({
+                        xtype: 'combo',
+                        store: self['st_' + e.valor],
+                        fieldLabel: e.nombre.toUpperCase(),
+                        valueField: e.valor,
+                        displayField: e.mostrar,
+                        hiddenName: e.valor,
+                        autoSelect: true,
+                        forceSelection: true,
+                        allowBlank: false,
+                        emptyText: 'Seleccione ' + e.nombre,
+			itemSelector: 'div.search-item',
+			tpl: new Ext.XTemplate('<tpl for="."><div class="search-item"><div class="desc">{'+e.mostrar+'}</div></div></tpl>'),
+                        triggerAction: 'all',
+                        mode: 'local'
+                    });
+                    self['co_'+ e.valor] = combo;
+                    combos.push(combo);
+                };
+            };
+
+            //crea los combos y stores
+            combos.forEach(crearCreaCombos(cbxs));
+            combos_n.forEach(crearCreaCombos(cbxs_n));
+
+            cbxs.push(this.co_co_nodo);
+
+            var ajusta = function(cbx, dep) {
+                self['st_' + dep].on('beforeload', function(st, op) {
+                    var params = {};
+                    if ( Ext.isArray(cbx) ) {
+                        Ext.iterate(cbx, function(cb){
+                            params[cb] = self['co_' + cb].getValue();
+                        });
+                    } else {
+                        params[cbx] = self['co_' + cbx].getValue();
+                    }
+                    op.params = params;
+                    return true;
+                });
+            };
+
+            var borrar = function(e) {
+                self['co_' + e].clearValue();
+            };
+
+            //cascada
+            ajusta('co_objetivo_historico', 'co_objetivo_nacional');
+            ajusta(['co_objetivo_historico', 'co_objetivo_nacional'], 'co_objetivo_estrategico');
+            ajusta(['co_objetivo_historico', 'co_objetivo_nacional', 'co_objetivo_estrategico'], 'co_objetivo_general');
+
+            self.co_co_objetivo_historico.on('change', function(){
+                [
+                    'co_objetivo_nacional', 'co_objetivo_estrategico', 'co_objetivo_general'
+                ].forEach(borrar);
+                self.st_co_objetivo_nacional.load();
+            });
+            self.co_co_objetivo_nacional.on('change', function(){
+                [
+                    'co_objetivo_estrategico', 'co_objetivo_general'
+                ].forEach(borrar);
+                self.st_co_objetivo_estrategico.load();
+            });
+            self.co_co_objetivo_estrategico.on('change', function(){
+                [
+                    'co_objetivo_general'
+                ].forEach(borrar);
+                self.st_co_objetivo_general.load();
+            });
+
+            ajusta('co_area_estrategica', 'co_ambito_zulia');
+            ajusta('co_ambito_zulia', 'co_objetivo_zulia');
+            ajusta('co_ambito_zulia', 'co_macroproblema');
+            ajusta('co_macroproblema', 'co_nodo');
+
+            self.co_co_area_estrategica.on('change', function(){
+                [
+                    'co_ambito_zulia', 'co_objetivo_zulia', 'co_macroproblema', 'co_nodo'
+                ].forEach(borrar);
+                self.st_co_ambito_zulia.load();
+            });
+            self.co_co_ambito_zulia.on('change', function(){
+                [
+                    'co_objetivo_zulia', 'co_macroproblema', 'co_nodo'
+                ].forEach(borrar);
+                self.st_co_objetivo_zulia.load();
+                self.st_co_macroproblema.load();
+            });
+            self.co_co_macroproblema.on('change', function(){
+                [
+                    'co_nodo'
+                ].forEach(borrar);
+                self.st_co_nodo.load();
+            });
+
+            this.forma = Ext.create({
+                xtype: 'form',
+                bbar: [
+                    '->', {
+                        text: 'Guardar',
+                        iconCls: 'icon-guardar',
+                        handler: function(btn) {
+                            var forma = self.forma.getForm();
+                            if (!forma.isValid()) {
+                                Ext.Msg.alert('Alerta',
+                                    'Existen campos con valores inválidos');
+                                return false;
+                            }
+                            forma.submit({
+                                method: 'POST',
+                                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                                params: {
+                                    op: 17,
+                                    id_accion_centralizada: self.ac.nu_codigo,
+                                    up: self.actualizar
+                                },
+                                waitMsg: 'Enviando datos, por favor espere..',
+                                waitTitle: 'Enviando',
+                                failure: function(form, action) {
+                                    Ext.MessageBox.alert('Error en transacción',
+                                        action.result.msg);
+                                },
+                                success: function(form, action) {
+                                    if (action.result.success) {
+                                        Ext.MessageBox.show({
+                                            icon: Ext.MessageBox.INFO,
+                                            title: 'Mensaje',
+                                            msg: action.result.msg,
+                                            closable: true,
+                                            buttons: Ext.MessageBox.OK
+                                        });
+                                        self.actualizar = 't';
+                                    }
+                                }
+                            });
+                        }
+                    }
+                ],
+                padding: '10px 4px',
+                autoWidth: true,
+		border: false,
+                defaults: {
+                    xtype: 'fieldset',
+                    defaults: {
+                        width: 500
+                    },
+                    labelWidth: 150,
+                    labelSeparator: '',
+                    labelAlign: 'right',
+                    labelStyle: 'font-weight:bold;',
+                },
+                items: [{
+                    title: 'OBJETIVOS DEL PLAN DE LA PATRIA',
+                    items: cbxs_n
+                }, {
+                    title: 'OBJETIVOS DEL PLAN DE DESARROLLO DEL ZULIA',
+                    items: cbxs
+                }]
+            });
+
+            config = Ext.apply({
+                title: 'VINCULACIÖN CON LOS PLANES',
+                items: [
+                    this.forma
+                ]
+            }, config);
+
+            this.callParent(arguments);
+
+            if ( self.ac.bloqueado ) {
+                Reingsys.util.deshabilitarForma(self.forma);
+            }
+
+            //restaura valores
+            var intermedio = function(nombre) {
+                return function(cb) {
+                    self['st_' + nombre].load({
+                        callback: function(r, op, scs) {
+                            self['co_' + nombre].setValue(
+                                self.vinculos[nombre]
+                            );
+                            cb(scs ? null : nombre);
+                        }
+                    });
+                };
+            };
+
+            Ext.Ajax.request({
+                method: 'POST',
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                params: {
+                    op: 7,
+                    id: self.ac.nu_codigo,
+                },
+                success: function(result) {
+                    var obj = Ext.util.JSON.decode(result.responseText);
+                    if (obj.success && obj.data) {
+                        self.actualizar = 't';
+                        self.vinculos = obj.data;
+
+                        async.auto({
+                            oh: intermedio('co_objetivo_historico'),
+                            on: [ 'oh', intermedio('co_objetivo_nacional') ],
+                            oe: [ 'on', intermedio('co_objetivo_estrategico') ],
+                            og: [ 'oe', intermedio('co_objetivo_general') ],
+                            ae: intermedio('co_area_estrategica'),
+                            az: [ 'ae', intermedio('co_ambito_zulia') ],
+                            o: [ 'az', intermedio('co_objetivo_zulia') ],
+                            m: [ 'az', intermedio('co_macroproblema') ],
+                            n: [ 'm', intermedio('co_nodo') ]
+                        }, function( err ) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    } else {
+                        self.st_co_objetivo_historico.load();
+                        self.st_co_area_estrategica.load();
+                    }
+                },
+                failure: function() {
+                    Ext.Msg.alert('Ocurrió un error contactando al servidor');
+                }
+            });
+        }
+    });
+
+    Ext.define('AccionCentralizada.Localizacion', {
+        extend: 'Ext.Panel',
+        xtype: 'accion_centralizada_localizacion',
+        constructor: function(config) {
+            var self = this;
+
+            var combos = [{
+                nombre: 'Municipios',
+                valor: 'co_municipio',
+                mostrar: 'tx_municipio',
+                url:'formulacion/modulos/seguimiento_ac/funcion.php',
+                stExtra: {
+                    autoLoad: true,
+                    baseParams: {
+			op: 18,
+                        co_estado: 23
+                    }
+                }
+            }, {
+                nombre: 'Parroquias',
+                valor: 'co_parroquia',
+                mostrar: 'tx_parroquia',
+		op: 19,
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php'
+            }];
+
+            var items = [];
+
+            //crea los combos y stores
+            combos.forEach(function(e) {
+                self['st_' + e.valor] = Ext.create(
+                    Ext.apply({
+                    xtype: 'jsonstore',
+                    url: e.url,
+                    root: 'data',
+                    baseParams: {
+            		op: e.op
+        	    },
+                    fields: [e.mostrar, e.valor],
+                }, e.stExtra || {} ));
+                var combo = Ext.create({
+                    xtype: 'combo',
+                    store: self['st_' + e.valor],
+                    fieldLabel: e.nombre.toUpperCase(),
+                    valueField: e.valor,
+                    displayField: e.mostrar,
+                    autoSelect: true,
+                    forceSelection: true,
+                    emptyText: 'Seleccione ' + e.nombre,
+                    triggerAction: 'all',
+                    mode: 'local'
+                });
+                self['co_'+ e.valor] = combo;
+                items.push(combo);
+            });
+
+            //cascada
+            self.co_co_municipio.on('change', function(){
+                self.co_co_parroquia.clearValue();
+                self.st_co_parroquia.load({
+                    params: {
+                        co_municipio: this.getValue()
+                    }
+                });
+            });
+
+            var getMunicipio = function() {
+                var co, idx;
+                co = self.co_co_municipio.getValue();
+                idx = self.st_co_municipio.find( 'co_municipio', co );
+                if (idx > -1 ) {
+                    return self.st_co_municipio.getAt(idx).data;
+                }
+                return null;
+            };
+            var getParroquia = function() {
+                var co, idx;
+                co = self.co_co_parroquia.getValue();
+                idx = self.st_co_parroquia.find( 'co_parroquia', co );
+                if (idx > -1 ) {
+                    return self.st_co_parroquia.getAt(idx).data;
+                }
+                return null;
+            };
+
+            var agregarMunicipio = function() {
+                var mun, r,id;
+                mun = getMunicipio();
+                if ( mun ) {
+                    id = mun.co_municipio;
+                    if ( !self.st_grid.getById( id ) ) {
+                        r = new self.st_grid.recordType(mun, id);
+                        self.st_grid.add(r);
+                    }
+                }
+            };
+
+            var agregarParroquia = function() {
+                var mun, par, r, id;
+                mun = getMunicipio();
+                par = getParroquia();
+                if ( par ) {
+                    id = mun.co_municipio + '-' + par.co_parroquia;
+                    if ( !self.st_grid.getById( id ) ) {
+                        r = new self.st_grid.recordType(
+                            Ext.apply(par, mun), id);
+                        self.st_grid.add(r);
+                    }
+                }
+            };
+
+            this.st_grid = Ext.create({
+                xtype: 'jsonstore',
+                autoDestroy: true,
+                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                baseParams: {
+                    op: 20,
+                    id: config.ac.nu_codigo
+                },
+                autoLoad: true,
+                root: 'data',
+                fields: [
+                    'co_municipio', 'co_parroquia', 'tx_municipio',
+                    'tx_parroquia'
+                ]
+            });
+
+            this.grid = Ext.create({
+                xtype: 'grid',
+                title: 'Localidades',
+                autoHeight: true,
+                store: this.st_grid,
+                columns: [
+                    {
+                        header: 'Municipio',
+                        dataIndex: 'tx_municipio',
+                        renderer: Reingsys.util.textoLargo,
+                        width: 320
+                    },
+                    {
+                        header: 'Parroquia',
+                        dataIndex: 'tx_parroquia',
+                        renderer: Reingsys.util.textoLargo,
+                        width: 320
+                    }
+                ],
+                bbar: [{
+                        text: 'Borrar Seleccionado',
+                        iconCls: 'icon-eliminar',
+                        handler: function() {
+                            var sm = self.grid.getSelectionModel();
+                            if (sm.hasSelection()) {
+                                sm.getSelections().forEach(function(r) {
+                                    self.st_grid.remove(r);
+                                });
+                            }
+                        }
+                    }, '->', {
+                        text: 'Guardar',
+                        iconCls: 'icon-guardar',
+                        handler: function(btn) {
+                            var localidades = [];
+                            self.st_grid.each(function(r){
+                                var loc = {
+                                    co_municipio: r.data.co_municipio
+                                };
+                                if ( r.data.co_parroquia ) {
+                                    loc.co_parroquia = r.data.co_parroquia;
+                                }
+                                localidades.push(loc);
+                            });
+
+                            Ext.Ajax.request({
+                                method: 'POST',
+                                url: 'formulacion/modulos/seguimiento_ac/funcion.php',
+                                params: {
+                                    op: 21,
+                                    id_accion_centralizada: self.ac.nu_codigo,
+                                    localidades: Ext.util.JSON.encode(localidades)
+                                },
+                                failure: function() {
+                                    Ext.MessageBox.alert(
+                                        'Error contactando al servidor'
+                                    );
+                                },
+                                success: function(result) {
+                                    var obj = Ext.util.JSON.decode(
+                                        result.responseText
+                                    );
+                                    if (obj.success) {
+                                        Ext.MessageBox.show({
+                                            icon: Ext.MessageBox.INFO,
+                                            title: 'Mensaje',
+                                            msg: obj.msg,
+                                            closable: true,
+                                            buttons: Ext.MessageBox.OK
+                                        });
+                                    } else {
+                                        Ext.MessageBox.alert(
+                                            'Error en transacción',
+                                            obj.msg
+                                        );
+                                    }
+                                }
+                            });
+                        }
+                    }
+                ]
+            });
+
+            this.forma = Ext.create({
+                xtype: 'form',
+                //region: 'center',
+                tbar: [{
+                    xtype: 'button',
+                    text: 'Agregar Municipio',
+                    iconCls: 'icon-agregar',
+                    handler: agregarMunicipio
+                }, {
+                    xtype: 'button',
+                    text: 'Agregar Parroquia',
+                    iconCls: 'icon-agregar',
+                    handler: agregarParroquia
+                }],
+                padding: '10px 4px',
+                autoWidth: true,
+		border: false,
+                labelWidth: 150,
+                labelSeparator: '',
+                labelAlign: 'right',
+                labelStyle: 'font-weight:bold;',
+                defaults: {
+                    width: 500
+                },
+                items: items
+            });
+
+            config = Ext.apply({
+                title: 'LOCALIZACIÓN',
+                items: [
+                    this.forma,
+                    this.grid
+                ],
+            }, config);
+
+            this.callParent(arguments);
+
+            if ( self.ac.bloqueado ) {
+                Reingsys.util.deshabilitarForma(self);
+            }
+        }
+    });
+
+}(Ext, Reingsys, async, paqueteComunJS, opcionPlanificador));

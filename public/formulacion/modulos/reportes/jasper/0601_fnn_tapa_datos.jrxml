@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="360" pageHeight="340" orientation="Landscape" columnWidth="360" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT tf.co_tipo_recurso, tr.tx_tipo_recurso as descripcion, sum( di.mo_fondo ) as sum_monto
+  FROM t26_proyectos pr
+  LEFT JOIN t62_proyecto_distribucion di ON di.id_proyecto = pr.id_proyecto AND di.mo_fondo>0 AND di.edo_reg
+  LEFT JOIN t61_tipo_fondo tf ON tf.co_tipo_fondo = di.co_tipo_fondo AND tf.edo_reg
+  LEFT JOIN t60_tipo_recurso tr ON tr.co_tipo_recurso = tf.co_tipo_recurso AND tr.edo_reg
+  WHERE pr.id_ejercicio=$P{id_ejercicio} AND pr.edo_reg is true AND di.edo_reg is true
+  GROUP BY tf.co_tipo_recurso, tr.tx_tipo_recurso
+  ORDER BY co_tipo_recurso]]>
+	</queryString>
+	<field name="co_tipo_recurso" class="java.lang.Long"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="sum_monto" class="java.math.BigDecimal"/>
+	<variable name="tot_monto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sum_monto}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Prevent">
+			<line>
+				<reportElement x="7" y="1" width="352" height="1" uuid="4c9753ab-9886-433a-ac84-8846ef4f825f"/>
+			</line>
+			<staticText>
+				<reportElement x="9" y="2" width="40" height="18" uuid="b7a5a51d-4f97-4f8d-9feb-1a7cea92a120"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COD.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="2" width="217" height="18" uuid="a5c8aefd-795c-48b9-85c2-098ee3f35db1"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECTORES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="267" y="2" width="92" height="18" uuid="1a889d0b-13e4-4a37-9167-6b5d46d7162d"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO (Bs.)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="20" width="352" height="1" uuid="0924ef5a-7b7f-4398-b82c-9ebc53493e75"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="9" y="0" width="257" height="18" uuid="4ef9c475-fcf5-4115-9dc7-4a8cdbcd3266"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{co_tipo_recurso}+" - "+$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="267" y="0" width="92" height="18" uuid="90f2dd5a-c8d1-4f70-af9f-8f6f45e917fe"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sum_monto}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="7" y="18" width="352" height="1" uuid="e639cc0b-583a-499c-aaa0-e51a593d6274"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="17" splitType="Prevent">
+			<staticText>
+				<reportElement x="9" y="0" width="100" height="16" uuid="c758f85c-24e2-4ed9-b0e9-4aa022f14869"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="267" y="0" width="92" height="16" uuid="616277b8-18f3-46c8-88bc-06706415e9cd"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tot_monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="05_sector" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="1a68cb12-9a9b-495d-b058-8eef80ef5803">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="340"/>
+	<property name="ireport.y" value="136"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select $P{id_ejercicio} as id_ejercicio]]>
+	</queryString>
+	<field name="id_ejercicio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="52">
+			<image scaleImage="RetainShape" isUsingCache="true">
+				<reportElement x="4" y="2" width="755" height="50" uuid="cc6c7c5e-96cc-43e3-9245-0db069b7a976"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"cintillo_2017.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="100" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="772" height="100" uuid="e44fd829-3acb-4b99-be99-bd0b27057442"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$F{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0501_sec_tapa.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="100">
+			<subreport>
+				<reportElement x="0" y="0" width="772" height="100" uuid="88d1d502-dbf9-42ac-9a32-3d99c1fb615a"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$F{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0502_sec_detal.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="45">
+			<textField>
+				<reportElement x="705" y="15" width="59" height="20" uuid="19e0c923-b9a5-4c1d-ad29-7a4311a8c880"/>
+				<textElement textAlignment="Right">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["5-"+String.format(  "%03d",  $V{PAGE_NUMBER} )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="14" width="755" height="1" uuid="86df743c-2813-47d8-a21b-7804698313ec"/>
+			</line>
+			<staticText>
+				<reportElement x="77" y="14" width="615" height="20" uuid="fca1ccaa-05a7-4792-9241-06dd94c31548"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Palacio de los Cóndores, Plaza Bolívar, Maracaibo, Estado Zulia, Venezuela]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

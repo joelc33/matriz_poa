@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="237"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/produccion/formulacion/modulos/reportes/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="co_estado" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$F{co_estado}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT co_estado, tx_estado
+  FROM t12_estado WHERE co_estado=23;]]>
+	</queryString>
+	<field name="co_estado" class="java.lang.Long"/>
+	<field name="tx_estado" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="52">
+			<image scaleImage="RetainShape" isUsingCache="true">
+				<reportElement x="4" y="2" width="755" height="50" uuid="cc6c7c5e-96cc-43e3-9245-0db069b7a976"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"cintillo_2017.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="48" width="747" height="20" uuid="a53d991d-7c28-4c6c-95e2-4ba859ca64ff"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[7. DISTRIBUCIÓN TERRITORIAL  DE LOS PROYECTOS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="5" y="72" width="755" height="1" uuid="c9f299f4-1989-41f4-b37a-2772990039ae"/>
+			</line>
+			<textField>
+				<reportElement x="5" y="12" width="763" height="25" uuid="f891e985-3581-455f-9b79-0f0df0e39c23"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLAN OPERATIVO ANUAL ESTATAL (POA "+$P{id_ejercicio}+")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="74" width="367" height="20" uuid="467dacfa-3ba6-439a-9402-4434b20dd0ea"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+				<textElement markup="none">
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESTADO "+$F{tx_estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="356" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement stretchType="RelativeToBandHeight" x="409" y="3" width="331" height="353" uuid="0a57d055-510d-4c42-9a17-f0dd0dcc03ec"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"/mapas/23-000.png"]]></imageExpression>
+			</image>
+			<subreport>
+				<reportElement x="20" y="3" width="341" height="353" uuid="907bfaba-6d88-4c92-9812-bc0e092245c9"/>
+				<subreportParameter name="co_estado">
+					<subreportParameterExpression><![CDATA[$F{co_estado}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0701_ter_tapa_datos.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="706" y="16" width="59" height="20" uuid="7465b025-a969-42a7-a317-5d258e9c5fb3"/>
+				<textElement textAlignment="Right">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["7-"+String.format(  "%03d",  $V{PAGE_NUMBER} )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="14" width="755" height="1" uuid="86df743c-2813-47d8-a21b-7804698313ec"/>
+			</line>
+			<staticText>
+				<reportElement x="47" y="16" width="646" height="20" uuid="997731ad-04bc-41a5-9078-c078eb4bdad3"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Palacio de los Cóndores, Plaza Bolívar, Maracaibo, Estado Zulia, Venezuela]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

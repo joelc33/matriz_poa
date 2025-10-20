@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="05_sector" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1a68cb12-9a9b-495d-b058-8eef80ef5803">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/produccion/formulacion/modulos/reportes/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select $P{id_ejercicio} as id_ejercicio]]>
+	</queryString>
+	<field name="id_ejercicio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="200" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="1" width="792" height="100" uuid="9893127d-22e9-43b9-99fa-1c949163a06a"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="co_estado">
+					<subreportParameterExpression><![CDATA[23]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$P{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0701_ter_tapa.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="101" width="100" height="1" uuid="0243077b-9afd-44d7-88f5-ae3eeb9fde57"/>
+			</break>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="102" width="792" height="98" uuid="a9117ca3-ffd4-46f5-90ef-b1a773877150"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$F{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0702_ter_detal.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

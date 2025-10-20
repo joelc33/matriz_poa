@@ -1,0 +1,43 @@
+/*********Instalar tomcat*********/
+sudo apt-get update
+sudo apt-get install tomcat7
+sudo nano /etc/default/tomcat7
+
+/etc/default/tomcat7 — JAVA_OPTS
+JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Xmx512m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC"
+sudo service tomcat7 restart
+http://server_IP_address:8080
+
+sudo apt-get install tomcat7-docs tomcat7-admin tomcat7-examples
+/*********Puerto tomcat*********/
+sudo nano /etc/tomcat7/server.xml
+
+cambiar la linea
+<Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000" URIEncoding="UTF-8" redirectPort="8443" />
+cambiar el port=8080 valor to port=54211
+
+/*********Usuarios tomcat*********/
+sudo nano /etc/tomcat7/tomcat-users.xml
+<tomcat-users>
+    <user username="admin" password="password" roles="manager-gui,admin-gui"/>
+</tomcat-users>
+sudo service tomcat7 restart
+http://server_IP_address:8080
+
+/*********Peso de Archivos*********/
+sudo nano /usr/share/tomcat7-admin/manager/WEB-INF/web.xml
+
+    <multipart-config>
+      <!-- (50MB = 52428800) max (100MB = 104857600) -->
+      <max-file-size>104857600</max-file-size>
+      <max-request-size>104857600</max-request-size>
+      <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+
+//*****Instalar  JavaBrigde****//
+deploy the Java Bridge on tomcat Server
+
+/*********configurar php*********/
+sudo nano /etc/php5/apache2/php.ini
+edit php.ini,turn on setting -> allow_url_include = On;
+sudo service apache2 restart

@@ -1,0 +1,157 @@
+{
+    "reportes": [{
+        "t": "Distribución Gráfica de los Proyectos por Objetivo Histórico",
+        "n": "04_objetivos",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }]
+    }, {
+        "t": "Distribución Gráfica de los Proyectos por Sector",
+        "n": "05_sector",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }]
+    }, {
+        "t": "Distribución Territorial de los Proyectos",
+        "n": "07_territorial",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }]
+    }, {
+        "t": "Distribución Gráfica de los Proyectos por Fuente de Financiamiento",
+        "n": "06_financiamiento",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }]
+    }, {
+        "t": "Fuentes de Financiamiento de ACs",
+        "n": "fuentes",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }]
+    }, {
+        "t": "Ficha de Proyectos",
+        "n": "ficha",
+        "d": {
+            "id_proyecto": "*",
+            "id_ejercicio": "2015"
+        },
+        "p": [{
+            "c": "lista",
+            "v": ["u", "co_rol"],
+            "p": [1, 2],
+            "l": {
+                "id_proyecto": [
+                    "/^((PR\\d{4}2\\d{3}\\d{4,5})|\\*)$/"
+                ],
+		"id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }, {
+            "c": "resto",
+            "l": {
+                "id_proyecto": [
+                    "/^PR", [
+                        "(\\d{4})", ["u", "id_ejecutor"]
+                    ], "2\\d{3}\\d{4,5}$/"
+                ]
+            }
+        }]
+    }, {
+        "t": "Relación Formulación ACs",
+        "n": "por_ejecutor",
+        "d": {
+            "ejecutor": "%",
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "lista",
+            "v": ["u", "co_rol"],
+            "p": [1, 2],
+            "l": {
+                "ejecutor": [
+                    "/^(\\d{4}|%)$/"
+                ],
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }, {
+            "c": "resto",
+            "l": {
+                "ejecutor": [
+                    "/^", [
+                        "(\\d{4})", ["u", "id_ejecutor"]
+                    ], "$/"
+                ]
+            }
+        }]
+    }, {
+        "t": "Preliminar ICP Acciones Centralizadas",
+        "n": "preliminar_icp_ac",
+	"d": {
+            "id_ejercicio": 2015
+	},
+	"x": 1
+    }, {
+        "t": "Preliminar ICP Proyectos",
+        "n": "preliminar_icp_pr",
+	"d": {
+            "id_ejercicio": 2015
+	},
+	"x": 1
+    }, {
+        "t": "Exportación ICP Acciones Centralizadas",
+        "n": "exportacion_icp_ac",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }],
+	"x": 1
+    }, {
+        "t": "Exportación ICP Proyectos",
+        "n": "exportacion_icp_pr",
+        "d": {
+            "id_ejercicio": 2015
+        },
+        "p": [{
+            "c": "resto",
+            "l": {
+                "id_ejercicio": ["/^\\d{4}$/"]
+            }
+        }],
+	"x": 1
+    }]
+}

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="350" pageHeight="792" columnWidth="350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT distinct vi.id_obj_historico, ob.tx_descripcion AS descripcion, sum(pr.monto) as sum_monto
+  FROM t26_proyectos pr
+  INNER JOIN t32_proyecto_vinculos vi ON vi.id_proyecto = pr.id_proyecto AND vi.edo_reg IS true
+  LEFT JOIN t20_planes ob ON ob.co_objetivo_historico= vi.id_obj_historico AND ob.nu_nivel=1 and ob.edo_reg IS true
+  WHERE pr.edo_reg AND pr.id_ejercicio=$P{id_ejercicio}
+  GROUP by vi.id_obj_historico  , ob.tx_descripcion
+  ORDER BY id_obj_historico;]]>
+	</queryString>
+	<field name="id_obj_historico" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="sum_monto" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="336" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="338" height="334" uuid="a8c356f0-a5b1-4983-86a0-2df3af5ee53d"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+			</frame>
+			<pieChart>
+				<chart evaluationTime="Report">
+					<reportElement x="5" y="4" width="331" height="316" uuid="33914c0c-ad91-4fa2-82f7-6883c3ef0fcb"/>
+					<chartTitle position="Bottom">
+						<font fontName="DejaVu Sans" isBold="true"/>
+						<titleExpression><![CDATA["DISTRIBUCIÓN GRÁFICA"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend>
+						<font fontName="DejaVu Sans" size="8"/>
+					</chartLegend>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{id_obj_historico}]]></keyExpression>
+					<valueExpression><![CDATA[$F{sum_monto}]]></valueExpression>
+				</pieDataset>
+				<piePlot labelFormat="{0} ({2})" legendLabelFormat="{0}">
+					<plot>
+						<seriesColor seriesOrder="0" color="#CCCCCC"/>
+						<seriesColor seriesOrder="1" color="#009933"/>
+						<seriesColor seriesOrder="2" color="#990000"/>
+						<seriesColor seriesOrder="3" color="#33CCFF"/>
+						<seriesColor seriesOrder="4" color="#FF9933"/>
+						<seriesColor seriesOrder="5" color="#0033CC"/>
+						<seriesColor seriesOrder="6" color="#9966FF"/>
+						<seriesColor seriesOrder="7" color="#FFFF66"/>
+						<seriesColor seriesOrder="8" color="#CCFFCC"/>
+						<seriesColor seriesOrder="9" color="#663300"/>
+						<seriesColor seriesOrder="10" color="#EFC166"/>
+					</plot>
+					<itemLabel>
+						<font fontName="DejaVu Sans" size="5"/>
+					</itemLabel>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>

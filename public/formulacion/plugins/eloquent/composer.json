@@ -1,0 +1,15 @@
+{
+    "name": "eloquent ORM",
+    "description": "Microframework YP.",
+    "keywords": ["framework", "ORM"],
+    "author" : "Yoser Perez",
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "illuminate/database": "*",
+	"illuminate/validation": "*",
+	"illuminate/translation": "*",
+	"illuminate/routing": "*",
+	"illuminate/events": "*"
+    }
+}

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="772" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="370"/>
+	<property name="ireport.y" value="531"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/produccion/formulacion/modulos/reportes/jasper/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT  distinct mu.co_estado, mu.co_municipio, mu.tx_municipio
+  FROM t13_municipio mu
+  LEFT JOIN t34_proyecto_localizacion_nacional ln ON  ln.co_municipio=mu.co_municipio AND ln.edo_reg
+  INNER JOIN t26_proyectos pr ON  pr.id_proyecto=ln.id_proyecto  AND pr.id_ejercicio =$P{id_ejercicio}
+  AND pr.edo_reg
+  where mu.co_estado=23
+  order by mu.co_municipio]]>
+	</queryString>
+	<field name="co_estado" class="java.lang.Long"/>
+	<field name="co_municipio" class="java.lang.Long"/>
+	<field name="tx_municipio" class="java.lang.String"/>
+	<group name="municipios" isStartNewPage="true" isReprintHeaderOnEachPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{co_municipio}]]></groupExpression>
+		<groupHeader>
+			<band height="47">
+				<textField>
+					<reportElement x="19" y="22" width="732" height="25" uuid="4fbc6ddc-7d2b-4299-9b7b-26c2a6c967b0"/>
+					<box topPadding="3" leftPadding="3" bottomPadding="2" rightPadding="3"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["MUNICIPIO "+$F{tx_municipio}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="4" y="2" width="766" height="20" uuid="a53d991d-7c28-4c6c-95e2-4ba859ca64ff"/>
+					<box>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="10" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[7. DISTRIBUCIÓN TERRITORIAL DE LOS PROYECTOS]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="52">
+			<image scaleImage="RetainShape" isUsingCache="true">
+				<reportElement x="4" y="2" width="755" height="50" uuid="cc6c7c5e-96cc-43e3-9245-0db069b7a976"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"cintillo_2017.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="10" width="770" height="25" uuid="f891e985-3581-455f-9b79-0f0df0e39c23"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PLAN OPERATIVO ANUAL ESTATAL (POA "+$P{id_ejercicio}+")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="356" splitType="Stretch">
+			<subreport>
+				<reportElement x="20" y="3" width="218" height="353" uuid="977972fb-9380-4864-a3db-b55245d7341e"/>
+				<subreportParameter name="id_ejercicio">
+					<subreportParameterExpression><![CDATA[$P{id_ejercicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="co_municipio">
+					<subreportParameterExpression><![CDATA[$F{co_municipio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "0702_ter_detal_datos.jasper"]]></subreportExpression>
+			</subreport>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement stretchType="RelativeToBandHeight" x="409" y="3" width="331" height="353" uuid="0a57d055-510d-4c42-9a17-f0dd0dcc03ec"/>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"/mapas/23-"+$F{co_municipio}+".png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="706" y="16" width="59" height="20" uuid="7465b025-a969-42a7-a317-5d258e9c5fb3"/>
+				<textElement textAlignment="Right">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["7-"+String.format(  "%03d",  $V{PAGE_NUMBER} )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="5" y="14" width="755" height="1" uuid="86df743c-2813-47d8-a21b-7804698313ec"/>
+			</line>
+			<staticText>
+				<reportElement x="47" y="16" width="646" height="20" uuid="997731ad-04bc-41a5-9078-c078eb4bdad3"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Palacio de los Cóndores, Plaza Bolívar, Maracaibo, Estado Zulia, Venezuela]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

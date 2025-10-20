@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="obj_tapa" language="groovy" pageWidth="375" pageHeight="792" columnWidth="375" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0348d9ea-d4ba-4755-905e-375f85e6e379">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_OBJ" class="java.lang.String"/>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT vi.id_obj_historico, ob.tx_descripcion as decripcion, pr.id_proyecto, pr.nombre, pr.objetivo, pr.monto
+  FROM t26_proyectos pr
+  INNER JOIN t32_proyecto_vinculos vi ON vi.id_proyecto = pr.id_proyecto AND vi.edo_reg
+  INNER JOIN t20_planes ob ON ob.co_objetivo_historico= vi.id_obj_historico AND ob.nu_nivel=1 AND ob.co_objetivo_historico = $P{ID_OBJ} AND ob.edo_reg
+WHERE pr.id_ejercicio=$P{id_ejercicio} AND pr.edo_reg
+  ORDER BY id_obj_historico,id_proyecto;]]>
+	</queryString>
+	<field name="id_obj_historico" class="java.lang.String"/>
+	<field name="decripcion" class="java.lang.String"/>
+	<field name="id_proyecto" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="objetivo" class="java.lang.String"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<variable name="tot_monto" class="java.math.BigDecimal" resetType="Group" resetGroup="obj" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<group name="obj">
+		<groupExpression><![CDATA[$F{id_obj_historico}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<line>
+					<reportElement positionType="Float" x="11" y="3" width="352" height="1" uuid="0e646610-446c-47a1-9837-050de49fcfaa"/>
+				</line>
+				<line>
+					<reportElement positionType="Float" x="11" y="20" width="352" height="1" uuid="0924ef5a-7b7f-4398-b82c-9ebc53493e75"/>
+				</line>
+				<staticText>
+					<reportElement positionType="Float" x="284" y="4" width="78" height="17" uuid="1a889d0b-13e4-4a37-9167-6b5d46d7162d"/>
+					<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[MONTO (Bs.)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="13" y="4" width="40" height="17" uuid="b7a5a51d-4f97-4f8d-9feb-1a7cea92a120"/>
+					<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[COD.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="53" y="4" width="231" height="17" uuid="a5c8aefd-795c-48b9-85c2-098ee3f35db1"/>
+					<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PROYECTOS]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<staticText>
+					<reportElement x="19" y="0" width="95" height="18" uuid="c758f85c-24e2-4ed9-b0e9-4aa022f14869"/>
+					<box topPadding="5" leftPadding="5"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<textField pattern="#,##0">
+					<reportElement x="271" y="0" width="91" height="18" uuid="616277b8-18f3-46c8-88bc-06706415e9cd"/>
+					<box topPadding="5" leftPadding="5"/>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans" size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tot_monto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="12" y="19" width="352" height="1" uuid="e639cc0b-583a-499c-aaa0-e51a593d6274"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="12" y="0" width="258" height="19" uuid="4ef9c475-fcf5-4115-9dc7-4a8cdbcd3266"/>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
+					<font fontName="DejaVu Sans" size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>"+$F{id_proyecto} + "</b> - " + $F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="271" y="0" width="91" height="19" uuid="90f2dd5a-c8d1-4f70-af9f-8f6f45e917fe"/>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

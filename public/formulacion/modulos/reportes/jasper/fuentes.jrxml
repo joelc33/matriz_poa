@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relacion_formulacion" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe0c446e-b1ee-4cb5-981a-80fd3adfa5e3">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="52"/>
+	<property name="ireport.y" value="35"/>
+	<parameter name="formato" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("Bs #,##0.00")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id_ejercicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select t46.id_ejercicio as ejercicio,
+	co_tipo_recurso as id_rec,
+	tx_tipo_recurso as recurso,
+	co_tipo_fondo as id,
+	t61.tx_tipo_fondo as fondo,
+	sum(t56.monto) as monto
+from t56_ac_ae_fuente as t56
+	join t46_acciones_centralizadas as t46 on t46.id = t56.id_ac
+	join mantenimiento.tab_ejercicio_fiscal as t25 on t25.id = t46.id_ejercicio
+	join t61_tipo_fondo as t61 on t61.co_tipo_fondo = t56.id_tipo_fondo
+	join t60_tipo_recurso as t60 using(co_tipo_recurso)
+where t61.edo_reg
+	and t60.edo_reg
+	--and t25.in_activo
+	and t25.id = $P{id_ejercicio}::integer
+group by 1, 2, 3, 4, 5
+order by 1, 2, 4]]>
+	</queryString>
+	<field name="ejercicio" class="java.math.BigDecimal"/>
+	<field name="id_rec" class="java.lang.Long"/>
+	<field name="recurso" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="fondo" class="java.lang.String"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<variable name="recurso_SUM" class="java.math.BigDecimal" resetType="Group" resetGroup="recurso" incrementType="Group" incrementGroup="recurso" calculation="Sum">
+		<variableExpression><![CDATA[$V{recurso_SUM} + $F{monto}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="todo_SUM" class="java.math.BigDecimal" incrementType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{todo_SUM} + $F{monto}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="recurso">
+		<groupExpression><![CDATA[$F{id_rec}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField isStretchWithOverflow="true">
+					<reportElement x="0" y="10" width="32" height="20" uuid="d2a2824f-bc12-45f2-b9c9-c9d1d0864710"/>
+					<box topPadding="4"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{id_rec} + " - "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="32" y="10" width="523" height="20" uuid="d2a2824f-bc12-45f2-b9c9-c9d1d0864710"/>
+					<box topPadding="4"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{recurso}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<staticText>
+					<reportElement x="280" y="0" width="71" height="20" uuid="43ab7795-9b53-4df4-9cbe-d80b5b3fd3f8"/>
+					<textElement textAlignment="Right" markup="none">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Subtotal: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="351" y="0" width="204" height="20" uuid="da4f4479-4552-4cd1-b3d9-58bb1949dde7"/>
+					<textElement textAlignment="Right" markup="none">
+						<font size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{formato}.format($V{recurso_SUM}.toLong())]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="51" width="555" height="24" uuid="f381021a-9904-4275-a3d8-ea83235f2c5f"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Relación de Fuentes de Financiamiento " + $F{ejercicio}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="42" uuid="8dab4ce6-8d07-4efb-889e-b0c46a3d0934"/>
+				<image scaleImage="RetainShape" isUsingCache="true">
+					<reportElement x="0" y="7" width="555" height="35" uuid="cc6c7c5e-96cc-43e3-9245-0db069b7a976"/>
+					<imageExpression><![CDATA["cintillo_"+$P{id_ejercicio}+".jpg"]]></imageExpression>
+				</image>
+			</frame>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Immediate">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="64" y="0" width="261" height="20" uuid="d2a2824f-bc12-45f2-b9c9-c9d1d0864710"/>
+				<box topPadding="3"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fondo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="32" y="0" width="32" height="20" uuid="d2a2824f-bc12-45f2-b9c9-c9d1d0864710"/>
+				<box topPadding="3"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id} + " - "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="383" y="0" width="172" height="20" uuid="d2a2824f-bc12-45f2-b9c9-c9d1d0864710"/>
+				<box topPadding="3"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{formato}.format($F{monto}.toLong())]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="28" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="28" uuid="00930210-de9c-4127-93d4-64e403663105"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textField>
+					<reportElement x="50" y="0" width="416" height="28" uuid="ab67ea05-11b5-42a0-b541-c902191003c7"/>
+					<textElement verticalAlignment="Middle">
+						<paragraph leftIndent="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Palacio de los Cóndores, Plaza Bolívar, Maracaibo, Estado Zulia, Venezuela"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="466" y="8" width="69" height="20" uuid="0ad27c93-db88-4dba-878b-ce06f6d17d0e"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement x="535" y="8" width="20" height="20" uuid="75f66265-0d8c-47e1-80eb-48eddbecfbb4"/>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20">
+			<staticText>
+				<reportElement x="280" y="0" width="71" height="20" uuid="43ab7795-9b53-4df4-9cbe-d80b5b3fd3f8"/>
+				<textElement textAlignment="Right" markup="none">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="351" y="0" width="201" height="20" uuid="da4f4479-4552-4cd1-b3d9-58bb1949dde7"/>
+				<textElement textAlignment="Right" markup="none">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{formato}.format($V{todo_SUM}.toLong())]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

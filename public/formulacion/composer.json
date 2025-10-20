@@ -1,0 +1,19 @@
+{
+	"name": "reingsys/formulacion",
+	"require": {
+		"respect/validation": "0.6.*",
+		"phpoffice/phpexcel": "~1.8"
+	},
+	"authors": [
+	{
+		"name": "Reingsys",
+		"email": "admin@reingsys.com.ve"
+	}
+	],
+	"autoload": {
+		"psr-4": {
+			"Reingsys\\": "src/"
+		}
+	}
+}
+

@@ -1,0 +1,180 @@
+/*
+This file is part of Ext JS 3.4
+
+Copyright (c) 2011-2013 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+GNU General Public License Usage
+This file may be used under the terms of the GNU General Public License version 3.0 as
+published by the Free Software Foundation and appearing in the file LICENSE included in the
+packaging of this file.
+
+Please review the following information to ensure the GNU General Public License version 3.0
+requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+
+If you are unsure which license is appropriate for your use, please contact the sales department
+at http://www.sencha.com/contact.
+
+Build date: 2013-04-03 15:07:25
+*/
+
+.search-item{
+	border:1px solid #fff;
+	padding:3px;
+	background-position:right bottom; 
+	background-repeat:no-repeat;
+}
+.desc{	
+	padding-right:10px;
+}
+.name{	
+	font-size:16px !important;
+	color:#000022;	
+}
+
+/** vim: ts=4:sw=4:nu:fdc=4:nospell
+ *
+ * Ext.ux.form.LovCombo CSS File
+ *
+ * @author    Ing.Jozef Sakáloš
+ * @copyright (c) 2008, by Ing. Jozef Sakáloš
+ * @date      5. April 2008
+ * @version   $Id: Ext.ux.form.LovCombo.css 682 2009-04-17 01:35:14Z jozo $
+ *
+ * @license Ext.ux.form.LovCombo.css is licensed under the terms of the Open Source
+ * LGPL 3.0 license. Commercial use is permitted to the extent that the 
+ * code/component(s) do NOT become part of another Open Source or Commercially
+ * licensed development library or toolkit without explicit permission.
+ * 
+ * License details: http://www.gnu.org/licenses/lgpl.html
+ */
+
+.ux-lovcombo-icon {
+	width:16px;
+	height:16px;
+	float:left;
+	background-position: -1px -1px ! important;
+	background-repeat:no-repeat ! important;
+}
+.ux-lovcombo-icon-checked {
+	background: transparent url(../images/default/menu/checked.gif);
+}
+.ux-lovcombo-icon-unchecked {
+	background: transparent url(../images/default/menu/unchecked.gif);
+}
+/* IE patch */
+.ext-ie .ux-lovcombo-item-text {
+	position:absolute;
+	left:16px;
+	top:3px;
+}
+.ext-ie .ux-lovcombo-icon {
+	float:none;
+}
+.ext-ie .x-combo-list-item {
+	position:relative;
+}
+ 
+/* eof */
+
+/** vim: ts=4:sw=4:nu:fdc=4:nospell
+ *
+ * Ext.ux.form.LovCombo Example Application CSS File
+ *
+ * @author    Ing.Jozef Sakáloš
+ * @copyright (c) 2008, by Ing. Jozef Sakáloš
+ * @date      16. April 2008
+ * @version   $Id: lovcombo.css 194 2008-04-17 00:16:12Z jozo $
+ *
+ * @license Ext.ux.form.LovCombo.css is licensed under the terms of the Open Source
+ * LGPL 3.0 license. Commercial use is permitted to the extent that the 
+ * code/component(s) do NOT become part of another Open Source or Commercially
+ * licensed development library or toolkit without explicit permission.
+ * 
+ * License details: http://www.gnu.org/licenses/lgpl.html
+ */
+ 
+#west-content a {
+	text-decoration:none;
+}
+#west-content a:hover {
+	text-decoration:underline;
+}
+#west {
+	width:280px;
+}
+#center {
+	width:640px;
+}
+#adsense-top {
+	margin: 10px 0 10px 0;
+}
+#west-content {
+	font-family:arial, sans-serif;
+}
+#center-content {
+	font-family:arial, sans-serif;
+	margin:0 0 0 10px;
+	color:#777777;
+}
+#center-content h2 {
+	font-size:16px;
+	text-align:center;
+}
+#description {
+	color:#777777;
+	text-align:justify;
+}
+#description em {
+	font-style:italic;
+	font-weight:bold;
+}
+#description p {
+	margin: 2px 0 8px 0;
+}
+.adsense {
+	opacity:.55;
+	filter:alpha(opacity=55);
+	-moz-opacity:.55;
+}
+#change-log {
+	padding:20px 0 0 20px;
+}
+#change-log ul {
+	margin: 8px 0 0 1em;
+	list-style:disc outside;
+	text-align:justify;
+}
+#cts {
+	margin: 20px;
+	zoom:1;
+}
+
+/* eof */
+
+@charset "utf-8";
+.x-superboxselect {position:relative; height: auto !important; margin: 0px; overflow: hidden; padding:2px; display:block; outline: none !important;}
+.x-superboxselect input[disabled] {background-color: transparent;};
+.x-superboxselect ul {overflow: hidden; cursor: text;}
+.x-superboxselect-display-btns {padding-right: 33px !important;}
+.x-superboxselect-btns {position: absolute; right: 1px; top: 0; overflow:hidden; padding:2px;}
+.x-superboxselect-btns div {float: left; width: 16px; height: 16px; margin-top: 4px;}
+.x-superboxselect-btn-clear {background: url(../images/combo/clear.png) no-repeat scroll left 0px;}
+.x-superboxselect-btn-expand {background: url(../images/combo/expand.png) no-repeat scroll left 0px;}
+.x-superboxselect-btn-over {background-position: left -16px}
+.x-superboxselect-btn-hide {display:none;}
+.x-superboxselect li {float: left; margin: 1px 1px 2px 1px; padding: 0;line-height: 18px;}
+.x-superboxselect-stacked li {float: none !important;}
+.x-superboxselect-input input { border: none; outline: none; margin-top: 4px; margin-bottom: 4px;}
+body.ext-ie .x-superboxselect-input input {background: none; border: none; margin-top: 3px;}
+.x-superboxselect-item {position: relative; -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px; o-border-radius: 6px; khtml-border-radius: 6px; border: 1px solid #CAD8F3; background-color: #DEE7F8; padding: 1px 15px 1px 5px !important; }
+body.ext-ie7 .x-superboxselect-item {margin: 2px 1px 2px 1px; line-height: 1.2em; padding: 2px 17px 4px 5px !important;}
+body.ext-ie6 .x-superboxselect-item {margin: 2px 1px 2px 1px; line-height: 1.2em; padding: 2px 19px 4px 5px !important;}
+.x-superboxselect-item-hover {background: #BBCEF1; border: 1px solid #6D95E0;}
+.x-superboxselect-item-focus {border-color: #598BEC; background: #598BEC; color: #fff;}
+.x-superboxselect-item-close {background: url(../images/combo/close.png) no-repeat scroll left 0px; border: none; cursor: default; font-size: 1px; height: 16px;padding:0; position: absolute; right: 0px; top: 2px; width: 13px;display:block;cursor:pointer;}
+
+.x-superboxselect-item-close:hover, .x-superboxselect-item-close:active  { background-position: left -12px;}
+.x-superboxselect-item-focus .x-superboxselect-item-close{ background-position: left -24px}
+.x-item-disabled .x-superboxselect-item-close{ background-position: left -36px}
