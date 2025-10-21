@@ -138,7 +138,7 @@ class sectorController extends Controller
                     $tabla = tab_sectores::find($id);
                     $tabla->co_sector = Input::get("sector");
                     $tabla->co_sub_sector = Input::get("sub_sector");
-                    $tabla->nu_nivel = Input::get("nivel");
+                    $tabla->nu_nivel = 1;
                     $tabla->tx_codigo = Input::get("sector").''.Input::get("sub_sector");
                     $tabla->tx_descripcion = Input::get("descripcion");
                     $tabla->nu_descripcion = Input::get("sector").''.Input::get("sub_sector").' - '.Input::get("descripcion");
@@ -171,7 +171,7 @@ class sectorController extends Controller
                     $tabla = new tab_sectores();
                     $tabla->co_sector = Input::get("sector");
                     $tabla->co_sub_sector = Input::get("sub_sector");
-                    $tabla->nu_nivel = Input::get("nivel");
+                    $tabla->nu_nivel = 1;
                     $tabla->tx_codigo = Input::get("sector").''.Input::get("sub_sector");
                     $tabla->tx_descripcion = Input::get("descripcion");
                     $tabla->nu_descripcion = Input::get("sector").''.Input::get("sub_sector").' - '.Input::get("descripcion");

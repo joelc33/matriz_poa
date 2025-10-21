@@ -27,14 +27,14 @@ class tab_ejecutores extends Model
     public static $validarCrear = array(
         "codigo" => "required|min:4|max:4|unique:tab_ejecutores,id_ejecutor",
         "nombre" => "required|min:1|max:800",
-        "car_01" => "required|min:1|max:10",
-        "car_02" => "required|min:1|max:10",
-        "car_03" => "required|min:1|max:10",
-        "car_04" => "required|min:1|max:10",
+//        "car_01" => "required|min:1|max:10",
+//        "car_02" => "required|min:1|max:10",
+//        "car_03" => "required|min:1|max:10",
+//        "car_04" => "required|min:1|max:10",
         "tipo" => "required|numeric",
         "ambito" => "required|numeric",
-        "codigo_01" => "required|min:1|max:10",
-        "codigo_eje" => "required|min:1|max:10",
+//        "codigo_01" => "required|min:1|max:10",
+//        "codigo_eje" => "required|min:1|max:10",
         "correo" => "required|email",
         "telefono" => "required|regex:/^([0-9]{4})([-]{1})([0-9]{7}$)/"
     );
@@ -42,14 +42,14 @@ class tab_ejecutores extends Model
     public static $validarEditar = array(
         "codigo" => "required|min:4|max:4",
         "nombre" => "required|min:1|max:800",
-        "car_01" => "required|min:1|max:10",
-        "car_02" => "required|min:1|max:10",
-        "car_03" => "required|min:1|max:10",
-        "car_04" => "required|min:1|max:10",
+//        "car_01" => "required|min:1|max:10",
+//        "car_02" => "required|min:1|max:10",
+//        "car_03" => "required|min:1|max:10",
+//        "car_04" => "required|min:1|max:10",
         "tipo" => "required|numeric",
         "ambito" => "required|numeric",
-        "codigo_01" => "required|min:1|max:10",
-        "codigo_eje" => "required|min:1|max:10",
+//        "codigo_01" => "required|min:1|max:10",
+//        "codigo_eje" => "required|min:1|max:10",
         "correo" => "required|email",
         "telefono" => "required|regex:/^([0-9]{4})([-]{1})([0-9]{7}$)/"
     );

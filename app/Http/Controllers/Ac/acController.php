@@ -110,7 +110,7 @@ class acController extends Controller
 
                 $tabla = tab_ac::find($id);
                 $tabla->id_accion = Input::get("id_accion");
-                $tabla->id_subsector = Input::get("id_subsector");
+                $tabla->id_subsector = Input::get("id_co_sector");
                 $tabla->id_estatus = 1;
                 $tabla->sit_presupuesto = Input::get("co_situacion_presupuestaria");
                 $tabla->descripcion = str_replace('"', '', Input::get("descripcion"));
@@ -186,7 +186,7 @@ class acController extends Controller
                 }
                 $tabla->id_ejercicio = Session::get('ejercicio');
                 $tabla->id_accion = Input::get("id_accion");
-                $tabla->id_subsector = Input::get("id_subsector");
+                $tabla->id_subsector = Input::get("id_co_sector");
                 $tabla->id_estatus = 1;
                 $tabla->sit_presupuesto = Input::get("co_situacion_presupuestaria");
                 $tabla->descripcion = str_replace('"', '', Input::get("descripcion"));

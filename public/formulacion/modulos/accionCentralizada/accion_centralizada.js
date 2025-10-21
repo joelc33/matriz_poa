@@ -60,7 +60,7 @@
             });
 
 	    this.accion_id = new Ext.form.ComboBox({
-		fieldLabel:'1.2. TIPO DE ACCIÓN',
+		fieldLabel:'1.2. TIPO DE PROGRAMA',
 		store: this.store_accion,
 		typeAhead: true,
 		valueField: 'id',
@@ -69,7 +69,7 @@
 		forceSelection:true,
 		resizable:true,
 		triggerAction: 'all',
-		emptyText: 'Seleccione el tipo de Acción Centralizada',
+		emptyText: 'Seleccione el tipo de Programa',
 		selectOnFocus: true,
 		mode: 'local',
 		width:400,
@@ -115,7 +115,7 @@
                     name: 'id_ejercicio',
                 }, {
                     xtype: 'textfield',
-                    fieldLabel: '1.0. CÓDIGO DE LA ACCIÓN CENTRALIZADA',
+                    fieldLabel: '1.0. CÓDIGO DEL PROGRAMA',
                     name: 'codigo',
                     readOnly: true,
                     style: 'background:#c9c9c9;'
@@ -198,16 +198,16 @@
                     op: 3
                 },*/
                 root: 'data',
-                fields: ['co_sector', 'nu_descripcion']
+                fields: ['id','co_sector', 'nu_descripcion']
             });
 
             this.co_sector = new Ext.form.ComboBox({
                 fieldLabel: '1.5.1. SECTOR',
                 store: this.store_sector,
                 typeAhead: true,
-                valueField: 'co_sector',
+                valueField: 'id',
                 displayField: 'nu_descripcion',
-                hiddenName: 'co_sector',
+                hiddenName: 'id_co_sector',
                 forceSelection: true,
                 resizable: true,
                 triggerAction: 'all',
@@ -258,7 +258,7 @@
                 },
                 items: [
                     this.co_sector,
-                    this.co_sub_sector
+//                    this.co_sub_sector
                 ]
             });
 
@@ -464,7 +464,7 @@
                                                 //FIXME
                                                 window.addTab(
                                                     nac.codigo,
-                                                    'Acción Centralizada '+ nac.codigo,
+                                                    'Programa '+ nac.codigo,
                                                     'formulacion/modulos/accionCentralizada/accion.php',
                                                     'load',
                                                     'icon-buscar',
@@ -526,8 +526,9 @@
                                     function(cb) {
                                         self.store_sector.load({
                                             callback: function(r, op, scs) {
+                                                console.log(self.ac.id_subsector);
                                                 self.co_sector.setValue(
-                                                    self.ac.co_sector
+                                                    self.ac.id_subsector
                                                 );
                                                 cb(scs ? null : 'sector');
                                             }
@@ -579,7 +580,7 @@
                     title: '4. RESPONSABLES'
                 }, {
                     xtype: 'accion_especifica',
-                    title: '5. ACCIONES ESPECÍFICAS',
+                    title: '5. PROYECTOS',
                 }];
                 for (i = 0; i < lista.length; i++) {
                     this.padre.insert(i + 1, Ext.create(
@@ -1358,12 +1359,12 @@
             this.forma = Ext.create({
                 xtype: 'form',
                 //region: 'center',
-                tbar: [{
+                tbar: [/*{
                     xtype: 'button',
                     text: 'Agregar Municipio',
                     iconCls: 'icon-agregar',
                     handler: agregarMunicipio
-                }, {
+                }, */{
                     xtype: 'button',
                     text: 'Agregar Parroquia',
                     iconCls: 'icon-agregar',

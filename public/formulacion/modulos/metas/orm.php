@@ -260,8 +260,8 @@ function ac_ae_partidas()
 	/*$response['data']  = tab_ac_ae_partida::select('co_partida')->where('id_accion_centralizada', '=', $_POST['id_accion_centralizada'])->where('id_accion', '=', $_POST['co_ac_acc_espec'])->where('edo_reg', '=', true)->orderby('co_partida','ASC')->get()->toArray();*/
 
 	$response['data']  = tab_ac_ae_partida::select(DB::raw('left(co_partida, 3) as co_partida'))
-	->where('id_accion_centralizada', '=', $_POST['id_accion_centralizada'])
-	->where('id_accion', '=', $_POST['co_ac_acc_espec'])
+//	->where('id_accion_centralizada', '=', $_POST['id_accion_centralizada'])
+//	->where('id_accion', '=', $_POST['co_ac_acc_espec'])
 	->where('edo_reg', '=', true)
 	->groupBy(DB::raw('1'))
 	->orderby('co_partida','ASC')->get()->toArray();

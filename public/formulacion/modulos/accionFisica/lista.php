@@ -212,9 +212,9 @@ this.accionFisica2 = new Ext.Button({
 	text:'Ver Actividades',
 	id:'verFisico2',
 	iconCls: 'icon-accion_fisica',
-	tooltip: 'Ver Actividades de la Accion Especifica',
+	tooltip: 'Ver Actividades del Proyecto',
 	handler: function(boton){
-		addTab(accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+'ae','Accion Centralizada:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+' >  Accion Especifica:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('tx_codigo'),'formulacion/modulos/metas/acLista.php','load','icon-accion_especifica','codigo='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('co_proyecto_acc_espec')+'&id_accion_centralizada='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_accion_centralizada'));
+		addTab(accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+'ae','Programa:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+' >  Proyecto:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('tx_codigo'),'formulacion/modulos/metas/acLista.php','load','icon-accion_especifica','codigo='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('co_proyecto_acc_espec')+'&id_accion_centralizada='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_accion_centralizada'));
 	}
 });
 
@@ -303,7 +303,7 @@ this.reordenar_ac_a.disable();
 
 //Grid principal
 this.gridPanel_2 = new Ext.grid.GridPanel({
-	title: 'ACCIONES CENTRALIZADAS: Acciones Especificas',
+	title: 'PROGRAMAS: Proyectos',
     iconCls: 'icon-accion_especifica',
     store: this.store_lista_2,
     loadMask:true,
@@ -325,9 +325,9 @@ this.gridPanel_2 = new Ext.grid.GridPanel({
     //{header: 'id_proyecto',hidden:true, menuDisabled:true,dataIndex: 'id_proyecto'},
     {header: 'EJECUTOR RESPONSABLE', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'ejecutor_resp'},
     //{header: 'ACCION C.', width:130,  menuDisabled:true, sortable: true, dataIndex: 'id_proyecto'},
-    {header: 'ACCION CENTRALIZADA', width:300,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'nb_ac'},
+    {header: 'PROGRAMA', width:300,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'nb_ac'},
     {header: 'CÓD.', width:80,  menuDisabled:true, sortable: true, textoLargo, dataIndex: 'tx_codigo'},
-    {header: 'Nombre de la Acción', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'descripcion'},
+    {header: 'Nombre del Proyecto', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'descripcion'},
     {header: 'UNIDAD DE MEDIDA', width:120,  menuDisabled:true, sortable: true,  dataIndex: 'co_unidades_medida'},
     {header: 'TOTAL GENERAL Bs.', width:120,  menuDisabled:true, sortable: true, renderer: formatoNumero, dataIndex: 'total'},
     {header: 'TOTAL CARGADO', width:120,  menuDisabled:true, sortable: true, renderer: colorIndicador, dataIndex: 'mo_cargado'},
@@ -361,7 +361,7 @@ this.panel = new Ext.TabPanel({
 	autoWidth: true,
 	autoScroll:true,
     items:[
-	this.gridPanel_1,
+//	this.gridPanel_1,
 	this.gridPanel_2
 	]
 });

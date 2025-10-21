@@ -121,8 +121,8 @@ this.formPanel_ = new Ext.form.FormPanel({
 	items:[
 		this._token,
 		this.co_sector,
-		this.co_sub_sector,
-		this.nu_nivel,
+//		this.co_sub_sector,
+//		this.nu_nivel,
 		this.tx_descripcion
 	]
 });

@@ -3,7 +3,7 @@
 		"id_accion_centralizada"     => $_GET['id_accion_centralizada'],
 		"co_ac_acc_espec"     => $_GET['co_ac_acc_espec'],
 		"co_estado"     => 23,
-		"co_municipio"     => "",
+		"co_municipio"     => 11,
 		"co_parroquia"     => "",
 	));
 ?>
@@ -46,8 +46,8 @@ this.co_estado = new Ext.form.ComboBox({
 	valueField: 'co_estado',
 	displayField:'tx_estado',
 	hiddenName:'co_estado',
-	//readOnly:(this.OBJ.co_estado!='')?true:false,
-	//style:(this.OBJ.co_estado!='')?'background:#c9c9c9;':'',
+	readOnly:(this.OBJ.co_estado!='')?true:false,
+	style:(this.OBJ.co_estado!='')?'background:#c9c9c9;':'',
 	forceSelection:true,
 	resizable:true,
 	triggerAction: 'all',
@@ -91,8 +91,8 @@ this.co_municipio = new Ext.form.ComboBox({
 	valueField: 'co_municipio',
 	displayField:'tx_municipio',
 	hiddenName:'co_municipio',
-	//readOnly:(this.OBJ.co_municipio!='')?true:false,
-	//style:(this.OBJ.co_municipio!='')?'background:#c9c9c9;':'',
+	readOnly:(this.OBJ.co_municipio!='')?true:false,
+	style:(this.OBJ.co_municipio!='')?'background:#c9c9c9;':'',
 	forceSelection:true,
 	resizable:true,
 	triggerAction: 'all',
@@ -111,6 +111,12 @@ this.co_municipio = new Ext.form.ComboBox({
         }
 });
 
+if(this.OBJ.co_municipio){
+	this.storeCO_PARROQUIA.load({
+		params: {co_municipio:this.OBJ.co_municipio},
+		callback: function(){detalleMetaEditar.main.co_parroquia.setValue(detalleMetaEditar.main.OBJ.co_parroquia);}
+	});
+}
 this.co_municipio.on('beforeselect',function(cmb,record,index){
         	this.co_parroquia.clearValue();
 },this);

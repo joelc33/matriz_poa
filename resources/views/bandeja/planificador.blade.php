@@ -292,7 +292,7 @@ var verCentralizadas = new Ext.Button({
 		var sel = opcionPlanificador.main.gridCentralizadas_.getSelectionModel().getSelected();
 		addTab(
 			sel.get('codigo'),
-			'Acción Centralizada '+ sel.get('codigo'),
+			'Programa '+ sel.get('codigo'),
 			'formulacion/modulos/accionCentralizada/accion.php',
 			'load',
 			'icon-buscar',
@@ -343,7 +343,7 @@ this.store_acciones.baseParams = {
 };
 
 this.gridCentralizadas_ = new Ext.grid.GridPanel({
-	title:'Acciones Centralizadas Activas',
+	title:'Programas Activos',
 	store: this.store_acciones,
 	loadMask: true,
 	border: true,
@@ -405,8 +405,6 @@ this.panel = new Ext.Panel({
 	border: false,
 	padding: 5,
 	items: [
-		this.gridPanel_,
-		{ height: 20 },
 		this.gridCentralizadas_
 	]
 });

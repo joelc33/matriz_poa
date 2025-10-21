@@ -64,7 +64,7 @@
                     if (k < rec.data.min || k > rec.data.max) {
                         Ext.Msg.alert( 'Atención',
                             'No pueden asignarse recursos a meses fuera'
-                                + ' del rango de la Acción Específica'
+                                + ' del rango del Proyecto'
                         ).setIcon(Ext.MessageBox.WARNING);
                         return false;
                     }
@@ -72,7 +72,7 @@
                 }
                 if (acum !== 0) {
                     Ext.Msg.alert( 'Atención',
-                            'La cantidad total por Acción Específica debe'
+                            'La cantidad total por proyecto debe'
                             + ' coincidir con el declarado'
                     ).setIcon(Ext.MessageBox.ERROR);
                     return false;
@@ -302,14 +302,14 @@
                 }, {
                     xtype: 'combo',
                     store: this.store_accion,
-                    fieldLabel: 'TIPO DE ACCIÓN',
+                    fieldLabel: 'TIPO DE PROYECTO',
                     valueField: 'id',
                     displayField: 'nombre',
                     hiddenName: 'id_accion',
                     autoSelect: true,
                     forceSelection: true,
                     allowBlank: false,
-                    emptyText: 'Seleccione el tipo de Acción Específica',
+                    emptyText: 'Seleccione el tipo de Proyecto',
                     triggerAction: 'all',
                     mode: 'local'
                 },/* {
@@ -489,7 +489,7 @@
             config = Ext.apply({
                 acid: null,
                 ae: null,
-                title: 'Añadir Acción Específica',
+                title: 'Añadir Proyecto',
                 modal: true,
                 width: 600,
                 height: 500,
@@ -573,7 +573,7 @@
 
             if (self.ae) {
                 self.actualizar = self.ae.id_accion;
-                self.setTitle('Editar Acción Específica');
+                self.setTitle('Editar Proyecto');
             }
 
             var intermedio = function(nombre) {
@@ -932,7 +932,7 @@
             });
 
             config = Ext.apply({
-                title: 'Partidas de la Acción Específica: ' +
+                title: 'Partidas del Proyecto: ' +
                 config.ac.codigo + ' - ' + config.ae.numero,
                 modal: true,
                 maximizable: true,
@@ -1022,7 +1022,7 @@
             });
 
             config = Ext.apply({
-                title: 'Partidas Desagregadas de la Acción Específica: ' +
+                title: 'Partidas Desagregadas del Proyecto: ' +
                 config.ac.codigo + ' - ' + config.ae.numero,
                 modal: true,
                 maximizable: true,

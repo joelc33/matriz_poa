@@ -174,7 +174,7 @@ if($_GET['op']==1){
 		"data"		=> $data
 	));
 }elseif($_GET['op']==12){
-	$sql = "SELECT * FROM t13_municipio where co_estado=".$_POST['co_estado'].";";
+	$sql = "SELECT * FROM t13_municipio where co_municipio = 322 and co_estado=".$_POST['co_estado'].";";
 	$result = $comunes->ObtenerFilasBySqlSelect($sql);
 	$data= array();
 	foreach($result as $key => $row){

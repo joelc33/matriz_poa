@@ -80,7 +80,7 @@ this.eliminar= new Ext.Button({
 });
 
 this.lista_ae= new Ext.Button({
-    text:'Acciones Especificas',
+    text:'Proyectos',
     iconCls: 'icon-accion_especifica',
     handler:function(){
 	this.codigo  = tipoaccionLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
@@ -187,9 +187,6 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 			@endif
 			@if( in_array( array( 'de_privilegio' => 'tipoac.ae.lista', 'in_habilitado' => true), Session::get('credencial') ))
 				this.lista_ae,'-',
-			@endif
-			@if( in_array( array( 'de_privilegio' => 'tipoac.partida.lista', 'in_habilitado' => true), Session::get('credencial') ))
-				this.lista_partida,'-',
 			@endif
 				this.buscador
     ],

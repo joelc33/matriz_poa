@@ -185,7 +185,7 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 //this.gridPanel_.render("contenedortipoaccionaeLista");
 
 this.winformPanel_ = new Ext.Window({
-	title:'Formulario: Accion Especifica',
+	title:'Formulario: Proyectos',
 	modal:true,
 	constrain:true,
 	width:714,

@@ -111,7 +111,7 @@ this.formPanel_ = new Ext.form.FormPanel({
 });
 
 this.winformPanel_ = new Ext.Window({
-    title:'Formulario: Accion Especifica',
+    title:'Formulario: Proyectos',
     modal:true,
     constrain:true,
 width:614,
