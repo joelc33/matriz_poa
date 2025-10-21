@@ -251,7 +251,7 @@ this.eliminar.disable();
 this.ver.disable();
 
 this.resultadoReal = new Ext.form.DisplayField({
-	value:"<b>Monto AE: Bs. <?php echo number_format($resultadoReal, 2, ',', '.'); ?></b>"
+	value:"<b>Monto: Bs. <?php echo number_format($resultadoReal, 2, ',', '.'); ?></b>"
 });
 
 this.buscador = new Ext.form.TwinTriggerField({
