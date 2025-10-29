@@ -129,6 +129,7 @@
                 triggerAction: 'all',
                 emptyText: 'Seleccione Sector',
                 mode: 'local',
+                width:400,
                 allowBlank: false,
                 listeners: {
                     change: function() {
