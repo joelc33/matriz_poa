@@ -60,7 +60,7 @@
             });
 
 	    this.accion_id = new Ext.form.ComboBox({
-		fieldLabel:'1.2. TIPO DE PROGRAMA',
+		fieldLabel:'1.3. TIPO DE PROGRAMA',
 		store: this.store_accion,
 		typeAhead: true,
 		valueField: 'id',
@@ -83,7 +83,7 @@
 	    });
 
 	    this.de_accion = new Ext.form.TextArea({
-		fieldLabel: '1.3. DESCRIPCIÓN',
+		fieldLabel: '1.4. DESCRIPCIÓN',
 		name: 'descripcion',
 		allowBlank: false,
 		height: 100,
@@ -102,6 +102,47 @@
                     }
                 }]
             });
+            
+            
+            this.store_sector = new Ext.data.JsonStore({
+                proxy: new Ext.data.HttpProxy({
+                    /*url: 'formulacion/modulos/proyecto/funcion.php',*/
+                    url: 'auxiliar/poa/sector',
+                    method: 'GET'
+                }),
+                /*baseParams: {
+                    op: 3
+                },*/
+                root: 'data',
+                fields: ['id','co_sector', 'nu_descripcion']
+            });
+
+            this.co_sector = new Ext.form.ComboBox({
+                fieldLabel: '1.2. SECTOR',
+                store: this.store_sector,
+                typeAhead: true,
+                valueField: 'id',
+                displayField: 'nu_descripcion',
+                hiddenName: 'id_co_sector',
+                forceSelection: true,
+                resizable: true,
+                triggerAction: 'all',
+                emptyText: 'Seleccione Sector',
+                mode: 'local',
+                allowBlank: false,
+                listeners: {
+                    change: function() {
+                        self.store_subsector.load({
+                            params: {
+                                co_sector: this.getValue()
+                            }
+                        });
+                    },
+                    beforeselect: function() {
+                        self.co_sub_sector.clearValue();
+                    }
+                }
+            });            
 
             this.fieldset1 = new Ext.form.FieldSet({
                 defaults: {
@@ -126,6 +167,7 @@
                     readOnly: true,
                     style: 'background:#c9c9c9;'
                 },
+                this.co_sector,
 		this.accion_id
 		/*,{
                     xtype: 'combo',
@@ -150,7 +192,7 @@
                 }*/,this.de_accion,
 		{
                     xtype: 'combo',
-                    fieldLabel: '1.4. UNIDAD EJECUTORA RESPONSABLE',
+                    fieldLabel: '1.5. UNIDAD EJECUTORA RESPONSABLE',
                     store: this.store_ejecutor,
                     valueField: 'id_ejecutor',
                     displayField: 'nombre',
@@ -166,21 +208,21 @@
                     mode: 'local'
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: '1.4.1. MISION',
+                    fieldLabel: '1.5.1. MISION',
                     name: 'inst_mision',
                     allowBlank: false,
                     height: 60,
                     maxLength: 3000
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: '1.4.2. VISION',
+                    fieldLabel: '1.5.2. VISION',
                     name: 'inst_vision',
                     allowBlank: false,
                     height: 60,
                     maxLength: 3000
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: '1.4.3. OBJETIVOS DE LA INSTITUCION',
+                    fieldLabel: '1.5.3. OBJETIVOS DE LA INSTITUCION',
                     name: 'inst_objetivos',
                     allowBlank: false,
                     height: 100,
@@ -188,45 +230,7 @@
                 }]
             });
 
-            this.store_sector = new Ext.data.JsonStore({
-                proxy: new Ext.data.HttpProxy({
-                    /*url: 'formulacion/modulos/proyecto/funcion.php',*/
-                    url: 'auxiliar/poa/sector',
-                    method: 'GET'
-                }),
-                /*baseParams: {
-                    op: 3
-                },*/
-                root: 'data',
-                fields: ['id','co_sector', 'nu_descripcion']
-            });
 
-            this.co_sector = new Ext.form.ComboBox({
-                fieldLabel: '1.5.1. SECTOR',
-                store: this.store_sector,
-                typeAhead: true,
-                valueField: 'id',
-                displayField: 'nu_descripcion',
-                hiddenName: 'id_co_sector',
-                forceSelection: true,
-                resizable: true,
-                triggerAction: 'all',
-                emptyText: 'Seleccione Sector',
-                mode: 'local',
-                allowBlank: false,
-                listeners: {
-                    change: function() {
-                        self.store_subsector.load({
-                            params: {
-                                co_sector: this.getValue()
-                            }
-                        });
-                    },
-                    beforeselect: function() {
-                        self.co_sub_sector.clearValue();
-                    }
-                }
-            });
 
             this.store_subsector = new Ext.data.JsonStore({
                 /*url: 'formulacion/modulos/proyecto/funcion.php?op=4',*/
@@ -397,7 +401,7 @@
                 labelAlign: 'right',
                 items: [
                     self.fieldset1,
-                    self.fieldset2,
+//                    self.fieldset2,
                     self.fieldset3
                 ],
                 bbar: [
