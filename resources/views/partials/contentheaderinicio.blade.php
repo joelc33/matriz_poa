@@ -9,7 +9,7 @@
 <div id="loading">
   <div class="loading-indicator">
   <img src="{{ asset('/images/32x32/blue-loading.gif') }}" width="32" height="32" style="margin-right:2px; padding-left:20px; float:left;vertical-align:top;"/>
-   ..::PLANIFICACION Y FORMULACION PRESUPUESTARIA - ZULIA::..<br />
+   ..::PLANIFICACION Y FORMULACION PRESUPUESTARIA - MARACAIBO::..<br />
   <span id="loading-msg">Cargando...</span>
     </div>
 </div>
