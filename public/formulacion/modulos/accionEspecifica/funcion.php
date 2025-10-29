@@ -591,7 +591,7 @@ if($_GET['op']==1){
 		"data"      =>  $data
 	));
 }elseif($_GET['op']==10){
-	$sql = "SELECT t47.*, t52.nombre as nb_ac, de_unidad_medida as tx_unidades_medida, t24.tx_ejecutor, ('AC' || t24b.id_ejecutor || id_ejercicio || lpad(t46.id_accion::text, 5, '0')) as id_ac, t53.nu_numero as numero, t53.de_nombre as nombre, mo_ac_ae_meta(id_accion_centralizada, t47.id_accion) AS mo_cargado, t24b.tx_ejecutor as ejecutor_resp FROM t47_ac_accion_especifica as t47
+	$sql = "SELECT t47.*, t52.nombre as nb_ac, de_unidad_medida as tx_unidades_medida, t24.tx_ejecutor, ('PG' || t24b.id_ejecutor || id_ejercicio || lpad(t46.id_accion::text, 5, '0')) as id_ac, t53.nu_numero as numero, t53.de_nombre as nombre, mo_ac_ae_meta(id_accion_centralizada, t47.id_accion) AS mo_cargado, t24b.tx_ejecutor as ejecutor_resp FROM t47_ac_accion_especifica as t47
 	inner join mantenimiento.tab_unidad_medida as t21 on t47.id_unidad_medida=t21.id
 	inner join mantenimiento.tab_ejecutores as t24 on t47.id_ejecutor=t24.id_ejecutor
 	inner join t46_acciones_centralizadas as t46 on t47.id_accion_centralizada=t46.id
