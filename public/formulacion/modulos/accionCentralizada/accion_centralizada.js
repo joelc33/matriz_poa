@@ -262,7 +262,7 @@
                     width: ancho,
                 },
                 items: [
-                    this.co_sector,
+//                    this.co_sector,
 //                    this.co_sub_sector
                 ]
             });
