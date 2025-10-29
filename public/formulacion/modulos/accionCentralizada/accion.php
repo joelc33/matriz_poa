@@ -19,7 +19,7 @@ if ( $id_accion > 0 ) {
 	$params = array();
 	$sql = <<<EOT
 SELECT t46.id, id_ejercicio, t46.id_ejecutor, t24.tx_ejecutor as ejecutor,
-'AC' || t24.id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo,
+'PG' || t24.id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo,
 codigo_new_etapa as co_sistema, t46.id_accion, descripcion,
 id_estatus, id_subsector, sit_presupuesto as co_situacion_presupuestaria,
 monto, t18.co_sector, fecha_inicio, fecha_fin, t52.nombre,
