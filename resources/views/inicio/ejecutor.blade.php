@@ -128,7 +128,7 @@ items: [{
             this.reloj,'-',
             this.btnCambiarEjercicio,'-',
             this.btnSalir,'-','->',
-            {xtype: 'tbtext', text: '<span style="color:black;"><b>SISTEMA POA-PRESUPUESTO DE LA GOBERNACION DEL ESTADO ZULIA.</b></span>'}
+            {xtype: 'tbtext', text: '<span style="color:black;"><b>SISTEMA POA-PRESUPUESTO DE LA ALCALDÍA BOLIVARIANA DE MARACAIBO.</b></span>'}
           ]
         },{
           region: 'west',
