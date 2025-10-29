@@ -176,7 +176,7 @@ this.formpanel = new Ext.form.FormPanel({
 	id: 'forma',
 	labelWidth: 160,
 	iconCls:'icon-reporteest',
-	title: 'PLAN OPERATIVO ANUAL - ACCIONES CENTRALIZADAS',
+	title: 'PLAN OPERATIVO ANUAL - PROGRAMAS',
 	items:[
 		this.botones
 	]
