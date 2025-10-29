@@ -50,7 +50,7 @@ class acController extends Controller
                 'monto',
                 'tx_ejecutor',
                 'de_estatus as tx_estatus',
-                DB::raw("'AC' || public.t46_acciones_centralizadas.id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo"),
+                DB::raw("'PG' || public.t46_acciones_centralizadas.id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo"),
                 DB::raw("coalesce(monto_calc, 0) as monto_calc"),
                 DB::raw("coalesce(null, id_estatus = 3) as reabrir"),
                 DB::raw("coalesce(null, id_estatus = 1) as eliminar")
