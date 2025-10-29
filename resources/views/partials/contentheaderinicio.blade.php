@@ -1,8 +1,8 @@
 <div id="header">
   <div style="background-color:white; padding-left:0px; padding-right:0px; padding-bottom:0px;">
   <!--<img height="58" src="{{ asset('/images/logo_zulia.png') }}">-->
-  <img height="58" src="{{ asset('/images/cintillo_sistema_izquierda.jpg') }}">
-  <img width="100" height="78" align="right" style="vertical-align:top" src="{{ asset('/images/cintillo_sistema_derecha.png') }}">
+  <img height="58" src="{{ asset('/images/Escudo_del_Municipio_Maracaibo.jpg') }}">
+  <img width="200" height="58" align="right" style="vertical-align:top" src="{{ asset('/images/Alcaldia-Bolivariana-de-Maracaibo.jpg') }}">
   </div>
 </div>
 <div id="loading-mask" style=""></div>
