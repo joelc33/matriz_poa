@@ -105,7 +105,7 @@ this.botones = new this.GrupoBotones({
 							@endif
 							@if( in_array( array( 'de_privilegio' => 'ac.poa.responsable.ejecutor', 'in_habilitado' => true), Session::get('credencial') ))
 								{
-									text:'Responsables por AC',  // Generar la impresión en pdf
+									text:'Responsables por PG',  // Generar la impresión en pdf
 									iconCls:'icon-pdf',
 									handler: this.onResponsable
 								},
@@ -119,7 +119,7 @@ this.botones = new this.GrupoBotones({
 							@endif
 							@if( in_array( array( 'de_privilegio' => 'ac.poa.responsable.todos', 'in_habilitado' => true), Session::get('credencial') ))
 								{
-									text:'Resumen A.C.',  // Generar la impresión en pdf
+									text:'Resumen PG.',  // Generar la impresión en pdf
 									iconCls:'icon-pdf',
 									handler: this.onResumenAc
 								},
@@ -140,7 +140,7 @@ this.botones = new this.GrupoBotones({
 							@endif
 							@if( in_array( array( 'de_privilegio' => 'ac.poa.responsable.exportar.ejecutor', 'in_habilitado' => true), Session::get('credencial') ))
 								{
-									text:'Responsables por AC',  // Generar la impresión en pdf
+									text:'Responsables por PG',  // Generar la impresión en pdf
 									iconCls:'icon-excel',
 									handler: this.onExportarResponsable
 								},
