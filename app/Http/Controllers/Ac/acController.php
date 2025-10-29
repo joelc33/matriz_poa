@@ -131,7 +131,7 @@ class acController extends Controller
                 DB::commit();
                 return Response::json(array(
                   'success' => true,
-                  'msg' => 'Accion Centralizada Editada con Exito!'
+                  'msg' => 'Programa Editado con Exito!'
                 ));
 
             } catch (\Illuminate\Database\QueryException $e) {
@@ -207,13 +207,13 @@ class acController extends Controller
 
                 DB::commit();
 
-                $consulta_ac = tab_ac::select(DB::raw("'AC' || id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo"))
+                $consulta_ac = tab_ac::select(DB::raw("'PG' || id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo"))
                 ->where('id', '=', $tabla->id)
                 ->first();
 
                 return Response::json(array(
                   'success' => true,
-                  'msg' => 'Accion Centralizada ha sido almacenado con el Código:'.$consulta_ac->codigo,
+                  'msg' => 'El Programa ha sido almacenado con el Código:'.$consulta_ac->codigo,
                   'data' => array('id' => $tabla->id, 'codigo' => $consulta_ac->codigo)
                 ));
 
