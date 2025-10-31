@@ -37,16 +37,8 @@
                 ancho = 400;
 
             var ac = config.ac;
-
             this.store_accion = new Ext.data.JsonStore({
-                proxy: new Ext.data.HttpProxy({
-                    /*url: 'formulacion/modulos/accionCentralizada/orm.php/tipo/accion',*/
-                    url: 'auxiliar/accion/tipo',
-                    /*method: 'POST'*/
-                }),
-                /*baseParams: {
-                    op: 1
-                },*/
+                url: 'auxiliar/accion/tipo',
                 root: 'data',
                 fields: [
                     'id', {
@@ -58,6 +50,26 @@
 		                'de_accion'
                 ]
             });
+           /* this.store_accion = new Ext.data.JsonStore({
+                proxy: new Ext.data.HttpProxy({
+                    /*url: 'formulacion/modulos/accionCentralizada/orm.php/tipo/accion',
+                    url: 'auxiliar/accion/tipo',
+                    /*method: 'POST'
+                }),
+                /*baseParams: {
+                    op: 1
+                },
+                root: 'data',
+                fields: [
+                    'id', {
+                        name: 'nombre',
+                        convert: function(v, r) {
+                            return r.id + ' - ' + r.de_nombre;
+                        }
+                    },
+		                'de_accion'
+                ]
+            });*/
 
 	    this.accion_id = new Ext.form.ComboBox({
 		fieldLabel:'1.3. TIPO DE PROGRAMA',
@@ -133,14 +145,14 @@
                 allowBlank: false,
                 listeners: {
                     change: function() {
-                        self.store_subsector.load({
+                        self.store_accion.load({
                             params: {
                                 co_sector: this.getValue()
                             }
                         });
                     },
                     beforeselect: function() {
-                        self.co_sub_sector.clearValue();
+                        self.accion_id.clearValue();
                     }
                 }
             });            
@@ -523,7 +535,7 @@
             this.on('beforerender', function() {
                 self.crearTabsAdicionales();
                 async.parallel([
-                        intermedio( 'accion'),
+//                        intermedio( 'accion'),
                         intermedio( 'ejecutor'),
                         intermedio( 'situacion'),
                         function(cb) {
