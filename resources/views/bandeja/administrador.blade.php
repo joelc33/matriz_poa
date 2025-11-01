@@ -256,7 +256,7 @@ var eliminarCentralizadas = new Ext.Button({
 	handler: function( boton ) {
 		var r = opcionPlanificador.main.gridCentralizadas_.getSelectionModel().getSelected();
 		Ext.MessageBox.confirm('Confirmación',
-			'¿Realmente desea eliminar la AC "' + r.get('codigo') + '?',
+			'¿Realmente desea eliminar el Programa "' + r.get('codigo') + '?',
 			function(boton) {
 				if (boton == 'yes') {
 					Ext.Ajax.request({
