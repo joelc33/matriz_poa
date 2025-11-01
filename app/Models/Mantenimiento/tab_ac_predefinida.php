@@ -14,13 +14,15 @@ class tab_ac_predefinida extends Model
 
     public static $validarCrear = array(
         "numero" => "required|min:1|max:2",
+        "sector" => "required",
         "nombre" => "required|min:1|max:1200",
-        "descripcion" => "required|min:1|max:1200"
+        "descripcion" => "min:0|max:1200"
     );
 
     public static $validarEditar = array(
         "numero" => "required|min:1|max:2",
+        "sector" => "required",
         "nombre" => "required|min:1|max:1200",
-        "descripcion" => "required|min:1|max:1200"
+        "descripcion" => "min:0|max:1200"
     );
 }
