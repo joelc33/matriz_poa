@@ -44,7 +44,7 @@
                     'id', {
                         name: 'nombre',
                         convert: function(v, r) {
-                            return r.id + ' - ' + r.de_nombre;
+                            return r.nu_original + ' - ' + r.de_nombre;
                         }
                     },
 		                'de_accion'
