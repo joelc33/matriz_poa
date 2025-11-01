@@ -333,8 +333,9 @@ class documentoController extends Controller
      */
     public function accionTipo()
     {
+ 
         $response['success']  = 'true';
-        $response['data']  = tab_ac_predefinida::select('id', 'de_nombre', 'de_accion')->orderby('id', 'ASC')->get()->toArray();
+        $response['data']  = tab_ac_predefinida::select('id','nu_original', 'de_nombre', 'de_accion')->where('id_tab_sectores', '=', Input::get('co_sector'))->orderby('id', 'ASC')->get()->toArray();
         return Response::json($response, 200);
     }
 

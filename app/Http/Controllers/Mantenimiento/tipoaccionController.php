@@ -47,7 +47,8 @@ class tipoaccionController extends Controller
             $variable = Input::get('variable');
 
             $tab_ac_predefinida = $this->tab_ac_predefinida
-            ->select('id', 'de_nombre', 'de_accion', 'in_activo')
+            ->join('mantenimiento.tab_sectores as t01', 't01.id', '=', 'mantenimiento.tab_ac_predefinida.id_tab_sectores')
+            ->select('mantenimiento.tab_ac_predefinida.id','nu_descripcion', 'de_nombre', 'de_accion', 'nu_original', 'mantenimiento.tab_ac_predefinida.in_activo')
             /*->where('in_activo', '=', 'TRUE')*/;
 
             if (Input::get("BuscarBy")=="true") {
@@ -91,7 +92,7 @@ class tipoaccionController extends Controller
      */
     public function editar($id)
     {
-        $data = tab_ac_predefinida::select('id', 'de_nombre', 'de_accion', 'in_activo', 'nu_original')
+        $data = tab_ac_predefinida::select('id','id_tab_sectores', 'de_nombre', 'de_accion', 'in_activo', 'nu_original')
         ->where('id', '=', $id)
         ->first();
         return View::make('mantenimiento.tipoaccion.editar')->with('data', $data);
@@ -118,6 +119,7 @@ class tipoaccionController extends Controller
                 }
                 $tabla = tab_ac_predefinida::find($id);
                 $tabla->de_nombre = Input::get("nombre");
+                $tabla->id_tab_sectores = Input::get("sector");
                 $tabla->de_accion = Input::get("descripcion");
                 $tabla->nu_original = Input::get("numero");
                 $tabla->save();
@@ -148,6 +150,7 @@ class tipoaccionController extends Controller
                 }
                 $tabla = new tab_ac_predefinida();
                 $tabla->de_nombre = Input::get("nombre");
+                $tabla->id_tab_sectores = Input::get("sector");
                 $tabla->de_accion = Input::get("descripcion");
                 $tabla->nu_original = Input::get("numero");
                 $tabla->in_activo = 'TRUE';
