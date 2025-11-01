@@ -192,8 +192,9 @@ this.gridPanel_ = new Ext.grid.GridPanel({
     ],
     columns: [
     new Ext.grid.RowNumberer(),
-    {header: 'Codigo', width:80, sortable: true, menuDisabled:true,dataIndex: 'id'},
-		{header: 'Nombre', width:300,  menuDisabled:true, sortable: true, /*renderer: textoLargo,*/ dataIndex: 'de_nombre'},
+    {header: 'Sector', width:300, sortable: true, menuDisabled:true,dataIndex: 'nu_descripcion'},
+    {header: 'Codigo', width:80, sortable: true, menuDisabled:true,dataIndex: 'nu_original'},
+		{header: 'Nombre', width:500,  menuDisabled:true, sortable: true, /*renderer: textoLargo,*/ dataIndex: 'de_nombre'},
     {header: 'Descripcion', width:300,  menuDisabled:true, sortable: true, /*renderer: textoLargo,*/ dataIndex: 'de_accion'},
     {header: 'Estado', width:80,  menuDisabled:true, sortable: true, renderer: change, dataIndex: 'in_activo'},
     ],
@@ -237,8 +238,10 @@ getLista: function(){
     root:'data',
     fields:[
     {name: 'id'},
+    {name: 'nu_descripcion'},
     {name: 'de_nombre'},
-		{name: 'de_accion'},
+    {name: 'de_accion'},
+    {name: 'nu_original'},
     {name: 'in_activo'},
            ]
     });

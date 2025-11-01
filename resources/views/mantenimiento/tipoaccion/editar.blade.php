@@ -5,12 +5,42 @@ init:function(){
 
 this.OBJ = paqueteComunJS.funcion.doJSON({stringData:'{!! $data !!}'});
 
+this.storeCO_SECTORES = this.getStoreCO_SECTORES();
+
 //<token>
 this._token = new Ext.form.Hidden({
 	name:'_token',
 	value:'{{ csrf_token() }}'
 });
 //</token>
+
+this.id_tab_sectores = new Ext.form.ComboBox({
+	fieldLabel:'Sector',
+	store: this.storeCO_SECTORES,
+	typeAhead: true,
+	valueField: 'id',
+	displayField:'nu_descripcion',
+	hiddenName:'sector',
+	//readOnly:(this.OBJ.id_tab_tipo_recurso!='')?true:false,
+	//style:(this.main.OBJ.id_tab_tipo_recurso!='')?'background:#c9c9c9;':'',
+	//forceSelection:true,
+	resizable:true,
+	triggerAction: 'all',
+	emptyText:'Seleccione sector...',
+	selectOnFocus: true,
+	mode: 'local',
+	width:400,
+	itemSelector: 'div.search-item',
+	tpl: new Ext.XTemplate('<tpl for="."><div class="search-item"><div class="desc">{nu_descripcion}</div></div></tpl>'),
+	resizable:true,
+	allowBlank:false
+});
+this.storeCO_SECTORES.load();
+	paqueteComunJS.funcion.seleccionarComboByCo({
+	objCMB: this.id_tab_sectores,
+	value:  this.OBJ.id_tab_sectores,
+	objStore: this.storeCO_SECTORES
+});
 
 this.nu_original = new Ext.form.TextField({
 	fieldLabel:'Numero',
@@ -32,7 +62,7 @@ this.de_accion = new Ext.form.TextArea({
 	fieldLabel:'Descripcion',
 	name:'descripcion',
 	value:this.OBJ.de_accion,
-	allowBlank:false,
+//	allowBlank:false,
 	width:400,
 	height: 150,
 });
@@ -101,6 +131,7 @@ this.formPanel_ = new Ext.form.FormPanel({
 	bodyStyle:'padding:10px;',
 	items:[
 		this._token,
+                this.id_tab_sectores,
 		this.nu_original,
 		this.de_nombre,
 		this.de_accion
@@ -128,7 +159,23 @@ width:614,
 });
 this.winformPanel_.show();
 tipoaccionLista.main.mascara.hide();
-}
+},
+getStoreCO_SECTORES:function(){
+    this.store = new Ext.data.JsonStore({
+        url:'{{ URL::to('auxiliar/poa/sector') }}',
+        root:'data',
+        fields:[
+            {name: 'id'},
+            {name: 'nu_descripcion'},
+            ],
+            listeners : {
+                exception : function(proxy, response, operation) {
+                    Ext.Msg.alert("Aviso", 'Error al obtener respuesta del servidor intente de nuevo!');
+                }
+            }
+    });
+    return this.store;
+}        
 };
 Ext.onReady(tipoaccionEditar.main.init, tipoaccionEditar.main);
 </script>
