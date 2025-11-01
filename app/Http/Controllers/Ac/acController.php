@@ -113,7 +113,7 @@ class acController extends Controller
                 $tabla->id_subsector = Input::get("id_co_sector");
                 $tabla->id_estatus = 1;
                 $tabla->sit_presupuesto = Input::get("co_situacion_presupuestaria");
-                $tabla->descripcion = str_replace('"', '', Input::get("descripcion"));
+//                $tabla->descripcion = str_replace('"', '', Input::get("descripcion"));
                 $tabla->monto = Input::get("monto");
                 //$tabla->monto_calc = 0;
                 $tabla->fecha_inicio = Input::get("fecha_inicio");
@@ -123,8 +123,8 @@ class acController extends Controller
                 $tabla->inst_objetivos = str_replace('"', '', Input::get("inst_objetivos"));
                 $tabla->nu_po_beneficiar = Input::get("nu_po_beneficiar");
                 $tabla->nu_em_previsto = Input::get("nu_em_previsto");
-                $tabla->tx_re_esperado = str_replace('"', '', Input::get("tx_re_esperado"));
-                $tabla->tx_pr_objetivo = str_replace('"', '', Input::get("tx_pr_objetivo"));
+//                $tabla->tx_re_esperado = str_replace('"', '', Input::get("tx_re_esperado"));
+//                $tabla->tx_pr_objetivo = str_replace('"', '', Input::get("tx_pr_objetivo"));
                 $tabla->edo_reg = 'TRUE';
                 $tabla->save();
 
@@ -189,7 +189,7 @@ class acController extends Controller
                 $tabla->id_subsector = Input::get("id_co_sector");
                 $tabla->id_estatus = 1;
                 $tabla->sit_presupuesto = Input::get("co_situacion_presupuestaria");
-                $tabla->descripcion = str_replace('"', '', Input::get("descripcion"));
+//                $tabla->descripcion = str_replace('"', '', Input::get("descripcion"));
                 $tabla->monto = Input::get("monto");
                 $tabla->monto_calc = 0;
                 $tabla->fecha_inicio = Input::get("fecha_inicio");
@@ -199,8 +199,8 @@ class acController extends Controller
                 $tabla->inst_objetivos = str_replace('"', '', Input::get("inst_objetivos"));
                 $tabla->nu_po_beneficiar = Input::get("nu_po_beneficiar");
                 $tabla->nu_em_previsto = Input::get("nu_em_previsto");
-                $tabla->tx_re_esperado = str_replace('"', '', Input::get("tx_re_esperado"));
-                $tabla->tx_pr_objetivo = str_replace('"', '', Input::get("tx_pr_objetivo"));
+//                $tabla->tx_re_esperado = str_replace('"', '', Input::get("tx_re_esperado"));
+//                $tabla->tx_pr_objetivo = str_replace('"', '', Input::get("tx_pr_objetivo"));
                 $tabla->tx_ejecutor_poa = str_replace('"', '', $data_ejecutor->tx_ejecutor);
                 $tabla->edo_reg = 'TRUE';
                 $tabla->save();
