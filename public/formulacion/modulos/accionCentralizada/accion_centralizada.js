@@ -72,7 +72,7 @@
             });*/
 
 	    this.accion_id = new Ext.form.ComboBox({
-		fieldLabel:'1.3. TIPO DE PROGRAMA',
+		fieldLabel:'1.3. PROGRAMA',
 		store: this.store_accion,
 		typeAhead: true,
 		valueField: 'id',
@@ -202,10 +202,10 @@
                     allowBlank: false,
                     height: 100,
                     maxLength: 200
-                }*/,this.de_accion,
+                },this.de_accion,*/,
 		{
                     xtype: 'combo',
-                    fieldLabel: '1.5. UNIDAD EJECUTORA RESPONSABLE',
+                    fieldLabel: '1.4. UNIDAD EJECUTORA RESPONSABLE',
                     store: this.store_ejecutor,
                     valueField: 'id_ejecutor',
                     displayField: 'nombre',
@@ -221,21 +221,21 @@
                     mode: 'local'
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: '1.5.1. MISION',
+                    fieldLabel: '1.4.1. MISION',
                     name: 'inst_mision',
                     allowBlank: false,
                     height: 60,
                     maxLength: 3000
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: '1.5.2. VISION',
+                    fieldLabel: '1.4.2. VISION',
                     name: 'inst_vision',
                     allowBlank: false,
                     height: 60,
                     maxLength: 3000
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: '1.5.3. OBJETIVOS DE LA INSTITUCION',
+                    fieldLabel: '1.4.3. OBJETIVO GENERAL',
                     name: 'inst_objetivos',
                     allowBlank: false,
                     height: 100,
@@ -291,7 +291,7 @@
             };
 
             this.fecha_inicio = new Ext.form.DateField({
-                fieldLabel: '1.6. FECHA DE INICIO',
+                fieldLabel: '1.5. FECHA DE INICIO',
                 name: 'fecha_inicio',
                 width: 100,
                 allowBlank: false,
@@ -304,7 +304,7 @@
             });
 
             this.fecha_fin = new Ext.form.DateField({
-                fieldLabel: '1.7. FECHA DE CULMINACIÓN',
+                fieldLabel: '1.6. FECHA DE CULMINACIÓN',
                 name: 'fecha_fin',
                 width: 100,
                 allowBlank: false,
@@ -341,7 +341,7 @@
                     this.fecha_fin,
                     {
                         xtype: 'combo',
-                        fieldLabel: '1.8. SITUACIÓN PRESUPUESTARIA',
+                        fieldLabel: '1.7. SITUACIÓN PRESUPUESTARIA',
                         store: this.store_situacion,
                         typeAhead: true,
                         valueField: 'id',
@@ -356,7 +356,7 @@
                         allowBlank: false
                     }, {
                         xtype: 'numberfield',
-                        fieldLabel: '1.9. MONTO TOTAL (BS.)',
+                        fieldLabel: '1.8. MONTO TOTAL (BS.)',
                         name: 'monto',
                         allowBlank: false,
                         allowDecimals: false,
@@ -366,7 +366,7 @@
                         emptyText: '0',
                     }, {
 			xtype: 'numberfield',
-			fieldLabel: '1.9.1. POBLACIÓN A BENEFICIAR',
+			fieldLabel: '1.8.1. POBLACIÓN A BENEFICIAR',
 			name: 'nu_po_beneficiar',
                         //allowBlank: false,
                         allowDecimals: false,
@@ -376,7 +376,7 @@
                         emptyText: '0',
 		    }, {
 			xtype: 'numberfield',
-			fieldLabel: '1.9.2. EMPLEOS PREVISTOS',
+			fieldLabel: '1.8.2. EMPLEOS PREVISTOS',
 			name: 'nu_em_previsto',
                         //allowBlank: false,
                         allowDecimals: false,
@@ -384,7 +384,7 @@
                         maxLength: 12,
                         allowNegative: false,
                         emptyText: '0',
-		    }, {
+		    }/*, {
 			xtype: 'textarea',
 			fieldLabel: '1.9.3. PRODUCTO PROGRAMADO DEL OBJETIVO',
 			name: 'tx_pr_objetivo',
@@ -398,7 +398,7 @@
 			allowBlank: false,
 			height: 60,
 			maxLength: 600
-                    }
+                    }*/
                 ]
             });
 
@@ -499,9 +499,9 @@
 
                             if (!!ac.id && (forma.getValues().id_accion !== ac.id_accion)) {
                                 Ext.Msg.confirm('Atención',
-                                    'Cambiar el Tipo de Acción de la AC, implica borrar'
+                                    'Cambiar el Programa, implica borrar'
                                     + ' (para mantener la consistencia), la información'
-                                    + ' de las AE cargadas. ¿Desea continuar?',
+                                    + ' de las proyectos cargados. ¿Desea continuar?',
                                     function(res) {
                                         if ( res === 'yes' ) {
                                             enviarCambios();
@@ -553,15 +553,15 @@
                                     },
                                     function(cb) {
                                         if (self.ac.co_sector) {
-                                            self.store_subsector.load({
+                                            self.store_accion.load({
                                                 params: {
                                                     co_sector: self.ac.co_sector
                                                 },
                                                 callback: function(r, op, scs) {
-                                                    self.co_sub_sector.setValue(
-                                                        self.ac.id_subsector
+                                                    self.accion_id.setValue(
+                                                        self.ac.id_accion
                                                     );
-                                                    cb(scs ? null : 'sub-sector');
+                                                    cb(scs ? null : 'programa');
                                                 }
                                             });
                                         } else {
