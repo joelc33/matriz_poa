@@ -128,6 +128,13 @@ class documentoController extends Controller
         $response['data']  = tab_ambito_ejecutor::select('id', 'de_ambito_ejecutor')->where('in_activo', '=', true)->orderby('id', 'ASC')->get()->toArray();
         return Response::json($response, 200);
     }
+    
+    public function ejecutorAcPredefinida()
+    {
+        $response['success']  = 'true';
+        $response['data']  = tab_ac_predefinida::select('id', 'de_nombre','nu_original')->where('in_activo', '=', true)->orderby('id', 'ASC')->get()->toArray();
+        return Response::json($response, 200);
+    }    
 
     /**
      * Show the form for creating a new resource.

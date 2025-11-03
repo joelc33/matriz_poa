@@ -92,6 +92,7 @@ Route::group(['namespace' => 'Auxiliar'], function () {
         Route::post('partida/buscar', 'buscarController@partida');
         Route::get('ejecutor/ambito', 'documentoController@ejecutorAmbito');
         Route::get('ejecutor/tipo', 'documentoController@ejecutorTipo');
+        Route::get('ejecutor/ac/predefinida', 'documentoController@ejecutorAcPredefinida');
         Route::get('objetivo/historico', 'documentoController@objetivoHistorico');
         Route::post('objetivo/nacional', 'documentoController@objetivoNacional');
         Route::post('objetivo/estrategico', 'documentoController@objetivoEstrategico');

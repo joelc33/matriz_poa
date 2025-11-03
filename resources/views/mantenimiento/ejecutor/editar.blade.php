@@ -10,6 +10,8 @@ this.storeCO_TIPO_EJECUTOR = this.getStoreCO_TIPO_EJECUTOR();
 //<Stores de fk>
 //<Stores de fk>
 this.storeID_AMBITO_EJECUTOR = this.getStoreID_AMBITO_EJECUTOR();
+
+this.storeID_TAB_AC_PREDEFINIDA = this.getStoreID_TAB_AC_PREDEFINIDA();
 //<Stores de fk>
 
 //<token>
@@ -205,6 +207,31 @@ this.de_telefono = new Ext.form.TextField({
         }
 });
 
+
+this.id_tab_ac_predefinida = new Ext.form.ComboBox({
+	fieldLabel:'Programa',
+	store: this.storeID_TAB_AC_PREDEFINIDA,
+	typeAhead: true,
+	valueField: 'id',
+	displayField:'de_nombre',
+	hiddenName:'id_tab_ac_predefinida',
+	forceSelection:true,
+	resizable:true,
+	triggerAction: 'all',
+	emptyText:'Seleccione el programa',
+	selectOnFocus: true,
+	mode: 'local',
+	width:400,
+	resizable:true,
+	allowBlank:false
+});
+this.storeID_TAB_AC_PREDEFINIDA.load();
+	paqueteComunJS.funcion.seleccionarComboByCo({
+	objCMB: this.id_tab_ac_predefinida,
+	value:  this.OBJ.id_tab_ac_predefinida,
+	objStore: this.storeID_TAB_AC_PREDEFINIDA
+});
+
 this.guardar = new Ext.Button({
     text:'Guardar',
     iconCls: 'icon-guardar',
@@ -276,6 +303,7 @@ this.formPanel_ = new Ext.form.FormPanel({
 //    this.car_03,
 //    this.car_04,
     this.co_tipo_ejecutor,
+    this.id_tab_ac_predefinida,
     this.id_ambito_ejecutor,
 //    this.codigo_01,
 //    this.codigo_eje,
@@ -335,7 +363,27 @@ getStoreID_AMBITO_EJECUTOR:function(){
             }
     });
     return this.store;
-}
+},
+getStoreID_TAB_AC_PREDEFINIDA:function(){
+    this.store = new Ext.data.JsonStore({
+        url:'{{ URL::to('auxiliar/ejecutor/ac/predefinida') }}',
+        root:'data',
+        fields:[
+            {name: 'id'},						
+            {name: 'de_nombre',
+            convert: function(v, r) {
+                            return r.nu_original + ' - ' + r.de_nombre;
+            }
+            }
+            ],
+            listeners : {
+                exception : function(proxy, response, operation) {
+                    Ext.Msg.alert("Aviso", 'Error al obtener respuesta del servidor intente de nuevo!');
+                }
+            }
+    });
+    return this.store;
+}        
 };
 Ext.onReady(ejecutorEditar.main.init, ejecutorEditar.main);
 </script>

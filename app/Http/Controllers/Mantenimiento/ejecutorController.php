@@ -64,7 +64,8 @@ class ejecutorController extends Controller
                 'in_activo',
                 'de_correo',
                 'de_telefono',
-                'in_verificado'
+                'in_verificado',
+                'id_tab_ac_predefinida'
             );
 
             if (Input::get("BuscarBy")=="true") {
@@ -123,7 +124,8 @@ class ejecutorController extends Controller
             'in_activo',
             'de_correo',
             'de_telefono',
-            'in_verificado'
+            'in_verificado',
+            'id_tab_ac_predefinida'
         )
         ->where('id', '=', $id)
         ->first();
@@ -161,6 +163,7 @@ class ejecutorController extends Controller
                 $tabla->codigo_eje = Input::get("codigo_eje");
                 $tabla->de_correo = Input::get("correo");
                 $tabla->de_telefono = Input::get("telefono");
+                $tabla->id_tab_ac_predefinida = Input::get("id_tab_ac_predefinida");
                 $tabla->save();
 
                 DB::commit();
@@ -200,6 +203,7 @@ class ejecutorController extends Controller
                 $tabla->codigo_eje = Input::get("codigo_eje");
                 $tabla->de_correo = Input::get("correo");
                 $tabla->de_telefono = Input::get("telefono");
+                $tabla->id_tab_ac_predefinida = Input::get("id_tab_ac_predefinida");
                 $tabla->in_activo = 'TRUE';
                 $tabla->in_verificado = 'FALSE';
                 $tabla->save();
