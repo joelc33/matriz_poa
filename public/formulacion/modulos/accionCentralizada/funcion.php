@@ -1109,7 +1109,7 @@ EOT;
 		$mensaje = $ms[1];
 	}
 	$respuesta = re\Helpers::responder( false,
-		'Error en Transacción: ' . $mensaje
+		'Error en Transacción: ' . $e
 	);
 } catch( \Exception $e ) {
 	error_log( json_encode( re\Helpers::jTraceEx( $e ) ) );
