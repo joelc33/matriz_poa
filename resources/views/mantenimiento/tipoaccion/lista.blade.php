@@ -80,7 +80,7 @@ this.eliminar= new Ext.Button({
 });
 
 this.lista_ae= new Ext.Button({
-    text:'Proyectos',
+    text:'Actividades',
     iconCls: 'icon-accion_especifica',
     handler:function(){
 	this.codigo  = tipoaccionLista.main.gridPanel_.getSelectionModel().getSelected().get('id');

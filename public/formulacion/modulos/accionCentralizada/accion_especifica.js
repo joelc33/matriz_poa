@@ -64,7 +64,7 @@
                     if (k < rec.data.min || k > rec.data.max) {
                         Ext.Msg.alert( 'Atención',
                             'No pueden asignarse recursos a meses fuera'
-                                + ' del rango del Proyecto'
+                                + ' del rango de la actividad'
                         ).setIcon(Ext.MessageBox.WARNING);
                         return false;
                     }
@@ -72,7 +72,7 @@
                 }
                 if (acum !== 0) {
                     Ext.Msg.alert( 'Atención',
-                            'La cantidad total por proyecto debe'
+                            'La cantidad total por actividad debe'
                             + ' coincidir con el declarado'
                     ).setIcon(Ext.MessageBox.ERROR);
                     return false;
@@ -302,14 +302,14 @@
                 }, {
                     xtype: 'combo',
                     store: this.store_accion,
-                    fieldLabel: 'TIPO DE PROYECTO',
+                    fieldLabel: 'TIPO DE ACTIVIDAD',
                     valueField: 'id',
                     displayField: 'nombre',
                     hiddenName: 'id_accion',
                     autoSelect: true,
                     forceSelection: true,
                     allowBlank: false,
-                    emptyText: 'Seleccione el tipo de Proyecto',
+                    emptyText: 'Seleccione la actividad',
                     triggerAction: 'all',
                     mode: 'local'
                 },/* {
@@ -342,14 +342,14 @@
                     ]
                 }, {
                     xtype: 'textfield',
-                    fieldLabel: 'BIEN O SERVICIO',
+                    fieldLabel: 'INDICADORES',
                     minLength: 3,
                     maxLength: 128,
                     name: 'bien_servicio',
                     allowBlank: false
                 }, {
                     xtype: 'textarea',
-                    fieldLabel: 'OBJETIVO INSTITUCIONAL',
+                    fieldLabel: 'OBJETIVO ESPECIFICO',
                     name: 'objetivo_institucional'
                 }, {
                     xtype: 'hidden',
@@ -489,7 +489,7 @@
             config = Ext.apply({
                 acid: null,
                 ae: null,
-                title: 'Añadir Proyecto',
+                title: 'Añadir Actividad',
                 modal: true,
                 width: 600,
                 height: 500,
@@ -573,7 +573,7 @@
 
             if (self.ae) {
                 self.actualizar = self.ae.id_accion;
-                self.setTitle('Editar Proyecto');
+                self.setTitle('Editar Actividad');
             }
 
             var intermedio = function(nombre) {
@@ -932,7 +932,7 @@
             });
 
             config = Ext.apply({
-                title: 'Partidas del Proyecto: ' +
+                title: 'Partidas de la Actividad: ' +
                 config.ac.codigo + ' - ' + config.ae.numero,
                 modal: true,
                 maximizable: true,
@@ -1022,7 +1022,7 @@
             });
 
             config = Ext.apply({
-                title: 'Partidas Desagregadas del Proyecto: ' +
+                title: 'Partidas Desagregadas de la Actividad: ' +
                 config.ac.codigo + ' - ' + config.ae.numero,
                 modal: true,
                 maximizable: true,
