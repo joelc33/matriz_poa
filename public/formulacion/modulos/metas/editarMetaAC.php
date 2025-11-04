@@ -24,6 +24,7 @@ if($codigo!=''||$codigo!=null){
 			"fecha_inicio"     => trim($row["fecha_inicio"]),
 			"fecha_culminacion"     => trim($row["fecha_fin"]),
 			"nb_responsable"     => trim($row["nb_responsable"]),
+                        "id_tab_ac_ae_oficina"     => trim($row["id_tab_ac_ae_oficina"]),
                         "id_ejercicio"     => decode($_POST['id_ejercicio']),
 		));
 	}
@@ -45,6 +46,8 @@ this.OBJ = paqueteComunJS.funcion.doJSON({stringData:'<?php echo $data ?>'});
 
 //<Stores de fk>
 this.storeCO_UNIDADES_MEDIDA = this.getStoreCO_UNIDADES_MEDIDA();
+
+this.storeID_TAB_AC_AE_OFICINA = this.getStoreID_TAB_AC_AE_OFICINA();
 //<Stores de fk>
 
 //<ClavePrimaria>
@@ -98,6 +101,36 @@ this.storeCO_UNIDADES_MEDIDA.load();
 	objCMB: this.co_unidades_medida,
 	value:  this.OBJ.co_unidades_medida,
 	objStore: this.storeCO_UNIDADES_MEDIDA
+});
+
+this.id_tab_ac_ae_oficina = new Ext.form.ComboBox({
+	fieldLabel:'OFICINA/GERENCIA',
+	store: this.storeID_TAB_AC_AE_OFICINA,
+	typeAhead: true,
+	valueField: 'id',
+	displayField:'de_nombre',
+	hiddenName:'id_tab_ac_ae_oficina',
+	//readOnly:(this.OBJ.co_unidades_medida!='')?true:false,
+	//style:(this.OBJ.co_unidades_medida!='')?'background:#c9c9c9;':'',
+	forceSelection:true,
+	resizable:true,
+	triggerAction: 'all',
+	emptyText:'Seleccione oficina/gerencia',
+	selectOnFocus: true,
+	mode: 'local',
+	width:400,
+	allowBlank:false
+});
+
+this.storeID_TAB_AC_AE_OFICINA.load({
+                params: {
+                    ac_ae: metaEditar.main.co_ac_acc_espec.getValue()
+                }
+            });
+	paqueteComunJS.funcion.seleccionarComboByCo({
+	objCMB: this.id_tab_ac_ae_oficina,
+	value:  this.OBJ.id_tab_ac_ae_oficina,
+	objStore: this.storeID_TAB_AC_AE_OFICINA
 });
 
 this.pr_anual = new Ext.form.NumberField({
@@ -171,6 +204,7 @@ this.fieldset1 = new Ext.form.FieldSet({
 	border:false,
         items:[
 		this.nb_actividad,
+                this.id_tab_ac_ae_oficina,
 		this.co_unidades_medida,
 		this.pr_anual,
 		this.comFechaInCul,
@@ -420,6 +454,16 @@ getStoreCO_UNIDADES_MEDIDA:function(){
         root:'data',
         fields:[
             {name: 'co_unidades_medida'},{name: 'tx_unidades_medida'}
+            ]
+    });
+    return this.store;
+},
+getStoreID_TAB_AC_AE_OFICINA:function(){
+    this.store = new Ext.data.JsonStore({
+        url:'formulacion/modulos/metas/funcion.php?op=14',
+        root:'data',
+        fields:[
+            {name: 'id'},{name: 'de_nombre'}
             ]
     });
     return this.store;

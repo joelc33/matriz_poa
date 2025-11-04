@@ -334,6 +334,7 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 		    "fecha_fin"     => trim(date_format(date_create($row["fecha_fin"]),'d/m/Y')),
 		    "nb_responsable"     => trim($row["nb_responsable"]),
 		    "mo_cargado"     => trim($row["mo_cargado"]),
+                    "id_tab_ac_ae_oficina"     => trim($row["id_tab_ac_ae_oficina"]),
 		);
 	}
 	echo json_encode(array(
@@ -360,6 +361,7 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 			list($dia, $mes, $anio) = explode("/",$_POST['fecha_culminacion']);
 			$fecha_culminacion = $anio."-".$mes."-".$dia;
 			$variable["fecha_fin"] = $fecha_culminacion;
+                        $variable["id_tab_ac_ae_oficina"] = $_POST['id_tab_ac_ae_oficina'];
                         $variable["nb_responsable"] = decode(str_replace('"', '', $_POST['nb_responsable']));
 			$variable["fecha_actualizacion"] = date("Y-m-d H:i:s");
 			$co_metas = $comunes->InsertUpdate($tabla,$variable,$tquery,$id);
@@ -415,6 +417,7 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 			list($dia, $mes, $anio) = explode("/",$_POST['fecha_culminacion']);
 			$fecha_culminacion = $anio."-".$mes."-".$dia;
 			$variable["fecha_fin"] = $fecha_culminacion;
+                        $variable["id_tab_ac_ae_oficina"] = $_POST['id_tab_ac_ae_oficina'];
 			$variable["nb_responsable"] = decode(str_replace('"', '', $_POST['nb_responsable']));
 			$variable["fecha_creacion"] = date("Y-m-d H:i:s");
 			$variable["edo_reg"] = 'TRUE';
@@ -566,5 +569,22 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 			    "msg" => "Error en Transaccion.\n".$e->getMessage()
 		));
 	}
+}elseif($_GET['op']==14){
+    
+        $codigo = decode($_POST['ac_ae']);
+	$sql = "SELECT * FROM mantenimiento.tab_ac_ae_oficina where in_activo = true and id_tab_ac_ae_predefinida = $codigo;";
+	$result = $comunes->ObtenerFilasBySqlSelect($sql);
+	$data= array();
+	foreach($result as $key => $row){
+		array_push($data,array(
+			"id"		=> $row["id"],
+			"de_nombre"	=> $row["de_nombre"], 
+		));
+	}
+	echo json_encode(
+		array(  
+		"success"	=> true,
+		"data"		=> $data
+	));
 }
 ?>

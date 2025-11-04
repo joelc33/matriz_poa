@@ -381,6 +381,13 @@ Route::group(['namespace' => 'Mantenimiento'], function () {
         Route::post('ae/guardar', 'tipoaccionaeController@guardar');
         Route::post('ae/guardar/{id}', 'tipoaccionaeController@guardar');
         Route::post('ae/eliminar', 'tipoaccionaeController@eliminar');
+        Route::get('ae/oficina/lista/{id}', 'tipoaccionaeController@listaOficina');
+        Route::post('ae/oficina/storeLista', 'tipoaccionaeController@storeListaOficina');
+        Route::get('ae/oficina/nuevo/{id}', 'tipoaccionaeController@nuevoOficina');
+        Route::get('ae/oficina/editar/{id}', 'tipoaccionaeController@editarOficina');
+        Route::post('ae/oficina/guardar', 'tipoaccionaeController@guardarOficina');
+        Route::post('ae/oficina/guardar/{id}', 'tipoaccionaeController@guardarOficina');
+        Route::post('ae/oficina/eliminar', 'tipoaccionaeController@eliminarOficina');        
         //*Modulo de tipo de accion partidas admitidas*/
         Route::get('partida/lista/{id}', 'tipoaccionpartidaController@lista');
         Route::post('partida/storeLista', 'tipoaccionpartidaController@storeLista');

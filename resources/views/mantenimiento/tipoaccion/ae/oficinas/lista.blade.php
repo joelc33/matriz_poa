@@ -1,5 +1,5 @@
 <script type="text/javascript">
-Ext.ns("tipoaccionaeLista");
+Ext.ns("tipoaccionaeOficinaLista");
 function change(val){
 	if(val==true){
 	    return '<span style="color:green;">Activo</span>';
@@ -8,7 +8,7 @@ function change(val){
 	}
 return val;
 };
-tipoaccionaeLista.main = {
+tipoaccionaeOficinaLista.main = {
 condicion:function(codigo){
     return (codigo=='0')?'NO':'SI';
 },
@@ -25,10 +25,10 @@ this.nuevo = new Ext.Button({
     text:'Nuevo',
     iconCls: 'icon-nuevo',
     handler:function(){
-        tipoaccionaeLista.main.mascara.show();
-        this.msg = Ext.get('formulariotipoaccionae');
+        tipoaccionaeOficinaLista.main.mascara.show();
+        this.msg = Ext.get('formulariotipoaccionaeOficina');
         this.msg.load({
-         url:"{{ URL::to('mantenimiento/tipoaccion/ae/nuevo') }}/{{ $data['id'] }}",
+         url:"{{ URL::to('mantenimiento/tipoaccion/ae/oficina/nuevo') }}/{{ $data['id'] }}",
          scripts: true,
          text: "Cargando.."
         });
@@ -40,11 +40,11 @@ this.editar= new Ext.Button({
     text:'Editar',
     iconCls: 'icon-editar',
     handler:function(){
-	this.codigo  = tipoaccionaeLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
-	tipoaccionaeLista.main.mascara.show();
-        this.msg = Ext.get('formulariotipoaccionae');
+	this.codigo  = tipoaccionaeOficinaLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
+	tipoaccionaeOficinaLista.main.mascara.show();
+        this.msg = Ext.get('formulariotipoaccionaeOficina');
         this.msg.load({
-         url:"{{ URL::to('mantenimiento/tipoaccion/ae/editar') }}/"+this.codigo,
+         url:"{{ URL::to('mantenimiento/tipoaccion/ae/oficina/editar') }}/"+this.codigo,
          scripts: true,
          text: "Cargando.."
         });
@@ -56,48 +56,32 @@ this.eliminar= new Ext.Button({
     text:'Eliminar',
     iconCls: 'icon-cancelar',
     handler:function(){
-	this.codigo  = tipoaccionaeLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
+	this.codigo  = tipoaccionaeOficinaLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
 	Ext.MessageBox.confirm('Confirmación', '¿Realmente desea Eliminar Registro?', function(boton){
 	if(boton=="yes"){
         Ext.Ajax.request({
             method:'POST',
-            url:'{{ URL::to('mantenimiento/tipoaccion/ae/eliminar') }}',
+            url:'{{ URL::to('mantenimiento/tipoaccion/ae/oficina/eliminar') }}',
             params:{
 		_token: '{{ csrf_token() }}',
-                id: tipoaccionaeLista.main.gridPanel_.getSelectionModel().getSelected().get('id')
+                id: tipoaccionaeOficinaLista.main.gridPanel_.getSelectionModel().getSelected().get('id')
             },
             success:function(result, request ) {
                 obj = Ext.util.JSON.decode(result.responseText);
                 if(obj.success=="true"){
-		    tipoaccionaeLista.main.store_lista.load();
+		    tipoaccionaeOficinaLista.main.store_lista.load();
                     Ext.Msg.alert("Notificación",obj.msg);
                 }else{
                     Ext.Msg.alert("Notificación",obj.msg);
                 }
-                tipoaccionaeLista.main.mascara.hide();
+                tipoaccionaeOficinaLista.main.mascara.hide();
             }});
 	}});
     }
 });
 
-this.lista_oficinas= new Ext.Button({
-    text:'Oficinas',
-    iconCls: 'icon-accion_especifica',
-    handler:function(){
-	this.codigo  = tipoaccionaeLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
-	tipoaccionaeLista.main.mascara.show();
-        this.msg = Ext.get('formulariotipoaccionae');
-        this.msg.load({
-         url:"{{ URL::to('mantenimiento/tipoaccion/ae/oficina/lista') }}/"+this.codigo,
-         scripts: true,
-         text: "Cargando.."
-        });
-    }
-});
-
 this.editar.disable();
 this.eliminar.disable();
-this.lista_oficinas.disable();
 
 this.buscador = new Ext.form.TwinTriggerField({
 	initComponent : function(){
@@ -127,11 +111,11 @@ this.buscador = new Ext.form.TwinTriggerField({
 		this.applyEmptyText();
 		this.value = '';
 		this.fireEvent('clear', this);
-		tipoaccionaeLista.main.store_lista.baseParams={};
-		tipoaccionaeLista.main.store_lista.baseParams.paginar = 'si';
-		tipoaccionaeLista.main.store_lista.baseParams._token = '{{ csrf_token() }}';
-		tipoaccionaeLista.main.store_lista.baseParams.ac = {{ $data['id'] }};
-		tipoaccionaeLista.main.store_lista.load();
+		tipoaccionaeOficinaLista.main.store_lista.baseParams={};
+		tipoaccionaeOficinaLista.main.store_lista.baseParams.paginar = 'si';
+		tipoaccionaeOficinaLista.main.store_lista.baseParams._token = '{{ csrf_token() }}';
+		tipoaccionaeOficinaLista.main.store_lista.baseParams.ac_ae = {{ $data['id'] }};
+		tipoaccionaeOficinaLista.main.store_lista.load();
 	},
 	onTrigger2Click : function(){
 		var v = this.getRawValue();
@@ -143,13 +127,13 @@ this.buscador = new Ext.form.TwinTriggerField({
 				       icon: Ext.MessageBox.WARNING
 			    });
 		}else{
-			tipoaccionaeLista.main.store_lista.baseParams={}
-			tipoaccionaeLista.main.store_lista.baseParams.BuscarBy = true;
-			tipoaccionaeLista.main.store_lista.baseParams._token = '{{ csrf_token() }}';
-			tipoaccionaeLista.main.store_lista.baseParams.ac = {{ $data['id'] }};
-			tipoaccionaeLista.main.store_lista.baseParams[this.paramName] = v;
-			tipoaccionaeLista.main.store_lista.baseParams.paginar = 'si';
-			tipoaccionaeLista.main.store_lista.load();
+			tipoaccionaeOficinaLista.main.store_lista.baseParams={}
+			tipoaccionaeOficinaLista.main.store_lista.baseParams.BuscarBy = true;
+			tipoaccionaeOficinaLista.main.store_lista.baseParams._token = '{{ csrf_token() }}';
+			tipoaccionaeOficinaLista.main.store_lista.baseParams.ac_ae = {{ $data['id'] }};
+			tipoaccionaeOficinaLista.main.store_lista.baseParams[this.paramName] = v;
+			tipoaccionaeOficinaLista.main.store_lista.baseParams.paginar = 'si';
+			tipoaccionaeOficinaLista.main.store_lista.load();
 		}
 	}
 });
@@ -173,13 +157,11 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 			@if( in_array( array( 'de_privilegio' => 'tipoac.ae.eliminar', 'in_habilitado' => true), Session::get('credencial') ))
 				this.eliminar,'-',
 			@endif
-                                this.lista_oficinas,'-',
 				this.buscador
     ],
     columns: [
     new Ext.grid.RowNumberer(),
 		{header: 'id',hidden:true, menuDisabled:true,dataIndex: 'id'},
-    {header: 'Codigo', width:80, sortable: true, menuDisabled:true,dataIndex: 'nu_numero'},
 		{header: 'Nombre', width:400,  menuDisabled:true, sortable: true, /*renderer: textoLargo,*/ dataIndex: 'de_nombre'},
     {header: 'Estado', width:80,  menuDisabled:true, sortable: true, renderer: change, dataIndex: 'in_activo'},
     ],
@@ -187,9 +169,8 @@ this.gridPanel_ = new Ext.grid.GridPanel({
     autoScroll:true,
     stateful: true,
     listeners:{cellclick:function(Grid, rowIndex, columnIndex,e ){
-			tipoaccionaeLista.main.editar.enable();
-			tipoaccionaeLista.main.eliminar.enable();
-                        tipoaccionaeLista.main.lista_oficinas.enable();
+			tipoaccionaeOficinaLista.main.editar.enable();
+			tipoaccionaeOficinaLista.main.eliminar.enable();
 		}},
     bbar: new Ext.PagingToolbar({
         pageSize: 20,
@@ -200,10 +181,10 @@ this.gridPanel_ = new Ext.grid.GridPanel({
     })
 });
 
-//this.gridPanel_.render("contenedortipoaccionaeLista");
+//this.gridPanel_.render("contenedortipoaccionaeOficinaLista");
 
 this.winformPanel_ = new Ext.Window({
-	title:'Formulario: Actividades',
+	title:'Formulario: Oficina/Gerencia',
 	modal:true,
 	constrain:true,
 	width:714,
@@ -217,17 +198,16 @@ this.winformPanel_ = new Ext.Window({
 	]
 });
 this.winformPanel_.show();
-tipoaccionLista.main.mascara.hide();
+tipoaccionaeLista.main.mascara.hide();
 
 //Cargar el grid
 this.store_lista.baseParams.paginar = 'si';
 this.store_lista.baseParams._token = '{{ csrf_token() }}';
-this.store_lista.baseParams.ac = {{ $data['id'] }};
+this.store_lista.baseParams.ac_ae = {{ $data['id'] }};
 this.store_lista.load();
 this.store_lista.on('load',function(){
-tipoaccionaeLista.main.editar.disable();
-tipoaccionaeLista.main.eliminar.disable();
-tipoaccionaeLista.main.lista_oficinas.disable();
+tipoaccionaeOficinaLista.main.editar.disable();
+tipoaccionaeOficinaLista.main.eliminar.disable();
 });
 this.store_lista.on('beforeload',function(){
 panel_detalle.collapse();
@@ -235,19 +215,18 @@ panel_detalle.collapse();
 },
 getLista: function(){
     this.store = new Ext.data.JsonStore({
-    url:'{{ URL::to('mantenimiento/tipoaccion/ae/storeLista') }}',
+    url:'{{ URL::to('mantenimiento/tipoaccion/ae/oficina/storeLista') }}',
     root:'data',
     fields:[
     {name: 'id'},
     {name: 'de_nombre'},
-		{name: 'nu_numero'},
     {name: 'in_activo'},
            ]
     });
     return this.store;
 }
 };
-Ext.onReady(tipoaccionaeLista.main.init, tipoaccionaeLista.main);
+Ext.onReady(tipoaccionaeOficinaLista.main.init, tipoaccionaeOficinaLista.main);
 </script>
-<div id="contenedortipoaccionaeLista"></div>
-<div id="formulariotipoaccionae"></div>
+<div id="contenedortipoaccionaeOficinaLista"></div>
+<div id="formulariotipoaccionaeOficina"></div>
