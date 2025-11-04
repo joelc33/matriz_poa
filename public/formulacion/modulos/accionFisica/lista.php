@@ -214,7 +214,7 @@ this.accionFisica2 = new Ext.Button({
 	iconCls: 'icon-accion_fisica',
 	tooltip: 'Ver Actividades del Proyecto',
 	handler: function(boton){
-		addTab(accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+'ae','Programa:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+' >  Proyecto:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('tx_codigo'),'formulacion/modulos/metas/acLista.php','load','icon-accion_especifica','codigo='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('co_proyecto_acc_espec')+'&id_accion_centralizada='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_accion_centralizada'));
+		addTab(accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+'ae','Programa:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+' >  Actividad:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('tx_codigo'),'formulacion/modulos/metas/acLista.php','load','icon-accion_especifica','codigo='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('co_proyecto_acc_espec')+'&id_accion_centralizada='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_accion_centralizada'));
 	}
 });
 

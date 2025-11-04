@@ -1092,13 +1092,13 @@
                 items: [{
                     title: 'OBJETIVOS DEL PLAN DE LA PATRIA',
                     items: cbxs_n
-                }, {
+                }/*, {
                     title: 'OBJETIVOS DEL PLAN DE DESARROLLO DEL ZULIA (LÍNEA MATRIZ 2022-2025)',
                     items: [
                         cbxs_z,
                         cbxs
                     ] 
-                }]
+                }*/]
             });
 
             config = Ext.apply({
