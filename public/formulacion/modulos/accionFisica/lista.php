@@ -303,7 +303,7 @@ this.reordenar_ac_a.disable();
 
 //Grid principal
 this.gridPanel_2 = new Ext.grid.GridPanel({
-	title: 'PROGRAMAS: Proyectos',
+	title: 'PROGRAMAS: Actividades',
     iconCls: 'icon-accion_especifica',
     store: this.store_lista_2,
     loadMask:true,
@@ -327,7 +327,7 @@ this.gridPanel_2 = new Ext.grid.GridPanel({
     //{header: 'ACCION C.', width:130,  menuDisabled:true, sortable: true, dataIndex: 'id_proyecto'},
     {header: 'PROGRAMA', width:300,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'nb_ac'},
     {header: 'CÓD.', width:80,  menuDisabled:true, sortable: true, textoLargo, dataIndex: 'tx_codigo'},
-    {header: 'Nombre del Proyecto', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'descripcion'},
+    {header: 'Nombre de la Actividad', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'descripcion'},
     {header: 'UNIDAD DE MEDIDA', width:120,  menuDisabled:true, sortable: true,  dataIndex: 'co_unidades_medida'},
     {header: 'TOTAL GENERAL Bs.', width:120,  menuDisabled:true, sortable: true, renderer: formatoNumero, dataIndex: 'total'},
     {header: 'TOTAL CARGADO', width:120,  menuDisabled:true, sortable: true, renderer: colorIndicador, dataIndex: 'mo_cargado'},
