@@ -92,7 +92,7 @@ Route::group(['namespace' => 'Auxiliar'], function () {
         Route::post('partida/buscar', 'buscarController@partida');
         Route::get('ejecutor/ambito', 'documentoController@ejecutorAmbito');
         Route::get('ejecutor/tipo', 'documentoController@ejecutorTipo');
-        Route::get('ejecutor/ac/predefinida', 'documentoController@ejecutorAcPredefinida');
+        Route::post('ejecutor/ac/predefinida', 'documentoController@ejecutorAcPredefinida');
         Route::get('objetivo/historico', 'documentoController@objetivoHistorico');
         Route::post('objetivo/nacional', 'documentoController@objetivoNacional');
         Route::post('objetivo/estrategico', 'documentoController@objetivoEstrategico');
@@ -258,6 +258,12 @@ Route::group(['namespace' => 'Mantenimiento'], function () {
         Route::post('guardar/{id}', 'ejecutorController@guardar');
         Route::post('eliminar', 'ejecutorController@eliminar');
         Route::post('habilitar', 'ejecutorController@habilitar');
+        //*Modulo Programas
+        Route::get('pr/lista/{id}', 'ejecutorController@listaPr');
+        Route::post('pr/storeLista', 'ejecutorController@storeListaPr');
+        Route::get('pr/nuevo/{id}', 'ejecutorController@nuevoPr');
+        Route::post('pr/guardar', 'ejecutorController@guardarPr');
+        Route::post('pr/eliminar', 'ejecutorController@eliminarPr');
     });
     //*Modulo de Sectores*/
     Route::group(['prefix' => 'mantenimiento/sector'], function () {

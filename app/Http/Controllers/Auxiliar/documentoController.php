@@ -132,7 +132,7 @@ class documentoController extends Controller
     public function ejecutorAcPredefinida()
     {
         $response['success']  = 'true';
-        $response['data']  = tab_ac_predefinida::select('id', 'de_nombre','nu_original')->where('in_activo', '=', true)->orderby('id', 'ASC')->get()->toArray();
+        $response['data']  = tab_ac_predefinida::select('id', 'de_nombre','nu_original')->where('id_tab_sectores','=',Input::get('co_sector'))->where('in_activo', '=', true)->orderby('id', 'ASC')->get()->toArray();
         return Response::json($response, 200);
     }    
 

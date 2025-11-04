@@ -4,6 +4,7 @@ namespace matriz\Http\Controllers\Mantenimiento;
 
 //*******agregar esta linea******//
 use matriz\Models\Mantenimiento\tab_ejecutores;
+use matriz\Models\Mantenimiento\tab_ejecutores_pr;
 use View;
 use Validator;
 use Input;
@@ -35,6 +36,12 @@ class ejecutorController extends Controller
     {
         return View::make('mantenimiento.ejecutor.lista');
     }
+    
+    public function listaPr($id)
+    {
+        $data = array("id" => $id);
+        return View::make('mantenimiento.ejecutor.pr.lista')->with('data', $data);
+    }    
 
     /**
      * Display a listing of the resource.
@@ -90,6 +97,43 @@ class ejecutorController extends Controller
             return Response::json(array('success' => false, 'message' => utf8_encode($e->getMessage())), 200);
         }
     }
+    
+    public function storeListaPr()
+    {
+        try {
+            $start  = Input::get('start', 0);
+            $limit  = Input::get('limit', 20);
+            $variable = Input::get('variable');
+            $id_tab_ejecutores = Input::get('id_tab_ejecutores');
+
+            $tab_ejecutores_pr = tab_ejecutores_pr::join('mantenimiento.tab_ac_predefinida as t01', 'mantenimiento.tab_ejecutores_pr.id_tab_ac_predefinida', '=', 't01.id')
+            ->join('mantenimiento.tab_sectores as t02', 't01.id_tab_sectores', '=', 't02.id')
+            ->select('mantenimiento.tab_ejecutores_pr.id', 'nu_descripcion', 'nu_original', 'de_nombre')
+                    
+            ->where('id_tab_ejecutores', '=', $id_tab_ejecutores);
+
+            if (Input::get("BuscarBy")=="true") {
+
+                if($variable!="") {
+                    $tab_ejecutores_pr->where('de_nombre', 'ILIKE', "%$variable%");
+                }
+
+                $response['success']  = 'true';
+                $response['total'] = $tab_ejecutores_pr->count();
+                $tab_ejecutores_pr->skip($start)->take($limit);
+                $response['data']  = $tab_ejecutores_pr->orderby('id', 'ASC')->get()->toArray();
+            } else {
+                $response['success']  = 'true';
+                $response['total'] = $tab_ejecutores_pr->count();
+                $tab_ejecutores_pr->skip($start)->take($limit);
+                $response['data']  = $tab_ejecutores_pr->orderby('id', 'ASC')->get()->toArray();
+            }
+
+            return Response::json($response, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return Response::json(array('success' => false, 'message' => utf8_encode($e->getMessage())), 200);
+        }
+    }    
 
     /**
      * Show the form for creating a new resource.
@@ -101,6 +145,12 @@ class ejecutorController extends Controller
         $data = json_encode(array("id" => "", "id_ejecutor" => ""));
         return View::make('mantenimiento.ejecutor.editar')->with('data', $data);
     }
+    
+    public function nuevoPr($id)
+    {
+        $data = json_encode(array("id_tab_ejecutores" => $id));
+        return View::make('mantenimiento.ejecutor.pr.editar')->with('data', $data);
+    }    
 
     /**
      * Show the form for creating a new resource.
@@ -223,6 +273,43 @@ class ejecutorController extends Controller
             }
         }
     }
+    
+    public function guardarPr($id = null)
+    {
+        DB::beginTransaction();
+            try {
+                
+            $data = tab_ejecutores_pr::where('id_tab_ejecutores', '=', Input::get("id_tab_ejecutores"))
+            ->where('id_tab_ac_predefinida', '=', Input::get("id_tab_ac_predefinida"))
+            ->first();                
+                
+                if ($data) {
+                    return Response::json(array(
+                      'success' => false,
+                      'msg' => 'El Programa seleccionado ya se encuenta asociado a esta unidad ejecutora'
+                    ));
+                }                
+
+                $tabla = new tab_ejecutores_pr();
+                $tabla->id_tab_ejecutores = Input::get("id_tab_ejecutores");
+                $tabla->id_tab_ac_predefinida = Input::get("id_tab_ac_predefinida");
+                $tabla->save();
+
+                DB::commit();
+                return Response::json(array(
+                  'success' => true,
+                  'msg' => 'Registro Guardado con Exito!'
+                ));
+
+            } catch (\Illuminate\Database\QueryException $e) {
+                DB::rollback();
+                return Response::json(array(
+                  'success' => false,
+                  'msg' => array('ERROR ('.$e->getCode().'):'=> $e->getMessage())
+                ));
+            }
+        
+    }    
 
     /**
      * Show the form for creating a new resource.
@@ -250,6 +337,27 @@ class ejecutorController extends Controller
             return Response::json($response, 200);
         }
     }
+    
+    public function eliminarPr()
+    {
+        DB::beginTransaction();
+        try {
+            $tabla = tab_ejecutores_pr::find(Input::get("id"));
+            $tabla->delete();
+            DB::commit();
+
+            $response['success']  = 'true';
+            $response['msg']  = 'Registro Eliminado con Exito!';
+            return Response::json($response, 200);
+
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollback();
+
+            $response['success']  = 'false';
+            $response['msg']  = array('ERROR ('.$e->getCode().'):'=> $e->getMessage());
+            return Response::json($response, 200);
+        }
+    }    
 
     /**
      * Show the form for creating a new resource.

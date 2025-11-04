@@ -303,7 +303,7 @@ this.formPanel_ = new Ext.form.FormPanel({
 //    this.car_03,
 //    this.car_04,
     this.co_tipo_ejecutor,
-    this.id_tab_ac_predefinida,
+//    this.id_tab_ac_predefinida,
     this.id_ambito_ejecutor,
 //    this.codigo_01,
 //    this.codigo_eje,

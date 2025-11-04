@@ -115,9 +115,25 @@ this.habilitar= new Ext.Button({
     }
 });
 
+this.lista_pr= new Ext.Button({
+    text:'Programas',
+    iconCls: 'icon-accion_especifica',
+    handler:function(){
+	this.codigo  = ejecutorLista.main.gridPanel_.getSelectionModel().getSelected().get('id');
+	ejecutorLista.main.mascara.show();
+        this.msg = Ext.get('formularioejecutor');
+        this.msg.load({
+         url:"{{ URL::to('mantenimiento/ejecutor/pr/lista') }}/"+this.codigo,
+         scripts: true,
+         text: "Cargando.."
+        });
+    }
+});
+
 this.editar.disable();
 this.eliminar.disable();
 this.habilitar.disable();
+this.lista_pr.disable();
 
 this.buscador = new Ext.form.TwinTriggerField({
 	initComponent : function(){
@@ -193,7 +209,8 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 			@if( in_array( array( 'de_privilegio' => 'ejecutor.deshabilitar', 'in_habilitado' => true), Session::get('credencial') ))
 				this.eliminar,'-',
 			@endif
-				this.buscador
+        		this.lista_pr,'-',                       
+			this.buscador
     ],
     columns: [
     new Ext.grid.RowNumberer(),
@@ -211,6 +228,7 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 			ejecutorLista.main.editar.enable();
 			ejecutorLista.main.habilitar.enable();
 			ejecutorLista.main.eliminar.enable();
+                        ejecutorLista.main.lista_pr.enable();
 		}},
     bbar: new Ext.PagingToolbar({
         pageSize: 20,
@@ -231,6 +249,7 @@ this.store_lista.on('load',function(){
 ejecutorLista.main.editar.disable();
 ejecutorLista.main.habilitar.disable();
 ejecutorLista.main.eliminar.disable();
+ejecutorLista.main.lista_pr.disable();
 });
 this.store_lista.on('beforeload',function(){
 panel_detalle.collapse();
