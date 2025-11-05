@@ -87,11 +87,38 @@
 		width:400,
 		resizable:true,
 		allowBlank:false,
-		onSelect: function(record){
-			self.accion_id.setValue(record.data.id);
-			self.de_accion.setValue(record.data.de_accion);
-			this.collapse();
-		}
+                listeners: {
+                    change: function() {
+                        
+                        if(ac.es_local){
+                            
+                        }else{
+                        if(self.ac.id){
+                            
+                        }else{
+                        self.store_ejecutor.load({
+                            params: {
+                                id_tab_ac_predefinida: this.getValue()
+                            }
+                        });   
+                        }                              
+                        }                         
+
+                    },
+                    beforeselect: function() {
+                        if(ac.es_local){
+                            
+                        }else{
+                        if(self.ac.id){
+                            
+                        }else{
+                        self.id_ejecutor.clearValue();    
+                        }                              
+                        } 
+                        
+			self.accion_id.setValue(this.getValue());
+                    }
+                }
 	    });
 
 	    this.de_accion = new Ext.form.TextArea({
@@ -114,6 +141,24 @@
                     }
                 }]
             });
+            
+            this.id_ejecutor = new Ext.form.ComboBox({
+                fieldLabel: '1.4. UNIDAD EJECUTORA RESPONSABLE',
+                store: this.store_ejecutor,
+                valueField: 'id_ejecutor',
+                displayField: 'nombre',
+                hiddenName: 'id_ejecutor',
+                emptyText: 'Seleccione Unidad Ejecutora',
+                allowBlank: false,
+                readOnly: ac.id?true:ac.es_local,
+                style: ac.es_local ? 'background:#c9c9c9;' : '',
+                typeAhead: true,
+                forceSelection: true,
+                resizable: true,
+                triggerAction: 'all',
+                width:400,
+                mode: 'local'
+            });             
             
             
             this.store_sector = new Ext.data.JsonStore({
@@ -147,7 +192,8 @@
                     change: function() {
                         self.store_accion.load({
                             params: {
-                                co_sector: this.getValue()
+                                co_sector: this.getValue(),
+                                id_ejecutor: self.ac.id_ejecutor
                             }
                         });
                     },
@@ -181,11 +227,12 @@
                     style: 'background:#c9c9c9;'
                 },
                 this.co_sector,
-		this.accion_id
+		this.accion_id,
+                this.id_ejecutor,
 		/*,{
                     xtype: 'combo',
                     store: this.store_accion,
-                    fieldLabel: '1.2. TIPO DE ACCIÓN',
+                    fieldLabel: '1.2. TIPO  ACCIÓN',
                     valueField: 'id',
                     displayField: 'nombre',
                     hiddenName: 'id_accion',
@@ -202,7 +249,7 @@
                     allowBlank: false,
                     height: 100,
                     maxLength: 200
-                },this.de_accion,*/,
+                },this.de_accion,
 		{
                     xtype: 'combo',
                     fieldLabel: '1.4. UNIDAD EJECUTORA RESPONSABLE',
@@ -218,8 +265,13 @@
                     forceSelection: true,
                     resizable: true,
                     triggerAction: 'all',
-                    mode: 'local'
-                }, {
+                    mode: 'local',
+                    listeners:{
+                           beforerender: function(combobox){
+                               combobox.reset();
+                           }
+                        }
+                }, */{
                     xtype: 'textarea',
                     fieldLabel: '1.4.1. MISION',
                     name: 'inst_mision',
@@ -536,12 +588,16 @@
                 self.crearTabsAdicionales();
                 async.parallel([
 //                        intermedio( 'accion'),
-                        intermedio( 'ejecutor'),
+//                        intermedio( 'ejecutor'),
                         intermedio( 'situacion'),
                         function(cb) {
                             async.series([
                                     function(cb) {
                                         self.store_sector.load({
+                                            params: {
+                                                    local: self.ac.es_local,
+                                                    id_ejecutor: self.ac.id_ejecutor
+                                                },
                                             callback: function(r, op, scs) {
                                                 console.log(self.ac.id_subsector);
                                                 self.co_sector.setValue(
@@ -555,7 +611,8 @@
                                         if (self.ac.co_sector) {
                                             self.store_accion.load({
                                                 params: {
-                                                    co_sector: self.ac.co_sector
+                                                    co_sector: self.ac.co_sector,
+                                                    id_ejecutor: self.ac.id_ejecutor
                                                 },
                                                 callback: function(r, op, scs) {
                                                     self.accion_id.setValue(
@@ -568,6 +625,35 @@
                                             cb(null);
                                         }
                                     },
+                                    function(cb) {
+                                        if (self.ac.es_local) {
+                                            self.store_ejecutor.load({
+                                                callback: function(r, op, scs) {
+                                                    self.id_ejecutor.setValue(
+                                                        self.ac.id_ejecutor
+                                                    );
+                                                    cb(scs ? null : 'ejecutor');
+                                                }
+                                            });
+                                        } else {
+                                            cb(null);
+                                        }
+                                    },
+                                    function(cb) {
+                                        if (self.ac.id) {
+                                            self.store_ejecutor.load({
+                                                callback: function(r, op, scs) {
+                                                    self.id_ejecutor.setValue(
+                                                        self.ac.id_ejecutor
+                                                    );
+                                                    cb(scs ? null : 'ejecutor');
+                                                }
+                                            });
+                                        } else {
+                                            cb(null);
+                                        }
+                                    }
+                                    
                                 ],
                                 function(err) {
                                     cb(err);

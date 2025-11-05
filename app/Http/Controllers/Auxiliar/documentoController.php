@@ -29,6 +29,7 @@ use matriz\Models\Mantenimiento\tab_lapso;
 use matriz\Models\Mantenimiento\tab_unidad_medida;
 use matriz\Models\Mantenimiento\tab_fuente_financiamiento;
 use matriz\Models\Mantenimiento\tab_estado;
+use matriz\Models\Mantenimiento\tab_ejecutores_pr;
 use Input;
 use Response;
 use DB;
@@ -340,10 +341,30 @@ class documentoController extends Controller
      */
     public function accionTipo()
     {
+        
+        if(Input::get('id_ejecutor')!=''){
+
+         $incluir = tab_ejecutores_pr::select('mantenimiento.tab_ejecutores_pr.id_tab_ac_predefinida')
+        ->join('mantenimiento.tab_ac_predefinida as t01', 'mantenimiento.tab_ejecutores_pr.id_tab_ac_predefinida', '=', 't01.id')
+        ->join('mantenimiento.tab_ejecutores as t02', 'mantenimiento.tab_ejecutores_pr.id_tab_ejecutores', '=', 't02.id')
+        ->where('t02.id_ejecutor', '=', Input::get('id_ejecutor'))
+        ->where('id_tab_sectores', '=', Input::get('co_sector'))
+        ->groupBy('mantenimiento.tab_ejecutores_pr.id_tab_ac_predefinida')
+        ->get()->toArray();            
+            
+        $response['success']  = 'true';
+        $response['data']  = tab_ac_predefinida::select('id','nu_original', 'de_nombre', 'de_accion')
+        ->where('id_tab_sectores', '=', Input::get('co_sector'))
+        ->whereIn('id', $incluir)
+        ->orderby('id', 'ASC')->get()->toArray();
+        return Response::json($response, 200);
+            
+        }else{        
  
         $response['success']  = 'true';
         $response['data']  = tab_ac_predefinida::select('id','nu_original', 'de_nombre', 'de_accion')->where('id_tab_sectores', '=', Input::get('co_sector'))->orderby('id', 'ASC')->get()->toArray();
         return Response::json($response, 200);
+        }
     }
 
     /**
@@ -353,12 +374,30 @@ class documentoController extends Controller
      */
     public function ejecutorActivo()
     {
+        
+        if(Input::get('id_tab_ac_predefinida')!=''){
+
+         $incluir = tab_ejecutores_pr::select('id_tab_ejecutores')
+        ->where('id_tab_ac_predefinida', '=', Input::get('id_tab_ac_predefinida'))
+        ->groupBy('id_tab_ejecutores')
+        ->get()->toArray();            
+            
+        $response['success']  = 'true';
+        $response['data']  = tab_ejecutores::select('id', 'id_ejecutor', 'tx_ejecutor')
+        ->whereIn('id', $incluir)
+        ->whereRaw("mantenimiento.sp_in_ejecutor( id, ".Session::get('ejercicio').") is true")
+        ->orderby('id_ejecutor', 'ASC')->get()->toArray();
+        return Response::json($response, 200);
+            
+        }else{        
         $response['success']  = 'true';
         $response['data']  = tab_ejecutores::select('id', 'id_ejecutor', 'tx_ejecutor')
         //->where('in_activo', '=', true)
         ->whereRaw("mantenimiento.sp_in_ejecutor( id, ".Session::get('ejercicio').") is true")
         ->orderby('id_ejecutor', 'ASC')->get()->toArray();
         return Response::json($response, 200);
+        
+        }
     }
 
     /**
@@ -368,12 +407,32 @@ class documentoController extends Controller
      */
     public function poaSector()
     {
+        if(Input::get('id_ejecutor')!=''){
+
+         $incluir = tab_ejecutores_pr::select('t01.id_tab_sectores')
+        ->join('mantenimiento.tab_ac_predefinida as t01', 'mantenimiento.tab_ejecutores_pr.id_tab_ac_predefinida', '=', 't01.id')
+        ->join('mantenimiento.tab_ejecutores as t02', 'mantenimiento.tab_ejecutores_pr.id_tab_ejecutores', '=', 't02.id')
+        ->where('t02.id_ejecutor', '=', Input::get('id_ejecutor'))
+        ->groupBy('t01.id_tab_sectores')
+        ->get()->toArray();            
+            
+        $response['success']  = 'true';
+        $response['data']  = tab_sectores::select('id', 'co_sector', 'nu_descripcion')
+        ->whereIn('id', $incluir)        
+        ->where('nu_nivel', '=', 1)
+        ->where('in_activo', '=', true)
+        ->orderby('co_sector', 'ASC')->get()->toArray();
+        return Response::json($response, 200);
+            
+        }else{
+        
         $response['success']  = 'true';
         $response['data']  = tab_sectores::select('id', 'co_sector', 'nu_descripcion')
         ->where('nu_nivel', '=', 1)
         ->where('in_activo', '=', true)
         ->orderby('co_sector', 'ASC')->get()->toArray();
         return Response::json($response, 200);
+        }
     }
 
     /**

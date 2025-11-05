@@ -107,6 +107,7 @@ Route::group(['namespace' => 'Auxiliar'], function () {
         Route::get('recurso/tipo', 'documentoController@recursoTipo');
         Route::post('accion/tipo', 'documentoController@accionTipo');
         Route::get('ejecutor/activo', 'documentoController@ejecutorActivo');
+        Route::post('ejecutor/activo', 'documentoController@ejecutorActivo');
         Route::get('poa/sector', 'documentoController@poaSector');
         Route::post('poa/subsector', 'documentoController@poaSubsector');
         Route::get('poa/situacion', 'documentoController@poaSituacion');

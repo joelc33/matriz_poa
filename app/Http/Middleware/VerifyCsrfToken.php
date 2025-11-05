@@ -27,6 +27,7 @@ class VerifyCsrfToken extends BaseVerifier
         'auxiliar/poa/subsector',
         'auxiliar/accion/tipo',
         'auxiliar/ejecutor/ac/predefinida',
+        'auxiliar/ejecutor/activo',
         'ac/guardar',
         'proyecto/storeLista',
         'ac/storeLista',

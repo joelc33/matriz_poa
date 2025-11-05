@@ -70,12 +70,18 @@ EOT
 	)[0];
 	$id_ejercicio = $ejercicio['co_ejercicio_fiscal'];
 	$contenedor = "contenedorAccionCentralizada_nueva";
+        
+        if($local){
+        $id_ejecutor = $usuario->id_ejecutor;    
+        }else{
+        $id_ejecutor = null;    
+        }
 
 	$accion = array(
 		'id' => null,
 		'codigo' => null,
 		'id_ejercicio' => $id_ejercicio,
-		'id_ejecutor' => $usuario->id_ejecutor,
+		'id_ejecutor' => $id_ejecutor,
 		'es_local' => $local,
 		'bloqueado' => false,
 		'id_accion' => null,

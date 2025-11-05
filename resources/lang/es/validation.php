@@ -144,7 +144,7 @@ return [
     	'cuenta' => 'Cuenta Bancaria',
     	'ritez' => 'RITEZ',
       /*Acciones centralizadas*/
-      'id_accion' => '1.2. TIPO DE ACCIÓN',
+      'id_accion' => '1.3. PROGRAMA',
       'id_tab_sectores' => 'sector',
     ],
 
