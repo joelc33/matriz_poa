@@ -260,21 +260,21 @@ function pie( $pdf, $h, $tipo){
 		if($tipo==1){
 			$termino='PR';
 		}else{
-			$termino='AC';
+			$termino='PG';
 		}
 	if($h=='v'){
 		//$pdf->Image('../../images/logo.png', 10, 260, 25, 12, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
 		$pdf->ln(0);
 		$pdf->writeHTMLCell(205,0, '', '', $termino.'-'.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages(), 0, 0, 0, true, 'R', true);
 		$pdf->ln(0);
-		$pdf->writeHTMLCell(205,0, '', '', 'AV 4 CON CALLE 96 EDIF ALCALDÍA DE MARACAIBO PISO 1 LOCAL UNICO SECTOR CASCO CENTRAL MARACAIBO ESTADO ZULIA', 0, 0, 0, true, 'C', true);
+		$pdf->writeHTMLCell(180,0, '', '', 'AV 4 CON CALLE 96 EDIF ALCALDÍA DE MARACAIBO PISO 1 LOCAL UNICO SECTOR CASCO CENTRAL MARACAIBO ESTADO ZULIA', 0, 0, 0, true, 'C', true);
 	}
 	if($h=='h'){
 		//$pdf->Image('../../images/logo.png', 10, 198, 25, 12, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
 		$pdf->ln(0);
 		$pdf->writeHTMLCell(260,0, '', '', $termino/*.'-'.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages()*/, 0, 0, 0, true, 'R', true);
 		$pdf->ln(0);
-		$pdf->writeHTMLCell(260,0, '', '', 'AV 4 CON CALLE 96 EDIF ALCALDÍA DE MARACAIBO PISO 1 LOCAL UNICO SECTOR CASCO CENTRAL MARACAIBO ESTADO ZULIA', 0, 0, 0, true, 'C', true);
+		$pdf->writeHTMLCell(240,0, '', '', 'AV 4 CON CALLE 96 EDIF ALCALDÍA DE MARACAIBO PISO 1 LOCAL UNICO SECTOR CASCO CENTRAL MARACAIBO ESTADO ZULIA', 0, 0, 0, true, 'C', true);
 	}
 	$pdf->ln(6);
 	return $pdf;
