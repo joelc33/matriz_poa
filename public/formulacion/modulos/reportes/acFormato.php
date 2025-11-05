@@ -582,7 +582,7 @@ $htmlPartidaDetalle.='
 $pdf = new MYPDF("L", PDF_UNIT, 'Letter', true, 'UTF-8', false);
 $pdf->SetCreator('Yoser Perez');
 $pdf->SetAuthor('Secretaria de Planificacion y Estadistica');
-$pdf->SetTitle('ACCIONES CENTRALIZADAS - ACCIONES ESPECIFICAS');
+$pdf->SetTitle('PROGRAMAS - ACTIVIDADES');
 $pdf->SetSubject('MI DOCUMENTO');
 $pdf->SetKeywords('Planilla, PDF, Registro');
 $pdf->SetMargins(15,20,10);
@@ -591,4 +591,4 @@ $pdf->setPrintHeader(false);
 $pdf->SetPrintFooter(true);
 $pdf->AddPage();
 $pdf->cuerpo();
-$pdf->Output('POA_AC_'.$_SESSION['ejercicio_fiscal'].'_'.date("H:i:s").'.pdf', 'D');
+$pdf->Output('POA_PG_'.$_SESSION['ejercicio_fiscal'].'_'.date("H:i:s").'.pdf', 'D');

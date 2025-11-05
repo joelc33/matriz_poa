@@ -450,7 +450,7 @@ $html6 = '
 $pdf = new MYPDF("L", PDF_UNIT, 'Letter', true, 'UTF-8', false);
 $pdf->SetCreator('Yoser Perez');
 $pdf->SetAuthor('Secretaria de Planificacion y Estadistica');
-$pdf->SetTitle('ACCIONES ESPECIFICAS');
+$pdf->SetTitle('PROGRAMAS');
 $pdf->SetSubject('MI DOCUMENTO');
 $pdf->SetKeywords('Planilla, PDF, Registro');
 $pdf->SetMargins(15,20,10);

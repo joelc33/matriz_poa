@@ -206,7 +206,7 @@ $html23.='
 $pdf = new MYPDF("P", PDF_UNIT, 'Letter', true, 'UTF-8', false);
 $pdf->SetCreator('Yoser Perez');
 $pdf->SetAuthor('Secretaria de Planificacion y Estadistica');
-$pdf->SetTitle('ACCIONES CENTRALIZADAS - RESUMEN DE PARTIDAS');
+$pdf->SetTitle('PROGRAMAS - RESUMEN DE PARTIDAS');
 $pdf->SetSubject('MI DOCUMENTO');
 $pdf->SetKeywords('Planilla, PDF, Registro');
 $pdf->SetMargins(15,20,10);
@@ -215,4 +215,4 @@ $pdf->setPrintHeader(false);
 $pdf->SetPrintFooter(true);
 $pdf->AddPage();
 $pdf->cuerpo();
-$pdf->Output('PARTIDAS_AC_'.$_SESSION['ejercicio_fiscal'].'_'.date("H:i:s").'.pdf', 'D');
+$pdf->Output('PARTIDAS_PG_'.$_SESSION['ejercicio_fiscal'].'_'.date("H:i:s").'.pdf', 'D');
