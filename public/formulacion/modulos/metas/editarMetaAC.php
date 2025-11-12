@@ -190,8 +190,8 @@ items: [
 	]
 });
 
-this.nb_responsable = new Ext.form.TextField({
-	fieldLabel:'RESPONSABLE',
+this.nb_responsable = new Ext.form.TextArea({
+	fieldLabel:'INDICADOR',
 	name:'nb_responsable',
 	value:this.OBJ.nb_responsable,
 	width:400,
