@@ -683,7 +683,7 @@
                     title: '4. RESPONSABLES'
                 }, {
                     xtype: 'accion_especifica',
-                    title: '5. ACTIVIDADES DEL PROGRAMA',
+                    title: '5. ACTIVIDAD PROGRAMATICA',
                 }];
                 for (i = 0; i < lista.length; i++) {
                     this.padre.insert(i + 1, Ext.create(

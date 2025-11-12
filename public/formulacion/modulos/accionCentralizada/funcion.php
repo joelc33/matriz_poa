@@ -127,7 +127,7 @@ EOT;
 
 			$fechas = v::date( 'd-m-Y' )->notEmpty();
 			$validador = v::key( 'monto', v::numeric()->positive()->notEmpty() )
-				->key( 'meta', v::intero()->positive()->notEmpty() )
+//				->key( 'meta', v::intero()->positive()->notEmpty() )
 //				->key( 'bien_servicio', v::stringcadena()->length( 3, 128 ) )
 				->key( 'fecha_inicio',  $fechas )
 				->key( 'fecha_fin', $fechas );

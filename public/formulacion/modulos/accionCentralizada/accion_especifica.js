@@ -367,7 +367,7 @@
                     emptyText: 'Seleccione la Unidad de Medida',
                     triggerAction: 'all',
                     mode: 'local'
-                }, */{
+                }, {
                     xtype: 'numberfield',
                     fieldLabel: 'META',
                     name: 'meta',
@@ -376,7 +376,7 @@
                     decimalPrecision: 0,
                     emptyText: '0',
                     maxLength: 8
-                }, {
+                },*/ {
                     xtype: 'numberfield',
                     fieldLabel: 'MONTO',
                     name: 'monto',
@@ -1320,7 +1320,7 @@
                     dataIndex: 'nombre'
                 },{
                     header: 'OBJETIVO ESPECIFICO',
-                    width: 200,
+                    width: 320,
                     menuDisabled: true,
                     sortable: true,
                     renderer: Reingsys.util.textoLargo,
@@ -1346,7 +1346,7 @@
                     sortable: true,
                     renderer: Reingsys.util.textoLargo,
                     dataIndex: 'tx_ejecutor'
-                }, {
+                },/* {
                     header: 'META',
                     width: 120,
                     menuDisabled: true,
@@ -1355,7 +1355,7 @@
                         return v + ' ';
                     },
                     dataIndex: 'meta'
-                }, {
+                },*/ {
                     header: 'FECHA DE INICIO',
                     width: 120,
                     format: 'd-m-Y',
