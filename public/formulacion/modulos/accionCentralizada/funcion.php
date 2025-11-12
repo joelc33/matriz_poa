@@ -126,10 +126,9 @@ EOT;
 			$actualiza = v::key( 'id_viejo', v::intero()->notEmpty() );
 
 			$fechas = v::date( 'd-m-Y' )->notEmpty();
-			$validador = v::key( 'id_unidad_medida', v::intero()->positive()->notEmpty() )
-				->key( 'monto', v::numeric()->positive()->notEmpty() )
+			$validador = v::key( 'monto', v::numeric()->positive()->notEmpty() )
 				->key( 'meta', v::intero()->positive()->notEmpty() )
-				->key( 'bien_servicio', v::stringcadena()->length( 3, 128 ) )
+//				->key( 'bien_servicio', v::stringcadena()->length( 3, 128 ) )
 				->key( 'fecha_inicio',  $fechas )
 				->key( 'fecha_fin', $fechas );
 
@@ -165,18 +164,18 @@ EOT;
 					$tabla,
 					$params,
 					'UPDATE',
-					"id_accion_centralizada = {$pk['id_accion_centralizada']}"
-					." and id_accion = {$up['id_viejo']}"
+					"id_tab_t47_ac_accion_especifica = {$up['id_viejo']}"
 				);
 
 				$llave = array(
-					'id_ac' => $pk['id_accion_centralizada'],
-					'id_ae' => $up['id_viejo']
+                                    	'id_ac' => $pk['id_accion_centralizada'],
+					'id_ae' => $pk['id_accion'],
+					'id_tab_t47_ac_accion_especifica' => $up['id_viejo']
 				);
 
 				$comunes->EjecutarQuery(
-					'delete from t56_ac_ae_fuente where id_ac = ? and id_ae = ?;'
-					, array( $llave['id_ac'], $llave['id_ae'] )
+					'delete from t56_ac_ae_fuente where id_tab_t47_ac_accion_especifica = ?;'
+					, array( $llave['id_tab_t47_ac_accion_especifica'] )
 				);
 			} else {
 				$params = array_merge( $pk, $params );
@@ -187,8 +186,9 @@ EOT;
 				);
 
 				$llave = array(
-					'id_ac' => $pk['id_accion_centralizada'],
-					'id_ae' => $pk['id_accion']
+                                        'id_ac' => $pk['id_accion_centralizada'],
+					'id_ae' => $pk['id_accion'],
+					'id_tab_t47_ac_accion_especifica' => $pk['id_tab_t47_ac_accion_especifica']
 				);
 			}
 
@@ -865,10 +865,11 @@ EOT;
 
 		case 21: //consulta de fuentes de financiamiento
 			$pk = re\Helpers::obtener_pertinentes(
-				$_POST, array( 'id_ac', 'id_ae' )
+				$_POST, array( 'id_ac', 'id_ae','id_tab_t47_ac_accion_especifica' )
 			);
 			$existe = v::key( 'id_ac', v::intero()->notEmpty() )
-				->key( 'id_ae', v::intero()->notEmpty() );
+				->key( 'id_ae', v::intero()->notEmpty() )
+                                ->key( 'id_tab_t47_ac_accion_especifica', v::intero()->notEmpty() );
 
 			$existe->assert( $pk );
 
@@ -876,9 +877,9 @@ EOT;
 select t56.id_tipo_fondo, t61.de_tipo_fondo as tx_tipo_fondo, t56.monto
 from t56_ac_ae_fuente as t56
 	join mantenimiento.tab_tipo_fondo as t61 on t61.id = t56.id_tipo_fondo
-where t56.id_ac = ? and t56.id_ae = ?;
+where t56.id_tab_t47_ac_accion_especifica = ?;
 EOT
-				, array( $pk['id_ac'], $pk['id_ae'] )
+				, array( $pk['id_tab_t47_ac_accion_especifica'])
 			);
 
 			if ( $res ) {

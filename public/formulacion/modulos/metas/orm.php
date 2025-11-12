@@ -137,9 +137,8 @@ function cerrar_tab_ac_ae() {
 
 	DB::beginTransaction();
 	try {
-		$validar_ae = tab_ac_ae::select('monto', DB::raw("mo_ac_ae_meta(id_accion_centralizada, id_accion) as mo_cargado"))
-		->where('id_accion_centralizada', '=', $_POST['ac'])
-		->where('id_accion', '=', $_POST['ae'])
+		$validar_ae = tab_ac_ae::select('monto', DB::raw("mo_ac_ae_meta(id_tab_t47_ac_accion_especifica) as mo_cargado"))
+		->where('id_tab_t47_ac_accion_especifica', '=', $_POST['id_tab_t47_ac_accion_especifica'])
 		->first();
 
 		if($validar_ae->monto == $validar_ae->mo_cargado){
@@ -149,11 +148,11 @@ function cerrar_tab_ac_ae() {
 		}
 
 		$mensajes = array(
-			'valido.in'=>'El monto Cargado No Coincide con el monto de la AE. <br>Monto Accion Esp.: <span style="color:green"><b>'.number_format($validar_ae->monto, 2, ',', '.').'</b></span>'.'<br>Monto Cargado: <span style="color:red"><b>'.number_format($validar_ae->mo_cargado, 2, ',', '.').'</b></span>'.'<br>Diferencia: <b>'.number_format(($validar_ae->monto - $validar_ae->mo_cargado), 2, ',', '.').'</b>'
+			'valido.in'=>'El monto Cargado No Coincide con el monto de la Actividad. <br>Monto Actividad: <span style="color:green"><b>'.number_format($validar_ae->monto, 2, ',', '.').'</b></span>'.'<br>Monto Cargado: <span style="color:red"><b>'.number_format($validar_ae->mo_cargado, 2, ',', '.').'</b></span>'.'<br>Diferencia: <b>'.number_format(($validar_ae->monto - $validar_ae->mo_cargado), 2, ',', '.').'</b>'
 		);
 
 		$datos = array(
-			'id' => $_POST['ac'],
+			'id' => $_POST['id_tab_t47_ac_accion_especifica'],
 			'valido' => $in_valido
 		);
 
@@ -205,8 +204,8 @@ function cerrar_tab_ac_ae() {
 			exit();
 		}
 
-		//$ac_ae = tab_ac_ae::find($_POST['ae']);
-		$ac_ae = tab_ac_ae::updateOrCreate(array('id_accion_centralizada' => $_POST['ac'], 'id_accion' => $_POST['ae']));
+//		$ac_ae = tab_ac_ae::find($_POST['id_tab_t47_ac_accion_especifica']);
+		$ac_ae = tab_ac_ae::updateOrCreate(array('id_tab_t47_ac_accion_especifica' => $_POST['id_tab_t47_ac_accion_especifica']));
 		$ac_ae->in_definitivo = true;
 		$ac_ae->save();
 
@@ -214,7 +213,7 @@ function cerrar_tab_ac_ae() {
 		header('Content-Type: application/json');
 		echo json_encode(array(
 			'success' => true,
-			'msg' => 'Acción Especifica cerrada con Exito!'
+			'msg' => 'Actividad cerrada con Exito!'
 		)); 
 
 	}catch (\Illuminate\Database\QueryException $e)
@@ -331,9 +330,8 @@ function abrir_tab_ac_ae() {
 
 	DB::beginTransaction();
 	try {
-		$validar_ae = tab_ac_ae::select('monto', DB::raw("mo_ac_ae_meta(id_accion_centralizada, id_accion) as mo_cargado"))
-		->where('id_accion_centralizada', '=', $_POST['ac'])
-		->where('id_accion', '=', $_POST['ae'])
+		$validar_ae = tab_ac_ae::select('monto', DB::raw("mo_ac_ae_meta(id_tab_t47_ac_accion_especifica) as mo_cargado"))
+		->where('id_tab_t47_ac_accion_especifica', '=', $_POST['id_tab_t47_ac_accion_especifica'])
 		->first();
 
 		if($validar_ae->monto == $validar_ae->mo_cargado){
@@ -347,7 +345,7 @@ function abrir_tab_ac_ae() {
 		);
 
 		$datos = array(
-			'id' => $_POST['ac'],
+			'id' => $_POST['id_tab_t47_ac_accion_especifica'],
 			'valido' => $in_valido
 		);
 
@@ -362,7 +360,7 @@ function abrir_tab_ac_ae() {
 		}
 
 		//$ac_ae = tab_ac_ae::find($_POST['ae']);
-		$ac_ae = tab_ac_ae::updateOrCreate(array('id_accion_centralizada' => $_POST['ac'], 'id_accion' => $_POST['ae']));
+		$ac_ae = tab_ac_ae::updateOrCreate(array('id_tab_t47_ac_accion_especifica' => $_POST['id_tab_t47_ac_accion_especifica']));
 		$ac_ae->in_definitivo = null;
 		$ac_ae->save();
 
@@ -370,7 +368,7 @@ function abrir_tab_ac_ae() {
 		header('Content-Type: application/json');
 		echo json_encode(array(
 			'success' => true,
-			'msg' => 'Acción Especifica Reaperturada!'
+			'msg' => 'Actividad Reaperturada!'
 		)); 
 
 	}catch (\Illuminate\Database\QueryException $e)

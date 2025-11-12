@@ -6,17 +6,18 @@ if( $_SESSION['estatus'] !== 'OK' ) {
 } 
 include("../../configuracion/ConexionComun.php");
 
-$codigo = decode($_POST['codigo']);
+$codigo = decode($_POST['id_tab_t47_ac_accion_especifica']);
 $data = json_encode(array(
-	"co_proyecto_acc_espec"     => $codigo,
+    	"co_proyecto_acc_espec"     => $_POST['codigo'],
 	"id_accion_centralizada"     => $_POST['id_accion_centralizada'],
+	"id_tab_t47_ac_accion_especifica"     => $codigo
 ));
 
 $comunes = new ConexionComun();
 $sql = "SELECT ('AC' || t24b.id_ejecutor || id_ejercicio || lpad(t46.id_accion::text, 5, '0')) as id_ac, t47.monto, in_definitivo,id_ejercicio FROM t47_ac_accion_especifica as t47 
 	inner join t46_acciones_centralizadas as t46 on t47.id_accion_centralizada=t46.id
 	inner join mantenimiento.tab_ejecutores as t24b on t46.id_ejecutor=t24b.id_ejecutor
-where t47.id_accion=".$codigo." and id_accion_centralizada=".$_POST['id_accion_centralizada'];
+where t47.id_tab_t47_ac_accion_especifica=".$codigo;
 $resultado = $comunes->ObtenerFilasBySqlSelect($sql);
 $resultadoIdProyecto = $resultado[0]['id_ac'];
 $resultadoReal = $resultado[0]['monto'];
@@ -49,6 +50,12 @@ this.mascara = new Ext.LoadMask(Ext.getBody(), {msg:"Cargando..."});
 this.store_lista = this.getLista();
 
 //<ClavePrimaria>
+this.id_tab_t47_ac_accion_especifica = new Ext.form.Hidden({
+	name:'id_tab_t47_ac_accion_especifica',
+	value:this.OBJ.id_tab_t47_ac_accion_especifica
+});
+
+
 this.co_proyecto_acc_espec = new Ext.form.Hidden({
 	name:'co_proyecto_acc_espec',
 	value:this.OBJ.co_proyecto_acc_espec
@@ -58,6 +65,7 @@ this.id_accion_centralizada = new Ext.form.Hidden({
 	name:'id_accion_centralizada',
 	value:this.OBJ.id_accion_centralizada
 });
+//</ClavePrimaria>
 
 this.id_ejercicio = new Ext.form.Hidden({
 	name:'id_ejercicio',
@@ -72,7 +80,7 @@ this.nuevo = new Ext.Button({
         this.msg = Ext.get('formulario_actividad<?php echo $codigo;?>');
         this.msg.load({
          url:"formulacion/modulos/metas/editarMetaAC.php",
-	 params: {co_proyecto_acc_espec:metaLista.main.co_proyecto_acc_espec.getValue(),id_accion_centralizada:metaLista.main.id_accion_centralizada.getValue(),id_ejercicio:metaLista.main.id_ejercicio.getValue()},
+	 params: {co_proyecto_acc_espec:metaLista.main.co_proyecto_acc_espec.getValue(),id_accion_centralizada:metaLista.main.id_accion_centralizada.getValue(),id_ejercicio:metaLista.main.id_ejercicio.getValue(),id_tab_t47_ac_accion_especifica:metaLista.main.id_tab_t47_ac_accion_especifica.getValue()},
          scripts: true,
          text: "Cargando.."
         });
@@ -135,8 +143,7 @@ this.cuadrar = new Ext.Button({
             method:'POST',
             url:'formulacion/modulos/metas/orm.php',
             params:{
-                ac:metaLista.main.id_accion_centralizada.getValue(),
-                ae:metaLista.main.co_proyecto_acc_espec.getValue(),
+                id_tab_t47_ac_accion_especifica:metaLista.main.id_tab_t47_ac_accion_especifica.getValue(),
                 op:2
             },
             success:function(result, request ) {
@@ -206,8 +213,7 @@ this.reabrir = new Ext.Button({
             method:'POST',
             url:'formulacion/modulos/metas/orm.php',
             params:{
-                ac:metaLista.main.id_accion_centralizada.getValue(),
-                ae:metaLista.main.co_proyecto_acc_espec.getValue(),
+                id_tab_t47_ac_accion_especifica:metaLista.main.id_tab_t47_ac_accion_especifica.getValue(),
                 op:6
             },
             success:function(result, request ) {
@@ -284,8 +290,7 @@ this.buscador = new Ext.form.TwinTriggerField({
 		this.fireEvent('clear', this);
 		metaLista.main.store_lista.baseParams={};
 		metaLista.main.store_lista.baseParams.paginar = 'si';
-		metaLista.main.store_lista.baseParams.co_proyecto_acc_espec = metaLista.main.co_proyecto_acc_espec.getValue();
-		metaLista.main.store_lista.baseParams.id_accion_centralizada = metaLista.main.id_accion_centralizada.getValue();
+		metaLista.main.store_lista.baseParams.id_tab_t47_ac_accion_especifica = metaLista.main.id_tab_t47_ac_accion_especifica.getValue();
 		metaLista.main.store_lista.load();
 	},
 	onTrigger2Click : function(){
@@ -302,8 +307,7 @@ this.buscador = new Ext.form.TwinTriggerField({
 			metaLista.main.store_lista.baseParams.BuscarBy = true;
 			metaLista.main.store_lista.baseParams[this.paramName] = v;
 			metaLista.main.store_lista.baseParams.paginar = 'si';
-			metaLista.main.store_lista.baseParams.co_proyecto_acc_espec = metaLista.main.co_proyecto_acc_espec.getValue();
-			metaLista.main.store_lista.baseParams.id_accion_centralizada = metaLista.main.id_accion_centralizada.getValue();
+			metaLista.main.store_lista.baseParams.id_tab_t47_ac_accion_especifica = metaLista.main.id_tab_t47_ac_accion_especifica.getValue();
 			metaLista.main.store_lista.load();
 		}
 	}
@@ -387,8 +391,7 @@ this.gridPanel_.render("contenedormetaLista<?php echo $codigo;?>");
 
 //Cargar el grid
 this.store_lista.baseParams.paginar = 'si';
-this.store_lista.baseParams.co_proyecto_acc_espec = this.OBJ.co_proyecto_acc_espec;
-this.store_lista.baseParams.id_accion_centralizada = this.OBJ.id_accion_centralizada;
+this.store_lista.baseParams.id_tab_t47_ac_accion_especifica = this.OBJ.id_tab_t47_ac_accion_especifica;
 this.store_lista.load();
 this.store_lista.on('load',function(){
 metaLista.main.editar.disable();

@@ -50,9 +50,10 @@ class acaeController extends Controller
             $tab_ac_ae = $this->tab_ac_ae
             ->join('mantenimiento.tab_ejecutores as t01', 'public.t47_ac_accion_especifica.id_ejecutor', '=', 't01.id_ejecutor')
             ->join('mantenimiento.tab_ac_ae_predefinida as t02', 'public.t47_ac_accion_especifica.id_accion', '=', 't02.id')
-            ->join('mantenimiento.tab_unidad_medida as t03', 'public.t47_ac_accion_especifica.id_unidad_medida', '=', 't03.id')
+            ->leftjoin('mantenimiento.tab_unidad_medida as t03', 'public.t47_ac_accion_especifica.id_unidad_medida', '=', 't03.id')
             ->select(
                 'id_accion_centralizada',
+                'id_tab_t47_ac_accion_especifica',
                 'id_accion',
                 'public.t47_ac_accion_especifica.id_ejecutor',
                 'bien_servicio',

@@ -340,21 +340,21 @@
                         },
                         self.fecha_fin
                     ]
-                }, {
+                }, /*{
                     xtype: 'textfield',
                     fieldLabel: 'INDICADORES',
                     minLength: 3,
                     maxLength: 128,
                     name: 'bien_servicio',
                     allowBlank: false
-                }, {
+                },*/ {
                     xtype: 'textarea',
                     fieldLabel: 'OBJETIVO ESPECIFICO',
                     name: 'objetivo_institucional'
                 }, {
                     xtype: 'hidden',
                     name: 'fondos'
-                }, {
+                },/* {
                     xtype: 'combo',
                     store: this.store_medida,
                     fieldLabel: 'UNIDAD DE MEDIDA',
@@ -367,7 +367,7 @@
                     emptyText: 'Seleccione la Unidad de Medida',
                     triggerAction: 'all',
                     mode: 'local'
-                }, {
+                }, */{
                     xtype: 'numberfield',
                     fieldLabel: 'META',
                     name: 'meta',
@@ -572,7 +572,7 @@
             this.callParent(arguments);
 
             if (self.ae) {
-                self.actualizar = self.ae.id_accion;
+                self.actualizar = self.ae.id_tab_t47_ac_accion_especifica;
                 self.setTitle('Editar Actividad');
             }
 
@@ -594,7 +594,8 @@
                         params: {
                             op: 21,
                             id_ac: self.ac.id,
-                            id_ae: self.ae.id_accion
+                            id_ae: self.ae.id_accion,
+                            id_tab_t47_ac_accion_especifica: self.ae.id_tab_t47_ac_accion_especifica
                         },
                         success: function(result) {
                             var resp = Ext.util.JSON.decode(result.responseText);
@@ -1059,9 +1060,9 @@
         },
         autoSave: false,
         root: 'data',
-        idProperty: 'id_accion',
+//        idProperty: 'id_accion',
         fields: [
-        'id_accion', 'numero', 'nombre',
+        'id_tab_t47_ac_accion_especifica','id_accion', 'numero', 'nombre',
         'bien_servicio', 'monto', 'monto_calc', 'fecha_inicio',
         'fecha_fin', 'id_ejecutor', 'tx_ejecutor',
         'id_unidad_medida', 'tx_unidades_medida',
@@ -1317,6 +1318,13 @@
                     sortable: true,
                     renderer: Reingsys.util.textoLargo,
                     dataIndex: 'nombre'
+                },{
+                    header: 'OBJETIVO ESPECIFICO',
+                    width: 200,
+                    menuDisabled: true,
+                    sortable: true,
+                    renderer: Reingsys.util.textoLargo,
+                    dataIndex: 'objetivo_institucional'
                 }, {
                     header: 'MONTO Bs.',
                     width: 120,
@@ -1344,7 +1352,7 @@
                     menuDisabled: true,
                     sortable: true,
                     renderer: function(v, m, r) {
-                        return v + ' ' + r.get('tx_unidades_medida');
+                        return v + ' ';
                     },
                     dataIndex: 'meta'
                 }, {

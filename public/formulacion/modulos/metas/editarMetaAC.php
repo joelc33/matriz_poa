@@ -17,6 +17,7 @@ if($codigo!=''||$codigo!=null){
 			"co_metas"     => trim($row["co_metas"]),
 			"co_ac_acc_espec"     => trim($row["co_ac_acc_espec"]),
 			"id_accion_centralizada"     => trim($row["id_accion_centralizada"]),
+                        "id_tab_t47_ac_accion_especifica"    => trim($row["id_tab_t47_ac_accion_especifica"]),
 			"codigo"     => trim($row["codigo"]),
 			"nb_actividad"     => trim($row["nb_meta"]),
 			"co_unidades_medida"     => trim($row["co_unidades_medida"]),
@@ -32,6 +33,7 @@ if($codigo!=''||$codigo!=null){
 	$data = json_encode(array(
 		"co_metas"     => decode($_POST['co_metas']),
 		"co_ac_acc_espec"     => decode($_POST['co_proyecto_acc_espec']),
+                "id_tab_t47_ac_accion_especifica"     => decode($_POST['id_tab_t47_ac_accion_especifica']),
 		"id_accion_centralizada"     => decode($_POST['id_accion_centralizada']),
                 "id_ejercicio"     => decode($_POST['id_ejercicio']),
 	));
@@ -61,6 +63,9 @@ this.co_ac_acc_espec = new Ext.form.Hidden({
 this.id_accion_centralizada = new Ext.form.Hidden({
     name:'id_accion_centralizada',
     value:this.OBJ.id_accion_centralizada});
+this.id_tab_t47_ac_accion_especifica = new Ext.form.Hidden({
+    name:'id_tab_t47_ac_accion_especifica',
+    value:this.OBJ.id_tab_t47_ac_accion_especifica});
 
 this.nb_actividad = new Ext.form.TextField({
 	fieldLabel:'NOMBRE DE LA ACTIVIDAD',
@@ -227,7 +232,7 @@ this.nuevo = new Ext.Button({
 	id:'AgregarDet',
 	iconCls: 'icon-nuevo',
 	handler: function(boton){
-		paqueteComunJS.funcion.mostrarVentana({url:'formulacion/modulos/metas/metaFinancieraAC.php?id_accion_centralizada='+metaEditar.main.id_accion_centralizada.getValue()+'&co_ac_acc_espec='+metaEditar.main.co_ac_acc_espec.getValue(),parametro:'no'});
+		paqueteComunJS.funcion.mostrarVentana({url:'formulacion/modulos/metas/metaFinancieraAC.php?id_accion_centralizada='+metaEditar.main.id_accion_centralizada.getValue()+'&co_ac_acc_espec='+metaEditar.main.co_ac_acc_espec.getValue()+'&id_tab_t47_ac_accion_especifica='+metaEditar.main.id_tab_t47_ac_accion_especifica.getValue(),parametro:'no'});
 	}
 });
 
@@ -409,6 +414,7 @@ this.formPanel_ = new Ext.form.FormPanel({
 	items:[
 		this.co_metas,
 		this.id_accion_centralizada,
+                this.id_tab_t47_ac_accion_especifica,
 		this.co_ac_acc_espec,
 		this.panel,
 		this.JsonDetalle

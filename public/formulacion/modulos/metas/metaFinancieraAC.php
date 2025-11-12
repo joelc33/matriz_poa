@@ -2,6 +2,7 @@
 	$data = json_encode(array(
 		"id_accion_centralizada"     => $_GET['id_accion_centralizada'],
 		"co_ac_acc_espec"     => $_GET['co_ac_acc_espec'],
+                "id_tab_t47_ac_accion_especifica"     => $_GET['id_tab_t47_ac_accion_especifica'],
 		"co_estado"     => 23,
 		"co_municipio"     => 11,
 		"co_parroquia"     => "",
@@ -162,7 +163,7 @@ this.co_partida = new Ext.form.ComboBox({
 });
 
 this.storeCO_PARTIDA.load({
-		params: {id_accion_centralizada:this.OBJ.id_accion_centralizada,co_ac_acc_espec:this.OBJ.co_ac_acc_espec}
+		params: {id_accion_centralizada:this.OBJ.id_accion_centralizada,co_ac_acc_espec:this.OBJ.co_ac_acc_espec,id_tab_t47_ac_accion_especifica:this.OBJ.id_tab_t47_ac_accion_especifica}
 	});
 	paqueteComunJS.funcion.seleccionarComboByCo({
 	objCMB: this.co_partida,
@@ -193,7 +194,7 @@ this.co_fuente_financiamiento = new Ext.form.ComboBox({
 });
 
 this.storeCO_FUENTE_FINANCIAMIENTO.load({
-		params: {id_accion_centralizada:this.OBJ.id_accion_centralizada,co_ac_acc_espec:this.OBJ.co_ac_acc_espec}
+		params: {id_accion_centralizada:this.OBJ.id_accion_centralizada,co_ac_acc_espec:this.OBJ.co_ac_acc_espec,id_tab_t47_ac_accion_especifica:this.OBJ.id_tab_t47_ac_accion_especifica}
 	});
 	paqueteComunJS.funcion.seleccionarComboByCo({
 	objCMB: this.co_fuente_financiamiento,

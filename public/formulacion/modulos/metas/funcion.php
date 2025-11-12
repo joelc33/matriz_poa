@@ -260,7 +260,7 @@ if($_GET['op']==1){
 }elseif($_GET['op']==5){
 	$sql = "SELECT * FROM mantenimiento.tab_fuente_financiamiento where id_tab_tipo_fondo in (select t56.id_tipo_fondo
 from t56_ac_ae_fuente as t56
-where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST['co_ac_acc_espec'].");";
+where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_especifica'].");";
 	$result = $comunes->ObtenerFilasBySqlSelect($sql);
 	$data= array();
 	foreach($result as $key => $row){
@@ -307,7 +307,7 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 }elseif($_GET['op']==8){
 	$sql = "SELECT t69.*, de_unidad_medida, monto_cargado_ac_ae_meta(co_metas) AS mo_cargado FROM t69_metas_ac as t69
 	inner join mantenimiento.tab_unidad_medida as t21 on t69.co_unidades_medida=t21.id
-	WHERE id_accion_centralizada='".$_POST['id_accion_centralizada']."' and co_ac_acc_espec='".$_POST['co_proyecto_acc_espec']."' and t69.edo_reg is true ";
+	WHERE id_tab_t47_ac_accion_especifica='".$_POST['id_tab_t47_ac_accion_especifica']."' and t69.edo_reg is true ";
 
 	if($_POST['BuscarBy']=="true"){
 		if($_POST['variable']!=""){$sql.=" and nb_meta ILIKE '%".$_POST['variable']."%'";}
@@ -345,6 +345,7 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 }elseif($_GET['op']==9){
 	$id_accion_centralizada = decode($_POST['id_accion_centralizada']);
 	$co_ac_acc_espec = decode($_POST['co_ac_acc_espec']);
+        $id_tab_t47_ac_accion_especifica = decode($_POST['id_tab_t47_ac_accion_especifica']);
 	$codigo = decode($_POST['co_metas']);
 	if($codigo!=''||$codigo!=null){
 		try{
@@ -408,6 +409,7 @@ where t56.id_ac = ".$_POST['id_accion_centralizada']." and t56.id_ae = ".$_POST[
 			$primaryKey="co_metas";
 			$variable["id_accion_centralizada"] = decode($id_accion_centralizada);
 			$variable["co_ac_acc_espec"] = decode($co_ac_acc_espec);
+                        $variable["id_tab_t47_ac_accion_especifica"] = decode($id_tab_t47_ac_accion_especifica);
 			$variable["nb_meta"] = decode(str_replace('"', '', $_POST['nb_actividad']));
 			$variable["co_unidades_medida"] = decode($_POST['co_unidades_medida']);
 			$variable["tx_prog_anual"] = decode($_POST['pr_anual']);

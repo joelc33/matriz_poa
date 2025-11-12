@@ -212,9 +212,9 @@ this.accionFisica2 = new Ext.Button({
 	text:'Ver Actividades',
 	id:'verFisico2',
 	iconCls: 'icon-accion_fisica',
-	tooltip: 'Ver Actividades del Proyecto',
+	tooltip: 'Ver Actividades del Programa',
 	handler: function(boton){
-		addTab(accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+'ae','Programa:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+' >  Actividad:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('tx_codigo'),'formulacion/modulos/metas/acLista.php','load','icon-accion_especifica','codigo='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('co_proyecto_acc_espec')+'&id_accion_centralizada='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_accion_centralizada'));
+                        addTab(accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+'ae','Programa:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_proyecto')+' >  Actividad:'+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('tx_codigo'),'formulacion/modulos/metas/acLista.php','load','icon-accion_especifica','codigo='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('co_proyecto_acc_espec')+'&id_accion_centralizada='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_accion_centralizada')+'&id_tab_t47_ac_accion_especifica='+accionEspLista.main.gridPanel_2.getSelectionModel().getSelected().get('id_tab_t47_ac_accion_especifica'));
 	}
 });
 
@@ -320,15 +320,15 @@ this.gridPanel_2 = new Ext.grid.GridPanel({
     ],
     columns: [
     new Ext.grid.RowNumberer(),
-    {header: 'co_proyecto_acc_espec',hidden:true, menuDisabled:true,dataIndex: 'co_proyecto_acc_espec'},
+    {header: 'id_tab_t47_ac_accion_especifica',hidden:true, menuDisabled:true,dataIndex: 'id_tab_t47_ac_accion_especifica'},
     {header: 'id_accion_centralizada',hidden:true, menuDisabled:true,dataIndex: 'id_accion_centralizada'},
     //{header: 'id_proyecto',hidden:true, menuDisabled:true,dataIndex: 'id_proyecto'},
     {header: 'EJECUTOR RESPONSABLE', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'ejecutor_resp'},
     //{header: 'ACCION C.', width:130,  menuDisabled:true, sortable: true, dataIndex: 'id_proyecto'},
-    {header: 'PROGRAMA', width:300,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'nb_ac'},
+    {header: 'PROGRAMA', width:120,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'nb_ac'},
     {header: 'CÓD.', width:80,  menuDisabled:true, sortable: true, textoLargo, dataIndex: 'tx_codigo'},
     {header: 'Nombre de la Actividad', width:200,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'descripcion'},
-    {header: 'UNIDAD DE MEDIDA', width:120,  menuDisabled:true, sortable: true,  dataIndex: 'co_unidades_medida'},
+    {header: 'OBJETIVO ESPECIFICO', width:300,  menuDisabled:true, sortable: true, renderer: textoLargo,  dataIndex: 'objetivo_institucional'},
     {header: 'TOTAL GENERAL Bs.', width:120,  menuDisabled:true, sortable: true, renderer: formatoNumero, dataIndex: 'total'},
     {header: 'TOTAL CARGADO', width:120,  menuDisabled:true, sortable: true, renderer: colorIndicador, dataIndex: 'mo_cargado'},
     {header: 'FECHA INICIO', width:100,  menuDisabled:true, sortable: true,  dataIndex: 'fec_inicio'},
@@ -403,7 +403,7 @@ getLista: function(){
     {name: 'nb_proyecto'},
     {name: 'tx_codigo'},
     {name: 'descripcion'},
-    {name: 'co_unidades_medida'},
+    {name: 'objetivo_institucional'},
     {name: 'meta'},
     {name: 'ponderacion'},
     {name: 'bien_servicio'},
@@ -425,11 +425,12 @@ getLista2: function(){
     fields:[
     {name: 'co_proyecto_acc_espec'},
     {name: 'id_accion_centralizada'},
+    {name: 'id_tab_t47_ac_accion_especifica'},
     {name: 'id_proyecto'},
     {name: 'nb_ac'},
     {name: 'tx_codigo'},
     {name: 'descripcion'},
-    {name: 'co_unidades_medida'},
+    {name: 'objetivo_institucional'},
     {name: 'meta'},
     {name: 'ponderacion'},
     {name: 'bien_servicio'},

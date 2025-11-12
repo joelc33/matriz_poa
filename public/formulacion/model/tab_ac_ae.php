@@ -17,7 +17,7 @@ class tab_ac_ae extends Illuminate\Database\Eloquent\Model {
 	const UPDATED_AT = 'fecha_actualizacion';
 
 	public static $cerrarAe = array(
-		"id"  => "required|numeric|exists:principal.public.t47_ac_accion_especifica,id_accion_centralizada",
+		"id"  => "required|numeric|exists:principal.public.t47_ac_accion_especifica,id_tab_t47_ac_accion_especifica",
 		"valido" => "integer|in:1"
 	);
 }
