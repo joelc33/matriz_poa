@@ -170,9 +170,11 @@ class acaepartidaController extends Controller
                             $consulta_ae = tab_ac_ae::select('id_accion')
                             ->join('mantenimiento.tab_ac_ae_predefinida as t01', 't01.id', '=', 'public.t47_ac_accion_especifica.id_accion')
                             ->where('id_accion_centralizada', '=', Input::get('accion_centralizada'))
-                            ->where('nu_numero', '=', $contador)
+                            ->where('id_accion', '=', $contenido)
                             ->first();
 
+
+                            
                             //empieza  lectura vertical
                             $start_v=10;
                             $end_v=2006;
@@ -191,7 +193,10 @@ class acaepartidaController extends Controller
                                 }
 
                                 if ($cellValue8>0) {
+                                    
 
+
+                                    
                                     $mensajes = array(
                                       'monto.regex'=>'En la celda: '.$abc.$v.' el monto no debe poseer decimales.',
                                       //'aplicacion.required'=>'Para la celda: '.$abc.$v.' el campo Aplicacion es requerido.',
@@ -227,14 +232,14 @@ class acaepartidaController extends Controller
 
                                     } else {
 
-                                        $validar_ae = tab_ac_ae_predefinida::select('id', 'nu_numero', 'de_nombre')
-                                        ->where('id', '=', $consulta_ae->id_accion)
-                                        ->first();
-
-                                        $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.$v.' la Partida: '.$partidaCrear.', Monto: '.$cellValue8.', No se encuentra dentro de las partidas admitidas para: <br>'.$validar_ae->nu_numero.' - '.$validar_ae->de_nombre)));
-                                        $response = Response::make($data);
-                                        $response->header('Content-Type', 'text/html');
-                                        return $response;
+//                                        $validar_ae = tab_ac_ae_predefinida::select('id', 'nu_numero', 'de_nombre')
+//                                        ->where('id', '=', $consulta_ae->id_accion)
+//                                        ->first();
+//
+//                                        $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.$v.' la Partida: '.$partidaCrear.', Monto: '.$cellValue8.', No se encuentra dentro de las partidas admitidas para: <br>'.$validar_ae->nu_numero.' - '.$validar_ae->de_nombre)));
+//                                        $response = Response::make($data);
+//                                        $response->header('Content-Type', 'text/html');
+//                                        return $response;
 
                                     }
 
@@ -248,6 +253,9 @@ class acaepartidaController extends Controller
                                     $partida->monto = floatval($cellValue8);
                                     $partida->edo_reg = true;
                                     $partida->save();
+                                    
+//                                    var_dump($partidaCrear);
+//                                    exit();
 
                                     $calculo_ac_ae = tab_ac_ae::select(DB::raw("calcular_monto(id_accion_centralizada, id_accion) as nu_monto"))
                                     ->where('id_accion_centralizada', '=', Input::get('accion_centralizada'))
