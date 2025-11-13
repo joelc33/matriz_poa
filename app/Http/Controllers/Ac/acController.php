@@ -244,6 +244,9 @@ class acController extends Controller
             ->groupBy(DB::raw('1,2'))
             ->first();
 
+    var_dump($validar_ae->mo_ac);
+            exit();
+            
             if($validar_ae->mo_ac == $validar_ae->mo_partida) {
                 $in_valido = 1;
             } else {
@@ -251,7 +254,7 @@ class acController extends Controller
             }
 
             $mensajes = array(
-              'valido.in'=>'El monto Cargado No Coincide con el monto de la AC. <br>Monto Accion Centralizada.: <span style="color:green"><b>'.number_format($validar_ae->mo_ac, 2, ',', '.').'</b></span>'.'<br>Monto Cargado Partidas: <span style="color:red"><b>'.number_format($validar_ae->mo_partida, 2, ',', '.').'</b></span>'.'<br>Diferencia: <b>'.number_format(($validar_ae->mo_ac - $validar_ae->mo_partida), 2, ',', '.').'</b>'
+              'valido.in'=>'El monto Cargado No Coincide con el monto del programa. <br>Monto Programa.: <span style="color:green"><b>'.number_format($validar_ae->mo_ac, 2, ',', '.').'</b></span>'.'<br>Monto Cargado Partidas: <span style="color:red"><b>'.number_format($validar_ae->mo_partida, 2, ',', '.').'</b></span>'.'<br>Diferencia: <b>'.number_format(($validar_ae->mo_ac - $validar_ae->mo_partida), 2, ',', '.').'</b>'
             );
 
             $datos = array(
@@ -268,7 +271,7 @@ class acController extends Controller
             DB::commit();
 
             $response['success']  = 'true';
-            $response['msg']  = 'La Acción Centralizada se ha cerrado!';
+            $response['msg']  = 'El programa se ha cerrado!';
             return Response::json($response, 200);
 
         } catch (\Illuminate\Database\QueryException $e) {
