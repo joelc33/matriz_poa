@@ -244,8 +244,7 @@ class acController extends Controller
             ->groupBy(DB::raw('1,2'))
             ->first();
 
-    var_dump($validar_ae->mo_partida);
-            exit();
+
             
             if($validar_ae->mo_ac == $validar_ae->mo_partida) {
                 $in_valido = 1;
