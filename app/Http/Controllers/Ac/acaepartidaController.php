@@ -173,9 +173,10 @@ class acaepartidaController extends Controller
                             ->where('nu_numero', '=', $contenido)
                             ->first();
 
-//                                                                var_dump($consulta_ae->id_accion);
-//                                    exit();
-                            
+
+                            if($consulta_ae) {
+                   
+                   
                             //empieza  lectura vertical
                             $start_v=10;
                             $end_v=2006;
@@ -281,6 +282,16 @@ class acaepartidaController extends Controller
 
                                 }
                             }
+                            
+                        }else{
+                 
+                    $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.'9 la Actividad: '.$contenido.',  No se encuentra dentro de la Actividad Programatica. Verifique.')));
+                    $response = Response::make($data);
+                    $response->header('Content-Type', 'text/html');
+                    return $response;                            
+                            
+                        }
+                            
                         }
                     }
 
