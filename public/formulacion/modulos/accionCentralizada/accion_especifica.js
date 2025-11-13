@@ -670,7 +670,7 @@
                             padding: '',
                             value: '* Recuerde verificar que el archivo contenga '
                                 + config.cuenta + ' columnas contigüas de datos, '
-                                + 'correspondientes a las acciones específicas'
+                                + 'correspondientes a las actividades'
                         }
                     ],
                     buttonAlign: 'right',
