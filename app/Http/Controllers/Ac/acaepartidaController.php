@@ -170,10 +170,11 @@ class acaepartidaController extends Controller
                             $consulta_ae = tab_ac_ae::select('id_accion')
                             ->join('mantenimiento.tab_ac_ae_predefinida as t01', 't01.id', '=', 'public.t47_ac_accion_especifica.id_accion')
                             ->where('id_accion_centralizada', '=', Input::get('accion_centralizada'))
-                            ->where('id_accion', '=', $contenido)
+                            ->where('nu_numero', '=', $contenido)
                             ->first();
 
-
+//                                                                var_dump($consulta_ae->id_accion);
+//                                    exit();
                             
                             //empieza  lectura vertical
                             $start_v=10;
@@ -253,9 +254,6 @@ class acaepartidaController extends Controller
                                     $partida->monto = floatval($cellValue8);
                                     $partida->edo_reg = true;
                                     $partida->save();
-                                    
-//                                    var_dump($partidaCrear);
-//                                    exit();
 
                                     $calculo_ac_ae = tab_ac_ae::select(DB::raw("calcular_monto(id_accion_centralizada, id_accion) as nu_monto"))
                                     ->where('id_accion_centralizada', '=', Input::get('accion_centralizada'))
