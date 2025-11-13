@@ -244,7 +244,7 @@ class acController extends Controller
             ->groupBy(DB::raw('1,2'))
             ->first();
 
-    var_dump($validar_ae->mo_ac);
+    var_dump($validar_ae->mo_partida);
             exit();
             
             if($validar_ae->mo_ac == $validar_ae->mo_partida) {
@@ -263,6 +263,13 @@ class acController extends Controller
             );
 
             $validador = Validator::make($datos, tab_ac::$cerrarAc, $mensajes);
+            
+            if ($validador->fails()) {
+                $data = json_encode(array('success' => false, 'msg' => $validador->getMessageBag()->toArray()));
+                $response = Response::make($data);
+                $response->header('Content-Type', 'text/html');
+                return $response;
+            }            
 
             $tabla = tab_ac::find($request->id_accion_centralizada);
             $tabla->id_estatus = 3;
