@@ -63,7 +63,7 @@ this.guardar = new Ext.Button({
 		for(datos in action.result.msg){
 			errores += action.result.msg[datos] + '<br>';
 		}
-                Ext.MessageBox.alert('Error en transacción', errores);
+                Ext.MessageBox.alert('Error en transacción', action.result.msg);
             },
             success: function(form, action) {
                  if(action.result.success){

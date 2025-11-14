@@ -4,6 +4,7 @@ namespace matriz\Http\Controllers\Mantenimiento;
 
 //*******agregar esta linea******//
 use matriz\Models\Mantenimiento\tab_ac_predefinida;
+use matriz\Models\Ac\t52_ac_predefinidas;
 use View;
 use Validator;
 use Input;
@@ -123,6 +124,10 @@ class tipoaccionController extends Controller
                 $tabla->de_accion = Input::get("descripcion");
                 $tabla->nu_original = Input::get("numero");
                 $tabla->save();
+                
+                $tabla_52 = t52_ac_predefinidas::find($id);
+                $tabla_52->nombre = Input::get("nombre");
+                $tabla_52->save();             
 
                 DB::commit();
                 return Response::json(array(
@@ -155,6 +160,14 @@ class tipoaccionController extends Controller
                 $tabla->nu_original = Input::get("numero");
                 $tabla->in_activo = 'TRUE';
                 $tabla->save();
+                
+                $tabla_52 = new t52_ac_predefinidas();
+                $tabla_52->id = $tabla->id;
+                $tabla_52->nombre = Input::get("nombre");
+                $tabla_52->save();                
+                
+                
+                
 
                 DB::commit();
                 return Response::json(array(

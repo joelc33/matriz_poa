@@ -5,6 +5,7 @@ namespace matriz\Http\Controllers\Mantenimiento;
 //*******agregar esta linea******//
 use matriz\Models\Mantenimiento\tab_ac_ae_predefinida;
 use matriz\Models\Mantenimiento\tab_ac_ae_oficina;
+use matriz\Models\Ac\t53_ac_ae_predefinidas;
 use View;
 use Validator;
 use Input;
@@ -178,6 +179,11 @@ class tipoaccionaeController extends Controller
                 $tabla->de_nombre = Input::get("nombre");
                 $tabla->nu_numero = Input::get("numero");
                 $tabla->save();
+                
+                $tabla_53 = t53_ac_ae_predefinidas::find($id);
+                $tabla_53->nombre = Input::get("nombre");
+                $tabla_53->numero = Input::get("numero");
+                $tabla_53->save();                 
 
                 DB::commit();
                 return Response::json(array(
@@ -203,12 +209,35 @@ class tipoaccionaeController extends Controller
                       'msg' => $validator->getMessageBag()->toArray()
                     ));
                 }
+                
+                if (tab_ac_ae_predefinida::where('id_padre', '=', Input::get("ac"))
+                ->where('nu_numero', '=', Input::get("numero"))
+                ->exists()) {
+                    
+                return Response::json(array(
+                  'success' => false,
+                  'msg' => 'El numero de Actividad ya existe para este programa. Verifique!'
+                ));                    
+
+                } else {
+
+                             
+                
                 $tabla = new tab_ac_ae_predefinida();
                 $tabla->id_padre = Input::get("ac");
                 $tabla->de_nombre = Input::get("nombre");
                 $tabla->nu_numero = Input::get("numero");
                 $tabla->in_activo = 'TRUE';
                 $tabla->save();
+                
+                $tabla_53 = new t53_ac_ae_predefinidas();
+                $tabla_53->padre = Input::get("ac");
+                $tabla_53->nombre = Input::get("nombre");
+                $tabla_53->numero = Input::get("numero");
+                $tabla_53->save();
+                    
+                
+                }                 
 
                 DB::commit();
                 return Response::json(array(
