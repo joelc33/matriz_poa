@@ -1300,8 +1300,8 @@
                     this.cargarPartida,
 		    this.descargarFormato,
                     this.verPartidas,
-                    this.verDistribucion,
-                    this.verDistribucionFisica,
+//                    this.verDistribucion,
+//                    this.verDistribucionFisica,
                     this.eliminar,
                     '->',
                     this.cerrar
