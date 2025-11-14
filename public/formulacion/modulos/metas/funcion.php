@@ -350,6 +350,14 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 	if($codigo!=''||$codigo!=null){
 		try{
 			$paraTransaccion->BeginTrans();
+                        
+                        $monto = 0;
+			$detalle = json_decode($_POST['json_detalle'],true); 
+
+			foreach ($detalle as $lista){
+				$monto = $monto + decode($lista['mo_presupuesto']);
+                        }                        
+                        
 			$tabla="t69_metas_ac";
 			$tquery="UPDATE";
 			$id = 'co_metas = '.$codigo;
@@ -363,6 +371,7 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 			$fecha_culminacion = $anio."-".$mes."-".$dia;
 			$variable["fecha_fin"] = $fecha_culminacion;
                         $variable["id_tab_ac_ae_oficina"] = $_POST['id_tab_ac_ae_oficina'];
+                        $variable["monto"] = $monto;
                         $variable["nb_responsable"] = decode(str_replace('"', '', $_POST['nb_responsable']));
 			$variable["fecha_actualizacion"] = date("Y-m-d H:i:s");
 			$co_metas = $comunes->InsertUpdate($tabla,$variable,$tquery,$id);
@@ -405,6 +414,15 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 	}else{
 			try{
 			$paraTransaccion->BeginTrans();
+                        
+                        $monto = 0;
+			$detalle = json_decode($_POST['json_detalle'],true); 
+
+			foreach ($detalle as $lista){
+				$monto = $monto + decode($lista['mo_presupuesto']);
+                        }                        
+                        
+                        
 			$tabla="t69_metas_ac";
 			$primaryKey="co_metas";
 			$variable["id_accion_centralizada"] = decode($id_accion_centralizada);
@@ -420,6 +438,7 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 			$fecha_culminacion = $anio."-".$mes."-".$dia;
 			$variable["fecha_fin"] = $fecha_culminacion;
                         $variable["id_tab_ac_ae_oficina"] = $_POST['id_tab_ac_ae_oficina'];
+                        $variable["monto"] = $monto;
 			$variable["nb_responsable"] = decode(str_replace('"', '', $_POST['nb_responsable']));
 			$variable["fecha_creacion"] = date("Y-m-d H:i:s");
 			$variable["edo_reg"] = 'TRUE';
