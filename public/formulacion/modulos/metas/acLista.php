@@ -38,6 +38,195 @@ function colorCargado(valorCargado){
 	return '<span style="color:green;">'+formatoNumero(valorCargado)+'</span>';
 return val;
 };
+
+    Ext.define('AccionCentralizada.Distribucion', {
+        extend: 'Ext.Window',
+        xtype: 'accion_centralizada_distribucion',
+        constructor: function(config) {
+            var self = this;
+
+            var campos = ['1', '2', '3', '4', '5', '6',
+                '7', '8', '9', '10', '11', '12', 'min', 'max'
+            ].map(function(e) {
+                return {
+                    name: e,
+                    type: 'int'
+                };
+            });
+
+            this.store = Ext.create({
+                xtype: 'jsonstore',
+                proxy: new Ext.data.HttpProxy({
+                    method: 'POST',
+                    api: {
+                        read: 'formulacion/modulos/accionCentralizada/funcion.php?op='
+                            + config.leer,
+                        update: 'formulacion/modulos/accionCentralizada/funcion.php?op='
+                            + config.actualizar
+                    }
+                }),
+                baseParams: {
+                    co_metas: config.co_metas,
+                },
+                writer: new Ext.data.JsonWriter({
+                    encode: true,
+                    writeAllFields: false
+                }),
+                autoLoad: true,
+                autoSave: false,
+                autoDestroy: true,
+                root: 'data',
+                fields: [
+                    'id'
+                ].concat(campos, [
+                    't1', 't2', 't3', 't4',
+                    'tot', 'totc'
+                ])
+            });
+
+            this.store.on('exception', function(s, t, a, o, r) {
+                Ext.Msg.alert('Error almacenando los cambios', r.raw.msg)
+                    .setIcon(Ext.MessageBox.ERROR);
+                self.store.reload();
+            });
+
+            var editor = new Ext.ux.grid.RowEditor({
+                saveText: 'Ok',
+                cancelText: 'Cancelar'
+            });
+
+            editor.on('validateedit', function(re, chg, rec, idx) {
+                var acum = 0,
+                    i, k, keys;
+                keys = Object.keys(chg);
+                for (i = 0; i < keys.length; i++) {
+                    k = keys[i];
+                    if (k < rec.data.min || k > rec.data.max) {
+                        Ext.Msg.alert( 'Atención',
+                            'No pueden asignarse recursos a meses fuera'
+                                + ' del rango de la actividad'
+                        ).setIcon(Ext.MessageBox.WARNING);
+                        return false;
+                    }
+                    acum += chg[k] - rec.data[k];
+                }
+                if (acum !== 0) {
+                    Ext.Msg.alert( 'Atención',
+                            'La cantidad total por actividad debe'
+                            + ' coincidir con el declarado'
+                    ).setIcon(Ext.MessageBox.ERROR);
+                    return false;
+                }
+                return true;
+            });
+
+            var meses = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ].map(function(e, i) {
+                return {
+                    header: e,
+                    dataIndex: (i + 1).toString(),
+                    editor: {
+                        xtype: 'numberfield',
+                        allowBlank: false,
+                        allowDecimals: false,
+                        allowNegative: false
+                    }
+                };
+            });
+
+            var trimestres = [1, 2, 3, 4].map(function(e) {
+                return {
+                    header: 'Trimestre ' + e,
+                    dataIndex: 't' + e,
+                    renderer: function(value, metaData, record) {
+                        var i, t = e - 1, acum = 0;
+                        for (i = (t * 3) + 1; i < (t * 3) + 3 + 1; i++) {
+                            acum += record.data[i.toString()];
+                        }
+                        return config.formato(acum);
+                    }
+                };
+            });
+
+            var columnas = [];
+
+            meses.forEach(function(e, i) {
+                columnas.push(e);
+                if ((i+1) % 3 === 0) {
+                    columnas.push(trimestres.shift());
+                }
+            });
+
+            this.grid = Ext.create({
+                xtype: 'grid',
+                store: self.store,
+                plugins: [editor],
+                flex: 1,
+                stripeRows: true,
+                viewConfig: {
+                    autoFit: true
+                },
+                minColumnWidth: 70,
+                bbar: [{
+                    text: 'Editar',
+                    iconCls: 'icon-editar',
+                    handler: function() {
+                        var r = self.grid.getSelectionModel().getSelected();
+                        editor.startEditing(self.store.indexOf(r), false);
+                    }
+                }, '->', {
+                    text: 'Guardar',
+                    iconCls: 'icon-guardar',
+                    handler: function() {
+                        self.store.save();
+                    }
+                }],
+                colModel: new Ext.grid.ColumnModel({
+                    defaults: {
+                        menuDisabled: false,
+                        sortable: true,
+                        editor: {
+                            xtype: 'numberfield',
+                            readOnly: true
+                        },
+                        renderer: config.formato
+                    },
+                    columns: [{
+                        header: 'NÚMERO',
+                        width: 60,
+                        dataIndex: 'id',
+                        renderer: null
+                    }].concat(columnas, [{
+                        header: 'TOTAL',
+                        dataIndex: 'tot'
+                    }])
+                })
+            });
+
+            config = Ext.apply({
+                title: 'Distribución ' + config.tipo
+                    + ' de la Actividad: ' + config.codigo,
+                modal: true,
+                maximizable: true,
+                resizable: true,
+                x: 0,
+                y: 0,
+                width: 500,
+                height: 400,
+                layout: 'fit',
+                items: [
+                    this.grid
+                ]
+            }, config);
+
+            this.callParent(arguments);
+
+
+        }
+    });
+
 metaLista.main = {
 init:function(){
 
@@ -252,9 +441,61 @@ this.reabrir = new Ext.Button({
 
 <?php endif;?>
 
+this.verDistribucion = new Ext.Button({
+text: 'Distribución Financiera',
+iconCls: 'icon-reporteest',
+disabled: true,
+etiquetas: {
+    ver: true
+},
+handler: function(btn) {
+    
+        this.codigo  = metaLista.main.gridPanel_.getSelectionModel().getSelected().get('tx_codigo');
+        this.co_metas  = metaLista.main.gridPanel_.getSelectionModel().getSelected().get('co_metas');    
+    var v = Ext.create({
+        xtype: 'accion_centralizada_distribucion',
+        ac: self.ac,
+        leer: 22,
+        actualizar: 24,
+        codigo: this.codigo,
+        co_metas: this.co_metas,
+        tipo: 'Financiera',
+        formato: formatoNumero
+    });
+    v.show();
+}
+});
+
+this.verDistribucionFisica = new Ext.Button({
+    text: 'Distribución Física',
+    iconCls: 'icon-reporteest',
+    disabled: true,
+    etiquetas: {
+        ver: true
+    },
+    handler: function(btn) {
+        
+        this.codigo  = metaLista.main.gridPanel_.getSelectionModel().getSelected().get('tx_codigo');
+        this.co_metas  = metaLista.main.gridPanel_.getSelectionModel().getSelected().get('co_metas');
+        var v = Ext.create({
+            xtype: 'accion_centralizada_distribucion',
+            ac: self.ac,
+            leer: 23,
+            actualizar: 25,
+            codigo: this.codigo,
+            co_metas: this.co_metas,
+            tipo: 'Física',
+            formato: function(v) { return v; }
+        });
+        v.show();
+    }
+});
+
 this.editar.disable();
 this.eliminar.disable();
 this.ver.disable();
+this.verDistribucion.disable();
+this.verDistribucionFisica.disable();
 
 this.resultadoReal = new Ext.form.DisplayField({
 	value:"<b>Monto: Bs. <?php echo number_format($resultadoReal, 2, ',', '.'); ?></b>"
@@ -330,7 +571,7 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 	this.editar,'-',
 <?php } ?>
 <?php if( in_array( array( 'de_privilegio' => 'ac.ae.actividad.borrar', 'in_habilitado' => true), $_SESSION['spe_session'][0][0] )){ ?>
-	this.eliminar
+	this.eliminar,'-',this.verDistribucion,'-',this.verDistribucionFisica
 <?php } ?>
     ],
 <?php }else{ ?>
@@ -364,7 +605,7 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 	enableRowBody:true,
 	showPreview:true,
     },
-    listeners:{cellclick:function(Grid, rowIndex, columnIndex,e ){metaLista.main.editar.enable();metaLista.main.eliminar.enable();metaLista.main.ver.enable();}},
+    listeners:{cellclick:function(Grid, rowIndex, columnIndex,e ){metaLista.main.editar.enable();metaLista.main.eliminar.enable();metaLista.main.ver.enable();metaLista.main.verDistribucion.enable();metaLista.main.verDistribucionFisica.enable();}},
     bbar: [ 
 	new Ext.PagingToolbar({
 		pageSize: 20,
@@ -397,6 +638,8 @@ this.store_lista.on('load',function(){
 metaLista.main.editar.disable();
 metaLista.main.eliminar.disable();
 metaLista.main.ver.disable();
+metaLista.main.verDistribucion.disable();
+metaLista.main.verDistribucionFisica.disable();
 });
 this.store_lista.on('beforeload',function(){
 panel_detalle.collapse();

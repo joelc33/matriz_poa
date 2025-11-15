@@ -179,16 +179,18 @@ EOT;
 				);
 			} else {
 				$params = array_merge( $pk, $params );
-				$resultado = $comunes->InsertUpdate(
-					$tabla,
-					$params,
-					'INSERT'
-				);
+                                $primaryKey="id_tab_t47_ac_accion_especifica";
+                                $id_tab_t47_ac_accion_especifica = $comunes->InsertConID($tabla,$params,$primaryKey);
+//				$resultado = $comunes->InsertUpdate(
+//					$tabla,
+//					$params,
+//					'INSERT'
+//				);
 
 				$llave = array(
                                         'id_ac' => $pk['id_accion_centralizada'],
 					'id_ae' => $pk['id_accion'],
-					'id_tab_t47_ac_accion_especifica' => $pk['id_tab_t47_ac_accion_especifica']
+					'id_tab_t47_ac_accion_especifica' => decode($id_tab_t47_ac_accion_especifica)
 				);
 			}
 
@@ -896,6 +898,144 @@ EOT
 				$respuesta = re\Helpers::responder( false );
 			}
 			break;
+                        
+		case 22:
+                case 23:
+			$pk = re\Helpers::obtener_pertinentes( $_POST, array( 'co_metas' ) );
+			$existe = v::key( 'co_metas', v::intero()->notEmpty() ) ;
+
+			$existe->assert( $pk );
+			if ( $op == 22 ) {
+				$sql = <<<EOT
+SELECT t69.codigo as numero, mes, round(t72.monto)::bigint monto,
+min(mes) over (partition by codigo) as min,
+max(mes) over (partition by codigo) as max
+FROM t72_metas_distribucion_financiera as t72
+JOIN public.t69_metas_ac as t69 on t69.co_metas = t72.co_metas
+WHERE t72.co_metas = ?
+ORDER BY codigo, mes;
+EOT;
+			} else {
+				$sql = <<<EOT
+SELECT t69.codigo as numero, mes, round(t71.monto)::bigint monto,
+min(mes) over (partition by codigo) as min,
+max(mes) over (partition by codigo) as max
+FROM t71_metas_distribucion_fisica as t71
+JOIN public.t69_metas_ac as t69 on t69.co_metas = t71.co_metas
+WHERE t71.co_metas = ?
+ORDER BY codigo, mes;
+EOT;
+			}
+
+			$res = $comunes->ObtenerFilasBySqlSelect( $sql, array(
+				$pk['co_metas']
+			) );
+
+			if ($res !== FALSE) {
+				//procesar
+				$ae = null;
+				$datos = array();
+				$datos_c = array();
+				foreach ( $res as $r ) {
+					$numero = $r['numero'];
+					$mes = intval( $r['mes'] );
+					$monto = $r['monto'];
+					if ( $ae !== $numero ) {
+						$ae = $numero;
+						//XXX por "culpa" del slice hay que empezar en 0
+						$datos[$numero] = array_fill( 0, 13, 0 );
+						$datos_c[$numero] = array_fill( 0, 13, 0 );
+					}
+					$datos[$numero][$mes] = $monto;
+					$datos[$numero]['min'] = $r['min'];
+					$datos[$numero]['max'] = $r['max'];
+					$datos_c[$numero][$mes] = $monto;
+				}
+
+				$trimestres = range( 0, 3 );
+				foreach ( $datos_c as $ae => $r ) {
+					$tot = 0;
+					foreach ( $trimestres as $t ) {
+						$tri = array_reduce(
+							array_slice( $r, ( $t * 3 ) + 1, 3 ),
+							function( $acu, $v ) {
+								return $acu + intval( $v );
+							}, 0 );
+						$t++;
+						$datos[$ae]["t$t"] = $tri;
+						$tot += $tri;
+					}
+					$datos[$ae]['tot'] = $tot;
+					$datos[$ae]['id'] = $ae;
+				}
+
+				$respuesta = re\Helpers::responder( true, null, array(
+					'data' => array_values( $datos )
+				) );
+			} else {
+				$respuesta = re\Helpers::responder( false,
+					'Error obteniendo los datos'
+				);
+			}
+			break; 
+                        
+		case 24:
+		case 25:
+			$pk = re\Helpers::obtener_pertinentes( $_POST, array(
+				'co_metas' => 'id'
+			) );
+
+			$clave = v::key( 'id', v::intero()->positive()->notEmpty() );
+			$clave->assert( $pk );
+
+			$params = re\Helpers::obtener_pertinentes( $_POST, array(
+				'data',
+			) );
+			$json = v::key( 'data', v::json()->notEmpty() );
+			$json->assert( $params );
+			$acciones = json_decode( $params['data'] );
+
+//			$contenido = v::object()->attribute( 'id', v::intero()->positive()->notEmpty() );
+
+//			foreach ( range(1,12) as $i ) {
+//				$contenido = $contenido->attribute( "$i", v::intero()->min( 0, true ), false );
+//			}
+			if ( !is_array( $acciones ) ) {
+				$acciones = array( $acciones );
+			}
+
+			$reglas = v::arr()->each( $contenido );
+			$reglas->assert( $acciones );
+
+			if ( $op == 24 ) {
+				$sql = <<<EOT
+update only t72_metas_distribucion_financiera as t52
+set monto = ?
+where co_metas = ? and mes = ?;
+EOT;
+			} else {
+				$sql = <<<EOT
+update only t71_metas_distribucion_fisica as t71
+set monto = ?
+where co_metas = ? and mes = ?;
+EOT;
+			}
+
+			$paraTransaccion->StartTrans();
+
+			foreach( $acciones as $ac ) {
+				$id_ae = $ac->{'id'};
+				foreach( $ac as $k => $v ) {
+					if( preg_match( '/^\d+$/', $k ) === 1 ) {
+						$res = $comunes->EjecutarQuery(
+							$sql, array( $v,$pk['id'],$k )
+						);
+					}
+				}
+			}
+			$res = $paraTransaccion->CompleteTrans();
+			$respuesta = re\Helpers::responder( $res );
+			break;                        
 
 		case 97: //reabrir
 			$pk = re\Helpers::obtener_pertinentes( $_POST,
