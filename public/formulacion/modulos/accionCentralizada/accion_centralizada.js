@@ -611,7 +611,7 @@
                                         if (self.ac.co_sector) {
                                             self.store_accion.load({
                                                 params: {
-                                                    co_sector: self.ac.co_sector,
+                                                    co_sector: self.ac.id_sector,
                                                     id_ejecutor: self.ac.id_ejecutor
                                                 },
                                                 callback: function(r, op, scs) {

@@ -22,7 +22,7 @@ SELECT t46.id, id_ejercicio, t46.id_ejecutor, t24.tx_ejecutor as ejecutor,
 'PG' || t24.id_ejecutor || id_ejercicio || lpad(id_accion::text, 5, '0') as codigo,
 codigo_new_etapa as co_sistema, t46.id_accion, descripcion,
 id_estatus, id_subsector, sit_presupuesto as co_situacion_presupuestaria,
-monto, t18.co_sector, fecha_inicio, fecha_fin, t52.nombre,
+monto, t18.co_sector,t18.id as id_sector, fecha_inicio, fecha_fin, t52.nombre,
 inst_mision, inst_vision, inst_objetivos, nu_po_beneficiar, nu_em_previsto, tx_re_esperado, tx_pr_objetivo,
 (t46.id_estatus = 3) as bloqueado
 FROM t46_acciones_centralizadas as t46
