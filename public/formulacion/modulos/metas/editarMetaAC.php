@@ -72,7 +72,7 @@ this.nb_actividad = new Ext.form.TextField({
 	name:'nb_actividad',
 	value:this.OBJ.nb_actividad,
 	width:400,
-	maxLength: 250,
+	maxLength: 950,
 	allowBlank:false,
         listeners:{
             change: function(){
