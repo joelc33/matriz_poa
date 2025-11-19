@@ -388,20 +388,17 @@ EOT;
 			break;
 
 		case 7: //elimina AE
-			$pk = re\Helpers::obtener_pertinentes( $_POST, array( 'id_accion_centralizada',
-				'id_accion_especifica' => 'numero' ) );
-			$existe = v::key( 'id_accion_centralizada', v::intero()->notEmpty() )
-				->key( 'numero', v::intero()->notEmpty() );
+			$pk = re\Helpers::obtener_pertinentes( $_POST, array( 'id_tab_t47_ac_accion_especifica' ) );
+			$existe = v::key( 'id_tab_t47_ac_accion_especifica', v::intero()->notEmpty() );
 
 				$existe->assert( $pk );
 				$sql = <<<EOT
 DELETE
 FROM t47_ac_accion_especifica
-WHERE id_accion_centralizada = ? AND id_accion = ?;
+WHERE id_tab_t47_ac_accion_especifica = ?;
 EOT;
 				$res = $comunes->EjecutarQuery( $sql, array(
-					$pk['id_accion_centralizada'],
-					$pk['numero']
+					$pk['id_tab_t47_ac_accion_especifica']
 				) );
 
 				if ( $res ) {

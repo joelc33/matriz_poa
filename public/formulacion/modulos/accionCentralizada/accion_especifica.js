@@ -1182,7 +1182,8 @@
                                     params: {
                                         op: 7,
                                         id_accion_centralizada: self.ac.id,
-                                        id_accion_especifica: r.get('id_accion')
+                                        id_accion_especifica: r.get('id_accion'),
+                                        id_tab_t47_ac_accion_especifica: r.get('id_tab_t47_ac_accion_especifica')
                                     },
                                     success: function(result) {
                                         var obj = Ext.util.JSON.decode(result.responseText);
