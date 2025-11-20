@@ -614,7 +614,7 @@ if($_GET['op']==1){
 
 	$start = ($_POST["start"] == null)? 0 : $_POST["start"];
 	$limit = ($_POST["limit"] == null)? 15: $_POST["limit"];
-	if($_POST['paginar']=='si'){$sql.= " ORDER BY t46.id_ejecutor, t46.id_accion  ASC LIMIT ".$limit." OFFSET ".$start;}
+	if($_POST['paginar']=='si'){$sql.= " ORDER BY t46.id_ejecutor, t46.id_accion  ASC,id_tab_t47_ac_accion_especifica ASC LIMIT ".$limit." OFFSET ".$start;}
 
 	$result = $comunes->ObtenerFilasBySqlSelect($sql);
 
