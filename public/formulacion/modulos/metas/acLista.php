@@ -615,7 +615,7 @@ this.gridPanel_ = new Ext.grid.GridPanel({
 		emptyMsg: "<span style=\"color:black\">No se encontraron registros</span>"
     	}),'-',
 	new Ext.ux.StatusBar({
-	    id: 'statusbar-actividad',
+	    id: 'statusbar-actividad<?php echo $codigo;?>',
 	    autoScroll:true,
 	    defaults:{style:'color:red;font-size:15px;',autoWidth:true},
 	    items:[
