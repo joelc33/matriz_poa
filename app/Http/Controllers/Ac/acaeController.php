@@ -83,12 +83,12 @@ class acaeController extends Controller
                 $response['success']  = 'true';
                 $response['total'] = $tab_ac_ae->count();
                 $tab_ac_ae->skip($start)->take($limit);
-                $response['data']  = $tab_ac_ae->orderby('id_accion', 'ASC')->get()->toArray();
+                $response['data']  = $tab_ac_ae->orderby('id_accion', 'ASC')->orderby('id_tab_t47_ac_accion_especifica', 'ASC')->get()->toArray();
             } else {
                 $response['success']  = 'true';
                 $response['total'] = $tab_ac_ae->count();
                 $tab_ac_ae->skip($start)->take($limit);
-                $response['data']  = $tab_ac_ae->orderby('id_accion', 'ASC')->get()->toArray();
+                $response['data']  = $tab_ac_ae->orderby('id_accion', 'ASC')->orderby('id_tab_t47_ac_accion_especifica', 'ASC')->get()->toArray();
             }
 
             return Response::json($response, 200);
