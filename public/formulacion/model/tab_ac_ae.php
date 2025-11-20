@@ -2,7 +2,7 @@
 //*****Modelo en Base al ORM eloquent********//
 class tab_ac_ae extends Illuminate\Database\Eloquent\Model {
 	protected $table = 't47_ac_accion_especifica';
-	protected $primaryKey = 'id_accion_centralizada';
+	protected $primaryKey = 'id_tab_t47_ac_accion_especifica';
 	//public $timestamps = false;
 	public $incrementing = true;
 
