@@ -204,8 +204,8 @@ function cerrar_tab_ac_ae() {
 			exit();
 		}
 
-//		$ac_ae = tab_ac_ae::find($_POST['id_tab_t47_ac_accion_especifica']);
-		$ac_ae = tab_ac_ae::updateOrCreate(array('id_tab_t47_ac_accion_especifica' => $_POST['id_tab_t47_ac_accion_especifica']));
+		$ac_ae = tab_ac_ae::find($_POST['id_tab_t47_ac_accion_especifica']);
+//		$ac_ae = tab_ac_ae::updateOrCreate(array('id_tab_t47_ac_accion_especifica' => $_POST['id_tab_t47_ac_accion_especifica']));
 		$ac_ae->in_definitivo = true;
 		$ac_ae->save();
 
@@ -359,8 +359,8 @@ function abrir_tab_ac_ae() {
 			exit();
 		}
 
-		//$ac_ae = tab_ac_ae::find($_POST['ae']);
-		$ac_ae = tab_ac_ae::updateOrCreate(array('id_tab_t47_ac_accion_especifica' => $_POST['id_tab_t47_ac_accion_especifica']));
+		$ac_ae = tab_ac_ae::find($_POST['id_tab_t47_ac_accion_especifica']);
+//		$ac_ae = tab_ac_ae::updateOrCreate(array('id_tab_t47_ac_accion_especifica' => $_POST['id_tab_t47_ac_accion_especifica']));
 		$ac_ae->in_definitivo = null;
 		$ac_ae->save();
 
