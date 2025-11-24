@@ -186,10 +186,10 @@ $htmlSector.='
 		$this->Write(0, 'SECTOR '.$campo['nu_sector'], '', 0, 'C', true, 0, false, false, 0);
                 $this->SetFont('','BU',20);
 		$this->Write(0, $campo['tx_sector'], '', 0, 'C', true, 0, false, false, 0);
-
+                $anio = $campo['nu_anio'] -1;
 		$this->SetY(190);
 		$this->SetFont('','',11);
-		$this->Write(0, 'Maracaibo, '.'Diciembre'.' de '.$campo['nu_anio'], '', 0, 'C', true, 0, false, false, 0);
+		$this->Write(0, 'Maracaibo, '.'Diciembre'.' de '.$anio, '', 0, 'C', true, 0, false, false, 0);
 		
                 $nu_sector = $campo['nu_sector'];
                 
