@@ -153,6 +153,27 @@ foreach($this->datos_sector as $key => $campo4){
                 </tr>';
                 $tx_descripcion = $campo4['tx_descripcion'];
                 $total_sector = $total_sector + $campo4['monto'];
+                
+                
+		$sql_partidas = "select SUBSTRING(t54.co_partida, 1,3) as co_partida,t54.id_tab_ejercicio_fiscal,tx_nombre,sum(monto) as monto
+		from t54_ac_ae_partidas t54
+                inner join mantenimiento.tab_partidas as t02 on SUBSTRING(t54.co_partida, 1,3)=t02.co_partida and t54.id_tab_ejercicio_fiscal = t02.id_tab_ejercicio_fiscal
+                where edo_reg is true and id_accion_centralizada = ".$campo4['id_accion_centralizada']." and t54.id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." group by 1,2,3 order by 1 asc";                    
+/*echo $sql_partidas;
+exit(); */                
+                $this->datos_partidas = $comunes->ObtenerFilasBySqlSelect($sql_partidas);
+
+                foreach($this->datos_partidas as $key => $campo5){
+                    
+    		$htmlSector.='
+		<tr style="font-size:8px">
+                <td style="width: 80%;" align="left" > - '.$campo5['tx_nombre'].'</td>
+                <td style="width: 20%;" align="right" >'.number_format($campo5['monto'], 2, ',','.').'</td>
+                </tr>';                    
+                    
+
+                }                
+                
     
 }
 
@@ -592,6 +613,26 @@ foreach($this->datos_sector as $key => $campo4){
                 </tr>';
                 $tx_descripcion = $campo4['tx_descripcion'];
                 $total_sector = $total_sector + $campo4['monto'];
+                
+		$sql_partidas = "select SUBSTRING(t54.co_partida, 1,3) as co_partida,t54.id_tab_ejercicio_fiscal,tx_nombre,sum(monto) as monto
+		from t54_ac_ae_partidas t54
+                inner join mantenimiento.tab_partidas as t02 on SUBSTRING(t54.co_partida, 1,3)=t02.co_partida and t54.id_tab_ejercicio_fiscal = t02.id_tab_ejercicio_fiscal
+                where edo_reg is true and id_accion_centralizada = ".$campo4['id_accion_centralizada']." and t54.id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." group by 1,2,3 order by 1 asc";                    
+/*echo $sql_partidas;
+exit(); */                
+                $this->datos_partidas = $comunes->ObtenerFilasBySqlSelect($sql_partidas);
+
+                foreach($this->datos_partidas as $key => $campo5){
+                    
+    		$htmlSector.='
+		<tr style="font-size:8px">
+                <td style="width: 80%;" align="left" > - '.$campo5['tx_nombre'].'</td>
+                <td style="width: 20%;" align="right" >'.number_format($campo5['monto'], 2, ',','.').'</td>
+                </tr>';                    
+                    
+
+                }                  
+                
     
 }
 
