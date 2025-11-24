@@ -395,9 +395,68 @@ $html23.='
 </tbody>
 </table>';
 
-$this->writeHTML($html23, true, false, false, false, '');             
+$this->writeHTML($html23, true, false, false, false, ''); 
+
+		$this->Ln(-3);
+                
+    $sqlDetalleMonto= "SELECT SUM(monto) as subtotal_ac FROM
+    t69_metas_ac as t69
+    WHERE  id_accion_centralizada='".$campo['id_accion_centralizada']."' and co_ac_acc_espec='".$campo['id_accion']."' AND t69.edo_reg is true";                
+// echo $sqlDetalleMonto;
+//exit();               
+$this->actividad_monto = $comunes->ObtenerFilasBySqlSelect($sqlDetalleMonto);
+$html3 = '
+<!-- Tabla 3 -->
+<table border="0.1" style="width:100%" style="font-size:7px" cellpadding="3">
+<tbody>
+<tr nobr="true">
+<td colspan="8" align="right"><b>SUBTOTAL ACTIVIDADES</b></td>
+<td colspan="3" align="left"><b>'.number_format($this->actividad_monto[0]['subtotal_ac'], 2, ',','.').'</b></td>
+</tr>
+</tbody>
+</table>
+';
+		$this->writeHTML($html3, true, false, false, false, '');
+		$this->Ln(-3);
+                
+    $sqlMontoPro= "SELECT *,mo_total_ejecutor(id_ejecutor,id_ejercicio::int) as mo_proyecto_ac FROM
+    t46_acciones_centralizadas
+    WHERE  id=".$campo['id_accion_centralizada'];      
+    
+$this->programa_monto = $comunes->ObtenerFilasBySqlSelect($sqlMontoPro);    
+                
+$html4 = '
+<!-- Tabla 4 -->
+<table border="0.1" style="width:100%" style="font-size:7px" cellpadding="3">
+<tbody>
+<tr nobr="true">
+<td colspan="8" align="right"><b>SUBTOTAL PROGRAMA</b></td>
+<td colspan="3" align="left"><b>'.number_format($this->programa_monto[0]['monto'], 2, ',','.').'</b></td>
+</tr>
+</tbody>
+</table>
+';
+		$this->writeHTML($html4, true, false, false, false, '');
+		$this->Ln(-3);
+
+$html5 = '
+<!-- Tabla 5 -->
+<table border="0.1" style="width:100%" style="font-size:7px" cellpadding="3">
+<tbody>
+<tr nobr="true">
+<td colspan="8" align="right"><b>TOTAL EJECUTOR</b></td>
+<td colspan="3" align="left"><b>'.number_format($this->programa_monto[0]['mo_proyecto_ac'], 2, ',','.').'</b></td>
+</tr>
+</tbody>
+</table>
+';
+		$this->writeHTML($html5, true, false, false, false, '');
+		$this->Ln(-3);                
 
 		}
+                
+                
+                
         }
 }
 
