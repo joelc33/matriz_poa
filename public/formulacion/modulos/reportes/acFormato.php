@@ -54,7 +54,7 @@ class MYPDF extends TCPDF {
 		join mantenimiento.tab_ejecutores as t2 on t2.id_ejecutor = t46.id_ejecutor
 		inner join mantenimiento.tab_sectores as t3 on t46.id_subsector=t3.id
                 join mantenimiento.tab_ac_ae_predefinida as t4 on t4.id = t47.id_accion
-	where t46.edo_reg is true and ".$condicionAC." t46.id_ejercicio = ".$_SESSION['ejercicio_fiscal']." group by 1,2,3,4,5,6,7,8,t4.de_nombre,10,t1.nu_original  order by 1 asc, 4 asc";
+	where t46.edo_reg is true and ".$condicionAC." t46.id_ejercicio = ".$_SESSION['ejercicio_fiscal']." group by 1,2,3,4,5,6,7,8,t4.de_nombre,10,t1.nu_original  order by 1 asc, t46.id_ejecutor asc, 4 asc";
 
 /*echo $sql;
 exit();*/
@@ -89,10 +89,90 @@ exit();*/
 
         $portada=0;
         $nu_sector = '';
-
+                
+        $cant_sector = 0;
+        
 	foreach($this->datos as $key => $campo){
             
             if($nu_sector<>$campo['nu_sector']){
+                
+                
+                 if($nu_sector==''){
+
+
+
+                }else{
+
+                    $this->AddPage();
+                    
+		if($id_ejecutor!= '')
+		{
+
+			$condicionSector.= " t46.id_ejecutor = '".$id_ejecutor."' AND ";
+		}                    
+                    
+		$sql_sector = "select distinct t46.id as id_accion_centralizada,
+                t1.de_nombre as de_programa,t46.id_ejecutor,
+                t2.tx_ejecutor,t3.tx_codigo,tx_ejecutor_poa,t46.monto,t3.tx_descripcion
+		from t46_acciones_centralizadas as t46
+                left join t47_ac_accion_especifica as t47 on t46.id = t47.id_accion_centralizada
+		join mantenimiento.tab_ac_predefinida as t1 on t1.id = t46.id_accion
+		join mantenimiento.tab_ejecutores as t2 on t2.id_ejecutor = t46.id_ejecutor
+		inner join mantenimiento.tab_sectores as t3 on t46.id_subsector=t3.id
+                join mantenimiento.tab_ac_ae_predefinida as t4 on t4.id = t47.id_accion
+                where t46.edo_reg is true and ".$condicionSector." t3.tx_codigo = '".$nu_sector."' and t46.id_ejercicio = ".$_SESSION['ejercicio_fiscal']." order by t46.id_ejecutor asc";                    
+/*echo $sql_sector;
+exit(); */                
+                $this->datos_sector = $comunes->ObtenerFilasBySqlSelect($sql_sector);
+                
+	$htmlSector = '
+<table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
+	<tr align="center" bgcolor="#BDBDBD">
+		<td colspan="2"><b>VINCULACIÓN PLAN-PRESUPUESTO</b></td>
+	</tr>  
+<thead>
+<tr style="font-size:9px">
+<th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 40%;"><b>PROGRAMAS / ACTIVIDADES</b></th>
+<th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 40%;"><b>UNIDAD EJECUTORA</b></th>
+<th colspan="11" align="right" bgcolor="#BDBDBD" style="width: 20%;"><b>ASIGNACIÓN PRESUPUESTARIA</b></th>
+</tr>
+</thead>'; 
+        
+$htmlSector.='
+<tbody>';        
+
+$total_sector=0;
+
+foreach($this->datos_sector as $key => $campo4){
+    
+    		$htmlSector.='
+		<tr style="font-size:8px">
+                <td style="width: 40%;" align="left" ><b>'.$campo4['de_programa'].'</b></td>
+                <td style="width: 40%;" align="center" ><b>'.$campo4['id_ejecutor'].'-'.$campo4['tx_ejecutor_poa'].'</b></td>
+                <td style="width: 20%;" align="right" ><b>'.number_format($campo4['monto'], 2, ',','.').'</b></td>
+                </tr>';
+                $tx_descripcion = $campo4['tx_descripcion'];
+                $total_sector = $total_sector + $campo4['monto'];
+    
+}
+
+    		$htmlSector.='
+		<tr style="font-size:9px">
+                <td style="width: 80%;" bgcolor="#BDBDBD" align="left" ><b>TOTAL, SECTOR '.$nu_sector.': '.$tx_descripcion.'</b></td>
+                <td style="width: 20%;" bgcolor="#BDBDBD" align="right" ><b>'.number_format($total_sector, 2, ',','.').'</b></td>
+                </tr>';
+
+$htmlSector.='
+</tbody>
+</table>';
+        
+		$this->SetFont('','',11);
+		$this->writeHTML($htmlSector, true, false, false, false, ''); 
+                
+                
+
+                }
+                
                 $this->AddPage();
 /******Portada*********/
 		$this->SetY(75);
@@ -111,7 +191,10 @@ exit();*/
 		$this->SetFont('','',11);
 		$this->Write(0, 'Maracaibo, '.'Diciembre'.' de '.$campo['nu_anio'], '', 0, 'C', true, 0, false, false, 0);
 		
-                $nu_sector = $campo['nu_sector']; 
+                $nu_sector = $campo['nu_sector'];
+                
+                $cant_sector++;
+                
 
             }
             $this->AddPage();
@@ -181,7 +264,7 @@ $html1 = '
 </tr>
 <tr style="font-size:9px">
 <td style="width: 70%;"><b>ACTIVIDAD PROGRAMATICA.:</b> '.$campo['nu_numero'].' - '.$campo['de_actividad'].'</td>
-<td style="width: 30%;"><b>COD. PRESUPUESTARIO: </b> '.$campo['co_presupuesto'].' </td>
+<td style="width: 30%;"><b>PROGRAMATICA: </b> '.$campo['co_presupuesto'].' </td>
 </tr>
 </tbody>
 </table>
@@ -204,11 +287,11 @@ $html23.= '
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 20%;" rowspan="2">ACTIVIDAD</th>
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 18%;" rowspan="2">INDICADOR</th>
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 5%;"  rowspan="2">META ANUAL</th>
+<th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 7%;" rowspan="2">UNIDAD DE MEDIDA</th>
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 5%;">I TRIM</th>
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 5%;">2 TRIM</th>
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 5%;">3 TRIM</th>
 <th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 5%;">4 TRIM</th>
-<th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 7%;" rowspan="2">UNIDAD DE MEDIDA</th>
 </tr>
 <tr style="font-size:6px">
 <th align="center" bgcolor="#BDBDBD" style="width: 5%;">PROG</th>
@@ -287,11 +370,11 @@ foreach($this->datos_actividades as $key => $campo3){
                 <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
 		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
+                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['segundo_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tercer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['cuarto_trimestre'].'</td>
-                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>
                 </tr>';   
             
         }else{
@@ -302,11 +385,11 @@ foreach($this->datos_actividades as $key => $campo3){
                 <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
 		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
+                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['segundo_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tercer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['cuarto_trimestre'].'</td>
-                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>
                 </tr>';   
         }
         
@@ -325,11 +408,11 @@ foreach($this->datos_actividades as $key => $campo3){
                 <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
 		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
+                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['segundo_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tercer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['cuarto_trimestre'].'</td>
-                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>
                 </tr>';   
                 
                 $id_nueva_oficina = 0;
@@ -341,11 +424,11 @@ foreach($this->datos_actividades as $key => $campo3){
                 <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
 		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
+                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['segundo_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tercer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['cuarto_trimestre'].'</td>
-                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>
                 </tr>'; 
                 
                 
@@ -360,11 +443,11 @@ foreach($this->datos_actividades as $key => $campo3){
                 <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
 		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
+                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['segundo_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tercer_trimestre'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['cuarto_trimestre'].'</td>
-                <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>
                 </tr>';   
                 
                 $id_nueva_oficina = 0;
@@ -451,11 +534,79 @@ $html5 = '
 </table>
 ';
 		$this->writeHTML($html5, true, false, false, false, '');
-		$this->Ln(-3);                
+		$this->Ln(-3); 
+                
+        
+                $id_ejecutor_poa = $campo['id_ejecutor'];
 
 		}
                 
-                
+                    $this->AddPage();
+                    
+                    
+                    
+		if($id_ejecutor!= '')
+		{
+
+			$condicionSector.= " t46.id_ejecutor = '".$id_ejecutor."' AND ";
+		}                    
+                    
+		$sql_sector = "select distinct t46.id as id_accion_centralizada,
+                t1.de_nombre as de_programa,t46.id_ejecutor,
+                t2.tx_ejecutor,t3.tx_codigo,tx_ejecutor_poa,t46.monto,t3.tx_descripcion
+		from t46_acciones_centralizadas as t46
+                left join t47_ac_accion_especifica as t47 on t46.id = t47.id_accion_centralizada
+		join mantenimiento.tab_ac_predefinida as t1 on t1.id = t46.id_accion
+		join mantenimiento.tab_ejecutores as t2 on t2.id_ejecutor = t46.id_ejecutor
+		inner join mantenimiento.tab_sectores as t3 on t46.id_subsector=t3.id
+                join mantenimiento.tab_ac_ae_predefinida as t4 on t4.id = t47.id_accion
+                where t46.edo_reg is true and ".$condicionSector." t3.tx_codigo = '".$nu_sector."' and t46.id_ejercicio = ".$_SESSION['ejercicio_fiscal']." order by t46.id_ejecutor asc";                    
+                 
+                $this->datos_sector = $comunes->ObtenerFilasBySqlSelect($sql_sector);
+$htmlSector='';                
+	$htmlSector = '
+<table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
+	<tr align="center" bgcolor="#BDBDBD">
+		<td colspan="2"><b>VINCULACIÓN PLAN-PRESUPUESTO</b></td>
+	</tr>  
+<thead>
+<tr style="font-size:9px">
+<th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 40%;"><b>PROGRAMAS / ACTIVIDADES</b></th>
+<th colspan="11" align="center" bgcolor="#BDBDBD" style="width: 40%;"><b>UNIDAD EJECUTORA</b></th>
+<th colspan="11" align="right" bgcolor="#BDBDBD" style="width: 20%;"><b>ASIGNACIÓN PRESUPUESTARIA</b></th>
+</tr>
+</thead>'; 
+        
+$htmlSector.='
+<tbody>';        
+
+$total_sector=0;
+
+foreach($this->datos_sector as $key => $campo4){
+    
+    		$htmlSector.='
+		<tr style="font-size:8px">
+                <td style="width: 40%;" align="left" ><b>'.$campo4['de_programa'].'</b></td>
+                <td style="width: 40%;" align="center" ><b>'.$campo4['id_ejecutor'].'-'.$campo4['tx_ejecutor_poa'].'</b></td>
+                <td style="width: 20%;" align="right" ><b>'.number_format($campo4['monto'], 2, ',','.').'</b></td>
+                </tr>';
+                $tx_descripcion = $campo4['tx_descripcion'];
+                $total_sector = $total_sector + $campo4['monto'];
+    
+}
+
+    		$htmlSector.='
+		<tr style="font-size:9px">
+                <td style="width: 80%;" bgcolor="#BDBDBD" align="left" ><b>TOTAL, SECTOR '.$nu_sector.': '.$tx_descripcion.'</b></td>
+                <td style="width: 20%;" bgcolor="#BDBDBD" align="right" ><b>'.number_format($total_sector, 2, ',','.').'</b></td>
+                </tr>';
+
+$htmlSector.='
+</tbody>
+</table>';
+        
+		$this->SetFont('','',11);
+		$this->writeHTML($htmlSector, true, false, false, false, '');                 
                 
         }
 }
