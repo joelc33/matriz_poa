@@ -395,8 +395,8 @@ foreach($this->datos_actividades as $key => $campo3){
 
 		$html23.='
 		<tr style="font-size:6px">
-                <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
-		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
+                <td style="width: 20%;" align="justify" >'.$campo3['nb_meta'].'</td>
+		<td style="width: 18%;" align="justify">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
                 <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
@@ -409,9 +409,9 @@ foreach($this->datos_actividades as $key => $campo3){
         
 		$html23.='
 		<tr style="font-size:6px">
-		<td style="width: 20%;" align="left" rowspan="'.$cantidadActividades.'">'.$campo2['objetivo_institucional'].'</td>
-                <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
-		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
+		<td style="width: 20%;" align="justify" rowspan="'.$cantidadActividades.'">'.$campo2['objetivo_institucional'].'</td>
+                <td style="width: 20%;" align="justify" >'.$campo3['nb_meta'].'</td>
+		<td style="width: 18%;" align="justify">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
                 <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
@@ -432,9 +432,9 @@ foreach($this->datos_actividades as $key => $campo3){
 		$html23.='
 		<tr style="font-size:6px">
 		<td style="width: 10%;" align="center" rowspan="'.$cantidadOficinas.'">'.$campo2['de_oficina'].'</td>
-		<td style="width: 20%;" align="left" rowspan="'.$cantidadActividades.'">'.$campo2['objetivo_institucional'].'</td>
-                <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
-		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
+		<td style="width: 20%;" align="justify" rowspan="'.$cantidadActividades.'">'.$campo2['objetivo_institucional'].'</td>
+                <td style="width: 20%;" align="justify" >'.$campo3['nb_meta'].'</td>
+		<td style="width: 18%;" align="justify">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
                 <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
@@ -449,8 +449,8 @@ foreach($this->datos_actividades as $key => $campo3){
             
 		$html23.='
 		<tr style="font-size:6px">
-                <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
-		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
+                <td style="width: 20%;" align="justify" >'.$campo3['nb_meta'].'</td>
+		<td style="width: 18%;" align="justify">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
                 <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
@@ -467,9 +467,9 @@ foreach($this->datos_actividades as $key => $campo3){
 		$html23.='
 		<tr style="font-size:6px">
 		<td style="width: 10%;" align="center" rowspan="'.$cantidadOficinas.'">'.$campo2['de_oficina'].'</td>
-		<td style="width: 20%;" align="left" rowspan="'.$cantidadActividades.'">'.$campo2['objetivo_institucional'].'</td>
-                <td style="width: 20%;" align="left" >'.$campo3['nb_meta'].'</td>
-		<td style="width: 18%;" align="left">'.$campo3['nb_responsable'].'</td>
+		<td style="width: 20%;" align="justify" rowspan="'.$cantidadActividades.'">'.$campo2['objetivo_institucional'].'</td>
+                <td style="width: 20%;" align="justify" >'.$campo3['nb_meta'].'</td>
+		<td style="width: 18%;" align="justify">'.$campo3['nb_responsable'].'</td>
                 <td style="width: 5%;" align="center" >'.$campo3['tx_prog_anual'].'</td>
                 <td style="width: 7%;" align="center" >'.$campo3['de_unidad_medida'].'</td>                    
                 <td style="width: 5%;" align="center" >'.$campo3['primer_trimestre'].'</td>
@@ -741,8 +741,8 @@ foreach($this->datos_actividades_vinculacion as $key => $campo7){
 
     		$html23.='
 		<tr style="font-size:8px">
-                <td style="width: 35%;"  align="left" ><b>'.$campo7['nb_meta'].'</b></td>
-                <td style="width: 30%;"  align="left" ><b>'.$campo7['nb_responsable'].'</b></td>
+                <td style="width: 35%;"  align="justify" ><b>'.$campo7['nb_meta'].'</b></td>
+                <td style="width: 30%;"  align="justify" ><b>'.$campo7['nb_responsable'].'</b></td>
                 <td style="width: 15%;"  align="center" ><b>'.$campo7['tx_prog_anual'].'</b></td>
                 <td style="width: 20%;"  align="right" ><b>'.number_format($campo7['monto'], 2, ',','.').'</b></td>
                 </tr>';
