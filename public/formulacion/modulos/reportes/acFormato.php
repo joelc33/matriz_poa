@@ -660,7 +660,7 @@ $pdf->SetTitle('PROGRAMAS - ACTIVIDADES');
 $pdf->SetSubject('MI DOCUMENTO');
 $pdf->SetKeywords('Planilla, PDF, Registro');
 $pdf->SetMargins(15,20,15);
-$pdf->SetTopMargin(23);
+$pdf->SetTopMargin(30);
 $pdf->setPrintHeader(false);
 $pdf->SetPrintFooter(true);
 $pdf->cuerpo();
