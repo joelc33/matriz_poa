@@ -213,12 +213,12 @@ function encabezado($pdf,$h,$tipo){
       //$pdf->Image('../../images/cintillo_2017.jpg', 15, 3, 195, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
 	  $pdf->Image('../../images/zulia_escudo_negro.png', 15, 3, 20, 16, 'PNG', '', '', true, 150, '', false, false, 0, false, false, false);
     }elseif($_SESSION['ejercicio_fiscal'] > 2017){
-      $pdf->Image('../../images/Alcaldia-Bolivariana-de-Maracaibo.jpg', 15, 3, 40, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+      $pdf->Image('../../images/poa_imagen.jpg', 15, 3, 40, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
       $pdf->setXY(55,7);
       $pdf->SetFont('','B',11);
-      $pdf->MultiCell(190, 5, 'ALCALDIA BOLIVARIANA DE MARACAIBO', 0, 'L', 0, 0, '', '', true);
-      $pdf->setXY(55,14);
-      $pdf->MultiCell(190, 5, 'PLAN OPERATIVO ANUAL '.$_SESSION['ejercicio_fiscal'], 0, 'L', 0, 0, '', '', true);
+//      $pdf->MultiCell(190, 5, 'ALCALDIA BOLIVARIANA DE MARACAIBO', 0, 'L', 0, 0, '', '', true);
+//      $pdf->setXY(55,14);
+//      $pdf->MultiCell(190, 5, 'PLAN OPERATIVO ANUAL '.$_SESSION['ejercicio_fiscal'], 0, 'L', 0, 0, '', '', true);
       $pdf->setY(23);
     }
 		//$pdf->Image('../../images/cintillo_2017.jpg', 10, 3, 195, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
@@ -233,13 +233,13 @@ function encabezado($pdf,$h,$tipo){
     }elseif($_SESSION['ejercicio_fiscal'] == 2017){
       $pdf->Image('../../images/cintillo_2017.jpg', 15, 3, 259, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
     }elseif($_SESSION['ejercicio_fiscal'] > 2017){
-      $pdf->Image('../../images/Alcaldia-Bolivariana-de-Maracaibo.jpg', 15, 3, 40, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+      $pdf->Image('../../images/poa_imagen.jpg', 30, 3, 220, 20, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
       $pdf->setXY(55,7);
       $pdf->SetFont('','B',11);
-      $pdf->MultiCell(190, 5, 'ALCALDIA BOLIVARIANA DE MARACAIBO', 0, 'L', 0, 0, '', '', true);
-      $pdf->setXY(55,14);
-      $pdf->MultiCell(190, 5, 'PLAN OPERATIVO ANUAL '.$_SESSION['ejercicio_fiscal'], 0, 'L', 0, 0, '', '', true);
-      $pdf->setY(23);
+//      $pdf->MultiCell(190, 5, 'ALCALDIA BOLIVARIANA DE MARACAIBO', 0, 'L', 0, 0, '', '', true);
+//      $pdf->setXY(55,14);
+//      $pdf->MultiCell(190, 5, 'PLAN OPERATIVO ANUAL '.$_SESSION['ejercicio_fiscal'], 0, 'L', 0, 0, '', '', true);
+      $pdf->setY(30);
     }
 		//$pdf->Image('../../images/cintillo_2018.jpg', 10, 3, 259, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
     //$pdf->Image('../../images/cintillo_2017.jpg', 10, 3, 259, 16, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
