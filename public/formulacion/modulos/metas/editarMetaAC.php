@@ -195,7 +195,7 @@ this.nb_responsable = new Ext.form.TextArea({
 	name:'nb_responsable',
 	value:this.OBJ.nb_responsable,
 	width:400,
-	maxLength: 250,
+	maxLength: 550,
 	allowBlank:false,
         listeners:{
             change: function(){
