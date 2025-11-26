@@ -362,7 +362,7 @@ foreach($this->datos_oficinas as $key => $campo2){
 exit();*/
     
     
-		$sqlActividades = "SELECT co_metas,id_tab_t47_ac_accion_especifica,nb_meta,nb_responsable,tx_prog_anual,
+		$sqlActividades = "SELECT co_metas,id_tab_t47_ac_accion_especifica,lower(nb_meta) as nb_meta,lower(nb_responsable) as nb_responsable,tx_prog_anual,
     (select sum(monto)::integer from t71_metas_distribucion_fisica where co_metas = t69.co_metas and mes in (1,2,3)) as primer_trimestre,
     (select sum(monto)::integer from t71_metas_distribucion_fisica where co_metas = t69.co_metas and mes in (4,5,6)) as segundo_trimestre,
     (select sum(monto)::integer from t71_metas_distribucion_fisica where co_metas = t69.co_metas and mes in (7,8,9)) as tercer_trimestre,
