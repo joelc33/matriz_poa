@@ -669,8 +669,8 @@ $htmlSector.='
 		$this->SetFont('','B',20);
 		$this->SetTextColor(0,0,0);
                 $this->Ln(10);
-		$this->Write(0, 'VINCULACIÓN', '', 0, 'R', true, 0, false, false, 0);
-		$this->Write(0, 'METAS '.$campo['nu_anio'], '', 0, 'R', true, 0, false, false, 0);
+		$this->Write(0, 'VINCULACIÓN', '', 0, 'C', true, 0, false, false, 0);
+		$this->Write(0, 'METAS '.$campo['nu_anio'], '', 0, 'C', true, 0, false, false, 0);
                 $anio = $campo['nu_anio'] -1;
 		$this->SetY(190);
 		$this->SetFont('','',11);
