@@ -32,8 +32,8 @@ class reporteController extends Controller
         $iconos = "{ title: 'Libros ".Session::get('ejercicio')."', opciones: [
         {
           id: 'libro_ley',
-          text: 'Ley de Presupuesto.',
-          url: 'reporte/libro/ley',
+          text: 'Ordenanza.',
+          url: 'formulacion/modulos/reportes/poa.php',
           icon: 'zulia_escudo.png',
           desc: 'Libro de Ley de Presupuesto para el Ejercicio Fiscal ".Session::get('ejercicio')."',
           estatus: 'nuevo',
