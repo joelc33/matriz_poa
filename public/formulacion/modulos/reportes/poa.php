@@ -76,12 +76,15 @@ exit();*/
 		foreach($this->datos as $key => $campo){
 			$tipo = $campo["co_tipo"];
 		}*/
-        //  pie($this, 'h', 2);
-        //$this->Cell(0, 10, 'Pagina '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+        pie($this, 'h', 2);
+        $this->Cell(0, 10, 'Pagina '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
     }
     public function setHeader()
     {
-        //  encabezado($this, 'h', 1);
+            $this->Image('../../images/poa_imagen_ordenanza.jpg', 30, 3, 220, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+            $this->setXY(55,7);
+            $this->SetFont('','B',11);
+            $this->setY(30);
     }
     public function cuerpo()
     {
@@ -386,4 +389,4 @@ $pdf->SetTopMargin(30);
 $pdf->setPrintHeader(false);
 $pdf->SetPrintFooter(true);
 $pdf->cuerpo();
-$pdf->Output('POA_PG_' . $_SESSION['ejercicio_fiscal'] . '_' . date("H:i:s") . '.pdf', 'D');
+$pdf->Output('Ordenanza_' . $_SESSION['ejercicio_fiscal'] . '_' . date("H:i:s") . '.pdf', 'D');
