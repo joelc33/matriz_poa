@@ -34,7 +34,7 @@ class reporteController extends Controller
           id: 'libro_ley',
           text: 'Ordenanza.',
           url: 'formulacion/modulos/reportes/poa.php',
-          icon: 'zulia_escudo.png',
+          icon: 'Escudo_del_Municipio_Maracaibo.jpg',
           desc: 'Libro de Ley de Presupuesto para el Ejercicio Fiscal ".Session::get('ejercicio')."',
           estatus: 'nuevo',
           iconCls: 'icon-pdf'
