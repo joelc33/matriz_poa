@@ -81,18 +81,58 @@ exit();*/
     }
     public function setHeader()
     {
-            $this->Image('../../images/poa_imagen_ordenanza.jpg', 30, 3, 220, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+           /* $this->Image('../../images/escudo.jpg', 200, 3, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
             $this->setXY(55,7);
             $this->SetFont('','B',11);
-            $this->setY(30);
+            $this->setY(30);*/
     }
     public function cuerpo()
     {
+        
+        $this->getPortada();
+        $this->getPartida();
+        $this->getSector();
+        
+    }
+
+    function getPortada(){
+
+                $this->AddPage();
+                $this->Image('../../images/escudo.jpg', 110, 15, 60, 60, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+         
+                $bMargin = $this->getBreakMargin();
+                $auto_page_break = $this->AutoPageBreak;
+                $this->SetAutoPageBreak(false, 0);
+                $this->SetAutoPageBreak($auto_page_break, $bMargin);
+                $this->setPageMark();
+                /******Portada*********/
+                $this->SetY(75);
+                $this->SetFont('', 'B', 20);
+                $this->SetTextColor(0, 0, 0);
+                $this->SetFont('', 'B', 20);
+                $this->SetTextColor(0, 0, 0);
+                $this->Ln(10);
+                $this->Write(0, "PROYECTO DE ORDENANZA DE \n PRESUPUESTO DE INGRESOS Y  \n GASTOS AÑO ".$_SESSION['ejercicio_fiscal'], '', 0, 'C', true, 0, false, false, 0);
+                $this->SetFont('', 'BU', 20);
+
+
+                $this->SetFont('', 'B', 12);
+                $this->Ln(50);
+                $this->Write(0, "DICIEMBRE ".($_SESSION['ejercicio_fiscal']-1), '', 0, 'R', false, 0, false, false, 0);
+                
+
+                $this->SetY(190);
+                $this->SetFont('', '', 11); 
+
+    }
+
+
+
+    function getSector(){
 
         if ($_GET['id_ejecutor'] != '') {
             $id_ejecutor = decode($_GET['id_ejecutor']);
         }
-
 
         $this->getRegistro($id_ejecutor);
         $comunes = new ConexionComun();
@@ -102,11 +142,7 @@ exit();*/
 
         $cant_sector = 0;
 
-
-
         foreach ($this->datos as $key => $campo) {
-
-
 
             if ($nu_sector <> $campo['nu_sector']) {
 
@@ -115,8 +151,9 @@ exit();*/
                     $nu_sector = $campo['nu_sector'];
                 }
 
-
                 $this->AddPage();
+                $this->Image('../../images/escudo.jpg', 230, 10, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+         
                 $bMargin = $this->getBreakMargin();
                 $auto_page_break = $this->AutoPageBreak;
                 $this->SetAutoPageBreak(false, 0);
@@ -141,6 +178,72 @@ exit();*/
                 $this->getPrograma($comunes,  $nu_sector);
             }
         }
+
+    }
+
+    function getPartida()
+    {
+
+             
+        /******Objetivos*********/
+        $this->AddPage();
+        $this->Image('../../images/escudo.jpg', 240, 31,20, 20, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+          
+        $htmlObjetivo = '
+                <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
+                     <tr>
+                        <td>
+                            <table>
+                               <tr align="left" style="border: 0px">
+                                    <td colspan="3"><b>ENTIDAD FEDERAL : ZULIA</b></td>
+                                </tr>
+                                <tr align="left" border: 0px>                        
+                                    <td colspan="3"><b>CODIGO PRESUPUESTARIO Y NOMBRE DEL MUNICIPIO: E7210 MARACAIBO</b></td>
+                                </tr>
+                                <tr align="left" >
+                                    <td colspan="3"><b>PRESUPUESTO: '.$_SESSION['ejercicio_fiscal'].'</b></td>
+                                </tr>
+                                <tr align="center" >
+                                    <td colspan="3"><b>TITULO II</b></td>
+                                </tr>
+                                <tr align="center" >
+                                    <td colspan="3"><b>PRESUPUESTO DE INGRESOS</b></td>
+                                </tr>
+                                <tr align="center" >
+                                    <td colspan="3">(EN BOLIVARES)</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>                                         
+                </table>';
+        $this->SetFont('', '', 8);
+        //$this->Ln(-20);
+        $this->writeHTML($htmlObjetivo, true, false, false, false, '');
+        $this->Ln(-6);
+
+        $deno = '<table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
+                    <thead>
+                        <tr>
+                            <td style="width:200px;text-align: center;" colspan="4"><b>CODIGO</b></td>
+                            <td style="width:350px;text-align: center;" rowspan="2"><b>DENOMINACIÓN</b></td>
+                            <td style="width:157px;text-align: center;" rowspan="2"><b>MONTO</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;"><b>RAMO</b></td>
+                            <td style="text-align: center;"><b>SUB-RAMO</b></td>
+                            <td style="text-align: center;"><b>ESP.</b></td>
+                            <td style="text-align: center;"><b>SUB-ESP</b></td>
+                        </tr>
+                    </thead>';
+      
+
+        $deno .= '</table>';
+        $this->SetFont('', '', 8);
+        //$this->Ln(-20);
+        $this->writeHTML($deno, true, false, false, false, '');
+
+        // $portada = $portada + 1;
+        //$obj->AddPage();
     }
 
 
@@ -160,11 +263,13 @@ exit();*/
                                         where t46.edo_reg is true and  t3.tx_codigo = '" . $nu_sector . "' and t46.id_ejercicio = " . $_SESSION['ejercicio_fiscal'] . " order by t46.id_ejecutor asc";
 
 
-        $datos_sector = $comunes->ObtenerFilasBySqlSelect($sql_sector);
+        $datos_programa = $comunes->ObtenerFilasBySqlSelect($sql_sector);
 
-        foreach ($datos_sector as $key => $campo) {
+        foreach ($datos_programa as $key => $campo) {
 
             $this->AddPage();
+            $this->Image('../../images/escudo.jpg', 230, 10, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+         
             $bMargin = $this->getBreakMargin();
             $auto_page_break = $this->AutoPageBreak;
             $this->SetAutoPageBreak(false, 0);
@@ -183,13 +288,13 @@ exit();*/
             $this->SetY(190);
             $this->SetFont('', '', 11);
 
-            $this->getDescripcionPrograma($comunes, $campo['id_accion_centralizada'], $this);
+            $this->getDescripcionPrograma($comunes, $campo['id_accion_centralizada']);
 
             $nu_sector = $campo['nu_sector'];
         }
     }
 
-    function getDescripcionPrograma($comunes, $id_accion_centralizada, $obj)
+    function getDescripcionPrograma($comunes, $id_accion_centralizada)
     {
 
         $sqlAc = "select t3.tx_codigo as nu_sector,t3.tx_descripcion as tx_sector,t46.id as id_accion_centralizada,t46.inst_objetivos,
@@ -210,7 +315,9 @@ exit();*/
 
       
         /******Objetivos*********/
-        $obj->AddPage();
+        $this->AddPage();
+        $this->Image('../../images/escudo.jpg', 240, 31, 18, 18, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+         
         $htmlObjetivo = '
                 <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                     <tr>
@@ -268,17 +375,18 @@ exit();*/
                    
                 </tbody>
                 </table>';
-        $obj->SetFont('', '', 10);
+        $this->SetFont('', '', 10);
         //$this->Ln(-20);
-        $obj->writeHTML($htmlObjetivo, true, false, false, false, '');
+        $this->writeHTML($htmlObjetivo, true, false, false, false, '');
 
-        $this->getMetasPrograma($comunes, $datos_ac["id_accion_centralizada"],$datos_ac['id_accion'],$datos_ac,$this);
+        $this->getMetasPrograma($comunes, $datos_ac["id_accion_centralizada"],$datos_ac['id_accion'],$datos_ac);
 
         // $portada = $portada + 1;
         //$obj->AddPage();
     }
 
-    function getMetasPrograma($comunes, $id_accion_centralizada,$co_ac_acc_espec, $datos_ac,$obj)
+    
+    function getMetasPrograma($comunes, $id_accion_centralizada,$co_ac_acc_espec, $datos_ac)
     {
 
         $sqlAc = "SELECT co_metas,id_tab_t47_ac_accion_especifica,capitalize_sentence(lower(nb_meta)) as nb_meta,capitalize_sentence(lower(nb_responsable)) as nb_responsable,tx_prog_anual,
@@ -293,7 +401,9 @@ exit();*/
         $datos = $comunes->ObtenerFilasBySqlSelect($sqlAc);
       
         /******Objetivos*********/
-        $obj->AddPage();
+        $this->AddPage();
+        $this->Image('../../images/escudo.jpg', 240, 31, 15, 15, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+          
         $htmlObjetivo = '
                 <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                      <tr>
@@ -340,10 +450,10 @@ exit();*/
                         <td>'.$datos_ac["tx_ejecutor"].'</td>
                     </tr>                              
                 </table>';
-        $obj->SetFont('', '', 8);
+        $this->SetFont('', '', 8);
         //$this->Ln(-20);
-        $obj->writeHTML($htmlObjetivo, true, false, false, false, '');
-$this->Ln(-6);
+        $this->writeHTML($htmlObjetivo, true, false, false, false, '');
+        $this->Ln(-6);
 
         $deno = '<table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                     <thead>
@@ -368,9 +478,9 @@ $this->Ln(-6);
 
 
         $deno .= '</table>';
-        $obj->SetFont('', '', 8);
+        $this->SetFont('', '', 8);
         //$this->Ln(-20);
-        $obj->writeHTML($deno, true, false, false, false, '');
+        $this->writeHTML($deno, true, false, false, false, '');
 
         // $portada = $portada + 1;
         //$obj->AddPage();
