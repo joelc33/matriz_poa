@@ -77,58 +77,59 @@ exit();*/
 			$tipo = $campo["co_tipo"];
 		}*/
         pie($this, 'h', 2);
-        $this->Cell(0, 10, 'Pagina '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+        $this->Cell(0, 10, 'Pagina ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
     }
     public function setHeader()
     {
-           /* $this->Image('../../images/escudo.jpg', 200, 3, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+        /* $this->Image('../../images/escudo.jpg', 200, 3, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
             $this->setXY(55,7);
             $this->SetFont('','B',11);
             $this->setY(30);*/
     }
     public function cuerpo()
     {
-        
+
         $this->getPortada();
         $this->getPartida();
         $this->getSector();
-        
-    }
-
-    function getPortada(){
-
-                $this->AddPage();
-                $this->Image('../../images/escudo.jpg', 110, 15, 60, 60, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-         
-                $bMargin = $this->getBreakMargin();
-                $auto_page_break = $this->AutoPageBreak;
-                $this->SetAutoPageBreak(false, 0);
-                $this->SetAutoPageBreak($auto_page_break, $bMargin);
-                $this->setPageMark();
-                /******Portada*********/
-                $this->SetY(75);
-                $this->SetFont('', 'B', 20);
-                $this->SetTextColor(0, 0, 0);
-                $this->SetFont('', 'B', 20);
-                $this->SetTextColor(0, 0, 0);
-                $this->Ln(10);
-                $this->Write(0, "PROYECTO DE ORDENANZA DE \n PRESUPUESTO DE INGRESOS Y  \n GASTOS AÑO ".$_SESSION['ejercicio_fiscal'], '', 0, 'C', true, 0, false, false, 0);
-                $this->SetFont('', 'BU', 20);
-
-
-                $this->SetFont('', 'B', 12);
-                $this->Ln(50);
-                $this->Write(0, "DICIEMBRE ".($_SESSION['ejercicio_fiscal']-1), '', 0, 'R', false, 0, false, false, 0);
-                
-
-                $this->SetY(190);
-                $this->SetFont('', '', 11); 
 
     }
 
+    function getPortada()
+    {
+
+        $this->AddPage();
+        $this->Image('../../images/escudo.jpg', 110, 15, 60, 60, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+
+        $bMargin = $this->getBreakMargin();
+        $auto_page_break = $this->AutoPageBreak;
+        $this->SetAutoPageBreak(false, 0);
+        $this->SetAutoPageBreak($auto_page_break, $bMargin);
+        $this->setPageMark();
+        /******Portada*********/
+        $this->SetY(75);
+        $this->SetFont('', 'B', 20);
+        $this->SetTextColor(0, 0, 0);
+        $this->SetFont('', 'B', 20);
+        $this->SetTextColor(0, 0, 0);
+        $this->Ln(10);
+        $this->Write(0, "PROYECTO DE ORDENANZA DE \n PRESUPUESTO DE INGRESOS Y  \n GASTOS AÑO " . $_SESSION['ejercicio_fiscal'], '', 0, 'C', true, 0, false, false, 0);
+        $this->SetFont('', 'BU', 20);
 
 
-    function getSector(){
+        $this->SetFont('', 'B', 12);
+        $this->Ln(50);
+        $this->Write(0, "DICIEMBRE " . ($_SESSION['ejercicio_fiscal'] - 1), '', 0, 'R', false, 0, false, false, 0);
+
+
+        $this->SetY(190);
+        $this->SetFont('', '', 11);
+    }
+
+
+
+    function getSector()
+    {
 
         if ($_GET['id_ejecutor'] != '') {
             $id_ejecutor = decode($_GET['id_ejecutor']);
@@ -153,7 +154,7 @@ exit();*/
 
                 $this->AddPage();
                 $this->Image('../../images/escudo.jpg', 230, 10, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-         
+
                 $bMargin = $this->getBreakMargin();
                 $auto_page_break = $this->AutoPageBreak;
                 $this->SetAutoPageBreak(false, 0);
@@ -178,17 +179,17 @@ exit();*/
                 $this->getPrograma($comunes,  $nu_sector);
             }
         }
-
     }
 
     function getPartida()
     {
 
-             
+
+        $comunes = new ConexionComun();
         /******Objetivos*********/
         $this->AddPage();
-        $this->Image('../../images/escudo.jpg', 240, 31,20, 20, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-          
+        $this->Image('../../images/escudo.jpg', 240, 31, 20, 20, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+
         $htmlObjetivo = '
                 <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                      <tr>
@@ -201,7 +202,7 @@ exit();*/
                                     <td colspan="3"><b>CODIGO PRESUPUESTARIO Y NOMBRE DEL MUNICIPIO: E7210 MARACAIBO</b></td>
                                 </tr>
                                 <tr align="left" >
-                                    <td colspan="3"><b>PRESUPUESTO: '.$_SESSION['ejercicio_fiscal'].'</b></td>
+                                    <td colspan="3"><b>PRESUPUESTO: ' . $_SESSION['ejercicio_fiscal'] . '</b></td>
                                 </tr>
                                 <tr align="center" >
                                     <td colspan="3"><b>TITULO II</b></td>
@@ -235,7 +236,121 @@ exit();*/
                             <td style="text-align: center;"><b>SUB-ESP</b></td>
                         </tr>
                     </thead>';
-      
+
+        $sql_nivel1 = "SELECT co_partida,tx_nombre,
+                                            sum((select sum(mo_partida) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%')) as monto
+                                        FROM mantenimiento.tab_partidas as tp
+                                        where co_partida like '3%' and 
+                                            id_tab_ejercicio_fiscal = 2026 and
+                                            length(co_partida) = 3
+                                        group by tp.id
+                                        ORDER BY length(co_partida),co_partida ASC";
+
+        $datos_nivel1 = $comunes->ObtenerFilasBySqlSelect($sql_nivel1);
+
+        foreach ($datos_nivel1 as $key => $campo) {
+
+            $deno .= '<tr>
+                                    <td style="width:50px;text-align: justify;"><b>' . $campo["co_partida"] . '</b></td>
+                                    <td style="width:50px;text-align: justify;"></td>
+                                    <td style="width:50px;text-align: justify;"></td>
+                                    <td style="width:50px;text-align: justify;"></td>
+                                    <td style="width:350px;text-align: justify;"><b><u>' . $campo["tx_nombre"] . '</u></b></td>
+                                    <td style="width:157px;text-align: rigth;"><b>' . number_format($campo["monto"]) . '</b></td>
+                                </tr>';
+
+            $sql_nivel2 = "SELECT SUBSTRING(co_partida,0,4) as ramo,SUBSTRING(co_partida,4,3) as subramo,tx_nombre,length(co_partida),co_partida,
+                                            sum((select coalesce(sum(mo_partida),0) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%')) as monto
+                                        FROM mantenimiento.tab_partidas as tp
+                                        where co_partida like '" . trim($campo["co_partida"]) . "%' and 
+                                            id_tab_ejercicio_fiscal = " . $_SESSION['ejercicio_fiscal'] . " and
+                                            length(co_partida) = 5
+                                        group by tp.id
+                                        having sum((select coalesce(sum(mo_partida),0) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%'))  > 0
+                                        ORDER BY length(co_partida),co_partida ASC";
+           
+
+
+            $datos_nivel2 = $comunes->ObtenerFilasBySqlSelect($sql_nivel2);
+
+            foreach ($datos_nivel2 as $key2 => $campo2) {
+
+                                $deno .= '<tr>
+                                    <td style="width:50px;text-align: justify;"><b>' . $campo2["ramo"] . '</b></td>
+                                    <td style="width:50px;text-align: justify;"><b>' . $campo2["subramo"] . '</b></td>
+                                    <td style="width:50px;text-align: justify;"></td>
+                                    <td style="width:50px;text-align: justify;"></td>
+                                    <td style="width:350px;text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;<b>' . $campo2["tx_nombre"] . '</b></td>
+                                    <td style="width:157px;text-align: rigth;">' . number_format($campo2["monto"]) . '</td>
+                                </tr>';
+
+                    $sql_nivel4 = "SELECT   distinct SUBSTRING(co_partida,0,4) as ramo,
+                                            SUBSTRING(co_partida,4,2) as subramo,
+                                            SUBSTRING(co_partida,6,2) as esp,
+                                            co_partida,tx_nombre,length(co_partida),
+                                            sum((select coalesce(sum(mo_partida),0) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%')) as monto
+                                        FROM mantenimiento.tab_partidas as tp
+                                        where co_partida like '".trim($campo2["co_partida"])."%' and 
+                                            id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." and
+                                            length(co_partida) = 9
+                                        group by tp.id
+                                        having sum((select coalesce(sum(mo_partida),0) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%'))  > 0
+                                        ORDER BY length(co_partida),co_partida ASC";
+
+                    $datos_nivel4 = $comunes->ObtenerFilasBySqlSelect($sql_nivel4);
+
+                     foreach ($datos_nivel4 as $key2 => $campo4) {
+
+                                $deno .= '<tr>
+                                    <td style="width:50px;text-align: justify;">' . $campo4["ramo"] . '</td>
+                                    <td style="width:50px;text-align: justify;">' . $campo4["subramo"] . '</td>
+                                    <td style="width:50px;text-align: justify;">' . $campo4["esp"] . '</td>
+                                    <td style="width:50px;text-align: justify;"></td>
+                                    <td style="width:350px;text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u>' . $campo4["tx_nombre"] . '</u></td>
+                                    <td style="width:157px;text-align: rigth;">' . number_format($campo4["monto"]) . '</td>
+                                </tr>';
+
+
+                                 $sql_partida = "select SUBSTRING(cast(nu_partida as varchar),0,4) as ramo,
+                                                SUBSTRING(cast(nu_partida as varchar),4,2) as subramo,
+                                                SUBSTRING(cast(nu_partida as varchar),6,2) as esp,
+                                                SUBSTRING(cast(nu_partida as varchar),8,2) as subesp,
+                                                de_partida,
+                                                mo_partida
+                                            from mantenimiento.tab_presupuesto_ingreso 
+                                            where id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." and cast(nu_partida as varchar) like '".trim($campo4["co_partida"])."'||'%'";
+
+                               
+
+                                $datos_partida  = $comunes->ObtenerFilasBySqlSelect($sql_partida);
+
+                             
+
+                                foreach ($datos_partida as $keyp => $campop) {
+
+                                    $deno .= '<tr>
+                                        <td style="width:50px;text-align: justify;">' . $campop["ramo"] . '</td>
+                                        <td style="width:50px;text-align: justify;">' . $campop["subramo"] . '</td>
+                                        <td style="width:50px;text-align: justify;">' . $campop["esp"] . '</td>
+                                        <td style="width:50px;text-align: justify;">' . $campop["subesp"] . '</td>
+                                        <td style="width:350px;text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $campop["de_partida"] . '</td>
+                                        <td style="width:157px;text-align: rigth;">' . number_format($campop["mo_partida"]) . '</td>
+                                    </tr>';                                   
+                                }
+
+                     }
+            
+            }
+        }
+
+        
+
+
+            
+
+
+
+
 
         $deno .= '</table>';
         $this->SetFont('', '', 8);
@@ -269,7 +384,7 @@ exit();*/
 
             $this->AddPage();
             $this->Image('../../images/escudo.jpg', 230, 10, 30, 25, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-         
+
             $bMargin = $this->getBreakMargin();
             $auto_page_break = $this->AutoPageBreak;
             $this->SetAutoPageBreak(false, 0);
@@ -308,16 +423,16 @@ exit();*/
                         inner join mantenimiento.tab_sectores as t3 on t46.id_subsector=t3.id
                         join mantenimiento.tab_ac_ae_predefinida as t4 on t4.id = t47.id_accion
                 where t46.id= $id_accion_centralizada group by 1,2,3,4,5,6,7,8,t4.de_nombre,10,t4.nu_numero,t1.nu_original,t3.id,t2.id_ejecutor,t46.inst_objetivos  order by 1 asc, t46.id_ejecutor asc, 4 asc";
-        
+
         $datos = $comunes->ObtenerFilasBySqlSelect($sqlAc);
 
         $datos_ac = $datos[0];
 
-      
+
         /******Objetivos*********/
         $this->AddPage();
         $this->Image('../../images/escudo.jpg', 240, 31, 18, 18, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-         
+
         $htmlObjetivo = '
                 <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                     <tr>
@@ -330,7 +445,7 @@ exit();*/
                                     <td colspan="3"><b>CODIGO PRESUPUESTARIO Y NOMBRE DEL MUNICIPIO: E7210 MARACAIBO</b></td>
                                 </tr>
                                 <tr align="left" >
-                                    <td colspan="3"><b>PRESUPUESTO: '.$datos_ac["nu_anio"].'</b></td>
+                                    <td colspan="3"><b>PRESUPUESTO: ' . $datos_ac["nu_anio"] . '</b></td>
                                 </tr>
                                 <tr align="center" >
                                     <td colspan="3"><b>DESCRIPCION DEL PROGRAMA Y SUB - PROGRAMA</b></td>
@@ -345,13 +460,13 @@ exit();*/
                     </tr>
                     <tr align="left">
                         <td><b>SECTOR: </b></td>
-                        <td align="center">'.$datos_ac["nu_sector"].'</td>
-                        <td>'.$datos_ac["tx_sector"].'</td>
+                        <td align="center">' . $datos_ac["nu_sector"] . '</td>
+                        <td>' . $datos_ac["tx_sector"] . '</td>
                     </tr>
                     <tr align="left">
                         <td><b>PROGRAMA: </b></td>
-                        <td align="center">'.$datos_ac["nu_original"].'</td>
-                        <td>'.$datos_ac["de_programa"].'</td>
+                        <td align="center">' . $datos_ac["nu_original"] . '</td>
+                        <td>' . $datos_ac["de_programa"] . '</td>
                     </tr>
                     <tr align="left">
                         <td><b>SUB-PROGRAMA: </b></td>
@@ -360,8 +475,8 @@ exit();*/
                     </tr>
                     <tr align="left">
                         <td><b>UNIDAD (ES) EJECUTORA (S): </b></td>
-                        <td align="center">'.$datos_ac["id_ejecutor"].'</td>
-                        <td>'.$datos_ac["tx_ejecutor"].'</td>
+                        <td align="center">' . $datos_ac["id_ejecutor"] . '</td>
+                        <td>' . $datos_ac["tx_ejecutor"] . '</td>
                     </tr>   
                 <thead>
                     <tr>
@@ -379,14 +494,14 @@ exit();*/
         //$this->Ln(-20);
         $this->writeHTML($htmlObjetivo, true, false, false, false, '');
 
-        $this->getMetasPrograma($comunes, $datos_ac["id_accion_centralizada"],$datos_ac['id_accion'],$datos_ac);
+        $this->getMetasPrograma($comunes, $datos_ac["id_accion_centralizada"], $datos_ac['id_accion'], $datos_ac);
 
         // $portada = $portada + 1;
         //$obj->AddPage();
     }
 
-    
-    function getMetasPrograma($comunes, $id_accion_centralizada,$co_ac_acc_espec, $datos_ac)
+
+    function getMetasPrograma($comunes, $id_accion_centralizada, $co_ac_acc_espec, $datos_ac)
     {
 
         $sqlAc = "SELECT co_metas,id_tab_t47_ac_accion_especifica,capitalize_sentence(lower(nb_meta)) as nb_meta,capitalize_sentence(lower(nb_responsable)) as nb_responsable,tx_prog_anual,
@@ -397,13 +512,13 @@ exit();*/
                     WHERE t69.id_accion_centralizada = $id_accion_centralizada and t69.co_ac_acc_espec = $co_ac_acc_espec and t69.edo_reg is true 
                     order by co_metas ASC ";
 
-             
+
         $datos = $comunes->ObtenerFilasBySqlSelect($sqlAc);
-      
+
         /******Objetivos*********/
         $this->AddPage();
         $this->Image('../../images/escudo.jpg', 240, 31, 15, 15, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-          
+
         $htmlObjetivo = '
                 <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                      <tr>
@@ -416,7 +531,7 @@ exit();*/
                                     <td colspan="3"><b>CODIGO PRESUPUESTARIO Y NOMBRE DEL MUNICIPIO: E7210 MARACAIBO</b></td>
                                 </tr>
                                 <tr align="left" >
-                                    <td colspan="3"><b>PRESUPUESTO: '.$datos_ac["nu_anio"].'</b></td>
+                                    <td colspan="3"><b>PRESUPUESTO: ' . $datos_ac["nu_anio"] . '</b></td>
                                 </tr>
                                 <tr align="center" >
                                     <td colspan="3"><b>METAS DEL PROGRAMA, SUB - PROGRAMA Y/O PROYECTO</b></td>
@@ -431,13 +546,13 @@ exit();*/
                     </tr>
                     <tr align="left">
                         <td><b>SECTOR: </b></td>
-                        <td align="center">'.$datos_ac["nu_sector"].'</td>
-                        <td>'.$datos_ac["tx_sector"].'</td>
+                        <td align="center">' . $datos_ac["nu_sector"] . '</td>
+                        <td>' . $datos_ac["tx_sector"] . '</td>
                     </tr>
                     <tr align="left">
                         <td><b>PROGRAMA: </b></td>
-                        <td align="center">'.$datos_ac["nu_original"].'</td>
-                        <td>'.$datos_ac["de_programa"].'</td>
+                        <td align="center">' . $datos_ac["nu_original"] . '</td>
+                        <td>' . $datos_ac["de_programa"] . '</td>
                     </tr>
                     <tr align="left">
                         <td><b>SUB-PROGRAMA: </b></td>
@@ -446,8 +561,8 @@ exit();*/
                     </tr>
                     <tr align="left">
                         <td><b>UNIDAD (ES) EJECUTORA (S): </b></td>
-                        <td align="center">'.$datos_ac["id_ejecutor"].'</td>
-                        <td>'.$datos_ac["tx_ejecutor"].'</td>
+                        <td align="center">' . $datos_ac["id_ejecutor"] . '</td>
+                        <td>' . $datos_ac["tx_ejecutor"] . '</td>
                     </tr>                              
                 </table>';
         $this->SetFont('', '', 8);
@@ -464,15 +579,15 @@ exit();*/
                             <td style="width:130px;text-align: center;"><b>COSTO FINANCIERO</b></td>
                        </tr>
                     </thead>';
-      //  var_dump($datos); exit();
+        //  var_dump($datos); exit();
         foreach ($datos as $key => $campo) {
 
             $deno .= '<tr>
-                         <td style="width:300px;text-align: justify;">'. $campo["nb_meta"].'</td>
-                         <td style="width:148px;text-align: justify;">'. $campo["nb_responsable"].'</td>
-                         <td style="width:130px;text-align: center;">'. $campo["tx_prog_anual"].'</td>
-                         <td style="width:130px;text-align: rigth;">'. number_format($campo["monto"]).'</td>
-                      </tr>';       
+                         <td style="width:300px;text-align: justify;">' . $campo["nb_meta"] . '</td>
+                         <td style="width:148px;text-align: justify;">' . $campo["nb_responsable"] . '</td>
+                         <td style="width:130px;text-align: center;">' . $campo["tx_prog_anual"] . '</td>
+                         <td style="width:130px;text-align: rigth;">' . number_format($campo["monto"]) . '</td>
+                      </tr>';
         }
 
 
