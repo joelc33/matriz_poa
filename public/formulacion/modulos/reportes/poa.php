@@ -2,6 +2,7 @@
 
 session_start();
 
+
 if ($_SESSION['estatus'] !== 'OK') {
     http_response_code(403);
     die();
@@ -70,6 +71,8 @@ exit();*/
         $this->cantidadTotal = $comunes->getFilas($sql);
     }
 
+    //$_SESSION['ejercicio_fiscal'] 
+
     public function Footer()
     {
         /*$this->getRegistro('PR130120150002','');
@@ -112,14 +115,23 @@ exit();*/
         $this->SetTextColor(0, 0, 0);
         $this->SetFont('', 'B', 20);
         $this->SetTextColor(0, 0, 0);
+        $this->Ln();
+        $this->SetFont('', 'B', 14);
+        $this->Write(0, "Alcaldia Bolivariana \n de Maracaibo ", '', 0, 'C', true, 0, false, false, 0);
+      
         $this->Ln(10);
+        $this->SetFont('', 'B', 20);
         $this->Write(0, "PROYECTO DE ORDENANZA DE \n PRESUPUESTO DE INGRESOS Y  \n GASTOS AÑO " . $_SESSION['ejercicio_fiscal'], '', 0, 'C', true, 0, false, false, 0);
         $this->SetFont('', 'BU', 20);
 
 
         $this->SetFont('', 'B', 12);
         $this->Ln(50);
-        $this->Write(0, "DICIEMBRE " . ($_SESSION['ejercicio_fiscal'] - 1), '', 0, 'R', false, 0, false, false, 0);
+        $this->Write(0, "DICIEMBRE " . ($_SESSION['ejercicio_fiscal'] - 1), '', 0, 'R', false, 0, false, false, 0);$this->SetFont('', 'B', 14);
+        $this->Ln(10);
+        $this->SetFont('', 'BI', 12);
+        $this->Write(0, "ALCALDIA BOLIVARIANA DE MARACAIBO", '', 0, 'R', true, 0, false, false, 0);
+
 
 
         $this->SetY(190);
@@ -324,19 +336,20 @@ exit();*/
 
                                 $datos_partida  = $comunes->ObtenerFilasBySqlSelect($sql_partida);
 
-                             
+                                if(count($datos_partida) > 1){
 
-                                foreach ($datos_partida as $keyp => $campop) {
+                                    foreach ($datos_partida as $keyp => $campop) {
 
-                                    $deno .= '<tr>
-                                        <td style="width:50px;text-align: justify;">' . $campop["ramo"] . '</td>
-                                        <td style="width:50px;text-align: justify;">' . $campop["subramo"] . '</td>
-                                        <td style="width:50px;text-align: justify;">' . $campop["esp"] . '</td>
-                                        <td style="width:50px;text-align: justify;">' . $campop["subesp"] . '</td>
-                                        <td style="width:350px;text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $campop["de_partida"] . '</td>
-                                        <td style="width:157px;text-align: rigth;">' . number_format($campop["mo_partida"]) . '</td>
-                                    </tr>';                                   
-                                }
+                                        $deno .= '<tr>
+                                            <td style="width:50px;text-align: justify;">' . $campop["ramo"] . '</td>
+                                            <td style="width:50px;text-align: justify;">' . $campop["subramo"] . '</td>
+                                            <td style="width:50px;text-align: justify;">' . $campop["esp"] . '</td>
+                                            <td style="width:50px;text-align: justify;">' . $campop["subesp"] . '</td>
+                                            <td style="width:350px;text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $campop["de_partida"] . '</td>
+                                            <td style="width:157px;text-align: rigth;">' . number_format($campop["mo_partida"]) . '</td>
+                                        </tr>';                                   
+                                    }
+                            }
 
                      }
             
