@@ -264,9 +264,9 @@ exit();*/
 
             $deno .= '<tr>
                                     <td style="width:50px;text-align: justify;"><b>' . $campo["co_partida"] . '</b></td>
-                                    <td style="width:50px;text-align: justify;">00</td>
-                                    <td style="width:50px;text-align: justify;">00</td>
-                                    <td style="width:50px;text-align: justify;">00</td>
+                                    <td style="width:50px;text-align: justify;"><b>00</b></td>
+                                    <td style="width:50px;text-align: justify;"><b>00</b></td>
+                                    <td style="width:50px;text-align: justify;"><b>00</b></td>
                                     <td style="width:350px;text-align: justify;"><b><u>' . $campo["tx_nombre"] . '</u></b></td>
                                     <td style="width:157px;text-align: rigth;"><b>' . number_format($campo["monto"]) . '</b></td>
                                 </tr>';
@@ -290,8 +290,8 @@ exit();*/
                                 $deno .= '<tr>
                                     <td style="width:50px;text-align: justify;"><b>' . $campo2["ramo"] . '</b></td>
                                     <td style="width:50px;text-align: justify;"><b>' . $campo2["subramo"] . '</b></td>
-                                    <td style="width:50px;text-align: justify;">00</td>
-                                    <td style="width:50px;text-align: justify;">00</td>
+                                    <td style="width:50px;text-align: justify;"><b>00</b></td>
+                                    <td style="width:50px;text-align: justify;"><b>00</b></td>
                                     <td style="width:350px;text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;<b>' . $campo2["tx_nombre"] . '</b></td>
                                     <td style="width:157px;text-align: rigth;">' . number_format($campo2["monto"]) . '</td>
                                 </tr>';
