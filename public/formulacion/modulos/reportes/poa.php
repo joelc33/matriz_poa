@@ -202,6 +202,7 @@ exit();*/
         $this->AddPage();
         $this->Image('../../images/escudo.jpg', 240, 31, 20, 20, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
 
+        $total = 0;
         $htmlObjetivo = '
                 <table border="0.1" style="width:100%;text-align: center;" cellpadding="3">
                      <tr>
@@ -253,7 +254,7 @@ exit();*/
                                             sum((select sum(mo_partida) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%')) as monto
                                         FROM mantenimiento.tab_partidas as tp
                                         where co_partida like '3%' and 
-                                            id_tab_ejercicio_fiscal = 2026 and
+                                            id_tab_ejercicio_fiscal = " . $_SESSION['ejercicio_fiscal'] . " and
                                             length(co_partida) = 3
                                         group by tp.id
                                         ORDER BY length(co_partida),co_partida ASC";
@@ -271,6 +272,7 @@ exit();*/
                                     <td style="width:157px;text-align: rigth;"><b>' . number_format($campo["monto"]) . '</b></td>
                                 </tr>';
 
+            $total += $campo["monto"];                    
             $sql_nivel2 = "SELECT SUBSTRING(co_partida,0,4) as ramo,SUBSTRING(co_partida,4,3) as subramo,tx_nombre,length(co_partida),co_partida,
                                             sum((select coalesce(sum(mo_partida),0) from mantenimiento.tab_presupuesto_ingreso where id_tab_ejercicio_fiscal = tp.id_tab_ejercicio_fiscal and cast(nu_partida as varchar) like cast(tp.co_partida as varchar)||'%')) as monto
                                         FROM mantenimiento.tab_partidas as tp
@@ -357,7 +359,10 @@ exit();*/
         }
 
         
-
+         $deno .= '<tr>                                    
+                                    <td style="width:550px;text-align: rigth;" colspan="5"><b>Monto Total</b></td>
+                                    <td style="width:157px;text-align: rigth;"><b>' . number_format($total) . '</b></td>
+                                </tr>';
 
             
 
