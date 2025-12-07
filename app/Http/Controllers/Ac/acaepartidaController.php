@@ -168,10 +168,11 @@ class acaepartidaController extends Controller
                     foreach($abecedario as $abc) {
                         
                         $contenido = get_cell($abc.'9', $objPHPExcel);
+                         var_dump($contenido); exit();
                         if($contenido!=''||$contenido!=null) {
                             $contador = $contador+1;
 
-                            var_dump($contenido); exit();
+                           
 
                             $consulta_ae = tab_ac_ae::select('id_accion')
                             ->join('mantenimiento.tab_ac_ae_predefinida as t01', 't01.id', '=', 'public.t47_ac_accion_especifica.id_accion')
