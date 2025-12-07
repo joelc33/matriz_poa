@@ -169,7 +169,7 @@ class acaepartidaController extends Controller
                         
                         $contenido = get_cell($abc.'9', $objPHPExcel);
                          echo $contenido.' '.empty($contenido); exit();
-                        if(!empty($contenido) {
+                        if(!empty($contenido)) {
                             $contador = $contador+1;
 
                            
