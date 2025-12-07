@@ -164,8 +164,9 @@ class acaepartidaController extends Controller
 
                     $borrar_ac_ae_partida = tab_ac_ae_partida::where('id_accion_centralizada', '=', Input::get('accion_centralizada'))->delete();
 
-                     echo "entro"; exit();
+                    
                     foreach($abecedario as $abc) {
+                         echo "entros"; exit();
                         $contenido = get_cell($abc.'9', $objPHPExcel);
                         if($contenido!=''||$contenido!=null) {
                             $contador = $contador+1;
@@ -237,14 +238,14 @@ class acaepartidaController extends Controller
 
                                     } else {
 
-//                                        $validar_ae = tab_ac_ae_predefinida::select('id', 'nu_numero', 'de_nombre')
-//                                        ->where('id', '=', $consulta_ae->id_accion)
-//                                        ->first();
-//
-//                                        $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.$v.' la Partida: '.$partidaCrear.', Monto: '.$cellValue8.', No se encuentra dentro de las partidas admitidas para: <br>'.$validar_ae->nu_numero.' - '.$validar_ae->de_nombre)));
-//                                        $response = Response::make($data);
-//                                        $response->header('Content-Type', 'text/html');
-//                                        return $response;
+                                        //                                        $validar_ae = tab_ac_ae_predefinida::select('id', 'nu_numero', 'de_nombre')
+                                        //                                        ->where('id', '=', $consulta_ae->id_accion)
+                                        //                                        ->first();
+                                        //
+                                        //                                        $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.$v.' la Partida: '.$partidaCrear.', Monto: '.$cellValue8.', No se encuentra dentro de las partidas admitidas para: <br>'.$validar_ae->nu_numero.' - '.$validar_ae->de_nombre)));
+                                        //                                        $response = Response::make($data);
+                                        //                                        $response->header('Content-Type', 'text/html');
+                                        //                                        return $response;
 
                                     }
 
@@ -291,10 +292,10 @@ class acaepartidaController extends Controller
                             
                         }else{
                  
-                    $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.'9 la Actividad: '.$contenido.',  No se encuentra dentro de la Actividad Programatica. Verifique.')));
-                    $response = Response::make($data);
-                    $response->header('Content-Type', 'text/html');
-                    return $response;                            
+                            $data = json_encode(array('success' => false, 'msg' => array('ERROR:'=> 'Para la celda: '.$abc.'9 la Actividad: '.$contenido.',  No se encuentra dentro de la Actividad Programatica. Verifique.')));
+                            $response = Response::make($data);
+                            $response->header('Content-Type', 'text/html');
+                            return $response;                            
                             
                         }
                             
