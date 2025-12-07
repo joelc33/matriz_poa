@@ -315,7 +315,7 @@ class acaepartidaController extends Controller
                 } catch (\Illuminate\Database\QueryException $e) {
                     DB::rollback();
 
-                    $data = json_encode(array('success' => false, 'msg' => array('ERROR ('.$e->getCode().'):'=> $e->getMessage())));
+                    $data = json_encode(array('success' => false, 'msg' => array('ERROR ('.$e->getCode().'):'=> $e->getMessage().' linea='.$contador)));
                     $response = Response::make($data);
                     $response->header('Content-Type', 'text/html');
                     return $response;
