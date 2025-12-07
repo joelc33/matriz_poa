@@ -96,6 +96,8 @@ class acaepartidaController extends Controller
 
         $file = Input::file('archivo');
 
+        echo "entro"; exit();
+
         $validator = Validator::make(
             ['file'      => $file, 'extension' => strtolower($file->getClientOriginalExtension()),],
             ['file'=> 'required', 'extension' => 'required|in:xls,xlsx', ]
@@ -246,7 +248,7 @@ class acaepartidaController extends Controller
                                     }
 
 
-                                    echo "entro"; exit();
+                                    
 
                                     $partida = new tab_ac_ae_partida();
                                     $partida->id_accion_centralizada = Input::get('accion_centralizada');
