@@ -180,9 +180,7 @@ class acaepartidaController extends Controller
                             ->where('nu_numero', '=', $contenido)
                             ->first();
 
-                            var_dump( $consulta_ae); echo $contenido; exit();
-
-
+                            
                             if($consulta_ae) {
                    
                    
