@@ -168,7 +168,7 @@ class acaepartidaController extends Controller
                     foreach($abecedario as $abc) {
                         
                         $contenido = get_cell($abc.'9', $objPHPExcel);
-                         echo $contenido.' '.empty($contenido); exit();
+                      //   echo $contenido.' '.empty($contenido); exit();
                         if(!empty($contenido)) {
                             $contador = $contador+1;
 
