@@ -96,7 +96,7 @@ class acaepartidaController extends Controller
 
         $file = Input::file('archivo');
 
-        echo "entro"; exit();
+       
 
         $validator = Validator::make(
             ['file'      => $file, 'extension' => strtolower($file->getClientOriginalExtension()),],
@@ -164,6 +164,7 @@ class acaepartidaController extends Controller
 
                     $borrar_ac_ae_partida = tab_ac_ae_partida::where('id_accion_centralizada', '=', Input::get('accion_centralizada'))->delete();
 
+                     echo "entro"; exit();
                     foreach($abecedario as $abc) {
                         $contenido = get_cell($abc.'9', $objPHPExcel);
                         if($contenido!=''||$contenido!=null) {
