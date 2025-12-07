@@ -91,7 +91,7 @@ class acaepartidaController extends Controller
      *
      * @return Response
      */
-    public function procesarMasivo()
+    public function procesarMasivo() 
     {
 
         $file = Input::file('archivo');
@@ -244,6 +244,9 @@ class acaepartidaController extends Controller
 //                                        return $response;
 
                                     }
+
+
+                                    echo "entro"; exit();
 
                                     $partida = new tab_ac_ae_partida();
                                     $partida->id_accion_centralizada = Input::get('accion_centralizada');

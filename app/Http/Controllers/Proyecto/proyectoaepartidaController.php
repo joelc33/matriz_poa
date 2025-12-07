@@ -178,9 +178,8 @@ class proyectoaepartidaController extends Controller
                                         $response->header('Content-Type', 'text/html');
                                         return $response;
                                     }
-
                                     echo "entro"; exit();
- 
+
                                     $partida = new tmp_proyecto_ae_partida();
                                     $partida->id_proyecto = Input::get('id_proyecto');
                                     $partida->id_tab_ejercicio_fiscal = Session::get('ejercicio');
