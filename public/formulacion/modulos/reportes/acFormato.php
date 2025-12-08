@@ -54,7 +54,7 @@ class MYPDF extends TCPDF {
 		join mantenimiento.tab_ejecutores as t2 on t2.id_ejecutor = t46.id_ejecutor
 		inner join mantenimiento.tab_sectores as t3 on t46.id_subsector=t3.id
                 join mantenimiento.tab_ac_ae_predefinida as t4 on t4.id = t47.id_accion
-	where t46.edo_reg is true and ".$condicionAC." t46.id_ejercicio = ".$_SESSION['ejercicio_fiscal']." group by 1,2,3,4,5,6,7,8,t4.de_nombre,10,t1.nu_original  order by 1 asc, t46.id_ejecutor asc, 4 asc";
+	where t46.edo_reg is true and ".$condicionAC." t46.id_ejercicio = ".$_SESSION['ejercicio_fiscal']." group by 1,2,3,4,5,6,7,8,t4.de_nombre,10,t1.nu_original  order by 1 asc, t1.nu_original asc, 4 asc";
 
 /*echo $sql;
 exit();*/
@@ -362,7 +362,7 @@ foreach($this->datos_oficinas as $key => $campo2){
 exit();*/
     
     
-		$sqlActividades = "SELECT co_metas,id_tab_t47_ac_accion_especifica,lower(nb_meta) as nb_meta,lower(nb_responsable) as nb_responsable,tx_prog_anual,
+		$sqlActividades = "SELECT co_metas,id_tab_t47_ac_accion_especifica,capitalize_sentence(lower(nb_meta)) as nb_meta,capitalize_sentence(lower(nb_responsable)) as nb_responsable,tx_prog_anual,
     (select sum(monto)::integer from t71_metas_distribucion_fisica where co_metas = t69.co_metas and mes in (1,2,3)) as primer_trimestre,
     (select sum(monto)::integer from t71_metas_distribucion_fisica where co_metas = t69.co_metas and mes in (4,5,6)) as segundo_trimestre,
     (select sum(monto)::integer from t71_metas_distribucion_fisica where co_metas = t69.co_metas and mes in (7,8,9)) as tercer_trimestre,
