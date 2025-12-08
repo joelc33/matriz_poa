@@ -94,7 +94,7 @@ exit();*/
 
         $this->getPortada();
         $this->getTitulo2();        
-        $this->getTitulo3();
+//        $this->getTitulo3();
         $this->getSector();
 
     }
