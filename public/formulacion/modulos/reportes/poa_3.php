@@ -260,7 +260,7 @@ $html32.='
         FROM t54_ac_ae_partidas t54
      inner join mantenimiento.tab_partidas as t02 on SUBSTRING(t54.co_partida, 1,7)=t02.co_partida and t54.id_tab_ejercicio_fiscal = t02.id_tab_ejercicio_fiscal
      JOIN t46_acciones_centralizadas t46 ON t46.id = t54.id_accion_centralizada
-     where t54.id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." and t02.co_partida like '".$campo1['co_partida']."%'
+     where t54.id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." and t02.co_partida like '".$campo2['co_partida']."%'
      group by t02.co_partida,tx_nombre";
 
         $datos_nivel3 = $comunes->ObtenerFilasBySqlSelect($sql_nivel3);
@@ -303,7 +303,7 @@ $html32.='
         FROM t54_ac_ae_partidas t54
      inner join mantenimiento.tab_partidas as t02 on SUBSTRING(t54.co_partida, 1,9)=t02.co_partida and t54.id_tab_ejercicio_fiscal = t02.id_tab_ejercicio_fiscal
      JOIN t46_acciones_centralizadas t46 ON t46.id = t54.id_accion_centralizada
-     where t54.id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." and t02.co_partida like '".$campo1['co_partida']."%'
+     where t54.id_tab_ejercicio_fiscal = ".$_SESSION['ejercicio_fiscal']." and t02.co_partida like '".$campo3['co_partida']."%'
      group by t02.co_partida,tx_nombre";
 
         $datos_nivel4 = $comunes->ObtenerFilasBySqlSelect($sql_nivel4);
