@@ -48,6 +48,15 @@ class reporteController extends Controller
           estatus: 'nuevo',
           iconCls: 'icon-pdf'
         },
+        {
+          id: 'libro_ley',
+          text: 'Ordenanza(TITULO 3)',
+          url: 'formulacion/modulos/reportes/poa_3.php',
+          icon: 'Escudo_del_Municipio_Maracaibo.jpg',
+          desc: 'Libro de Ley de Presupuesto para el Ejercicio Fiscal ".Session::get('ejercicio')."',
+          estatus: 'nuevo',
+          iconCls: 'icon-pdf'
+        },        
       ]}";
 
         return View::make('reporte.libro.lista')->with('iconos', $iconos);
