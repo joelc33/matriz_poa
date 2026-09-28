@@ -334,6 +334,115 @@ this.panelDatos2 = new Ext.Panel({
 	]
 });
 
+//Agregar un registro
+this.nuevo_transformacion = new Ext.Button({
+	text:'Agregar',
+	id:'AgregarDetTrans',
+	iconCls: 'icon-nuevo',
+	handler: function(boton){
+		paqueteComunJS.funcion.mostrarVentana({url:'formulacion/modulos/metas/metaTransformacion.php?id_accion_centralizada='+metaEditar.main.id_accion_centralizada.getValue()+'&co_ac_acc_espec='+metaEditar.main.co_ac_acc_espec.getValue()+'&id_tab_t47_ac_accion_especifica='+metaEditar.main.id_tab_t47_ac_accion_especifica.getValue(),parametro:'no'});
+	}
+});
+
+//Eliminar un registro
+this.eliminar_transformacion= new Ext.Button({
+	text:'Quitar',
+	iconCls: 'icon-eliminar',
+	handler: function(boton){
+		metaEditar.main.eliminarRequerimientoTrans();
+	}
+});
+
+this.eliminar_transformacion.disable();
+
+this.Registro_transformacion = Ext.data.Record.create([
+	{ name: 'co_metas_linea_transformacion', type: 'number'},
+	{ name: 'co_metas', type: 'number'},
+	{ name: 'id_transformacion', type: 'number'},
+	{ name: 'id_eje_alineacion', type: 'number'},
+	{ name: 'id_linea_impulso', type: 'number'},
+	{ name: 'id_foco_accion', type: 'number'},
+	{ name: 'tx_transformacion', type: 'string'},
+	{ name: 'tx_eje_alineacion', type: 'string'},
+	{ name: 'tx_linea_impulso', type: 'string' },
+	{ name: 'tx_foco_accion', type: 'string' },
+]);
+
+this.store_lista_transformacion =  new Ext.data.GroupingStore({
+	reader: new Ext.data.JsonReader({fields:metaEditar.main.Registro_transformacion})
+});
+
+if(this.OBJ.co_metas!='')
+{
+	this.store_lista_transformacion = new Ext.data.JsonStore({
+		url:'formulacion/modulos/metas/funcion.php?op=15',
+		root:'data',
+		fields:
+			[
+				{ name: 'co_metas_linea_transformacion'},
+				{ name: 'co_metas'},
+				{ name: 'id_transformacion'},
+				{ name: 'id_eje_alineacion'},
+				{ name: 'id_linea_impulso'},
+				{ name: 'id_foco_accion'},
+				{ name: 'tx_transformacion'},
+				{ name: 'tx_eje_alineacion'},
+				{ name: 'tx_linea_impulso'},
+				{ name: 'tx_foco_accion'},
+			]
+		});
+	this.store_lista_transformacion.load({
+		params: {co_metas:metaEditar.main.co_metas.getValue()},
+	});
+}
+
+//Grid principal
+this.gridPanelTrans_ = new Ext.grid.GridPanel({
+    iconCls: 'icon-libro',border:true,
+    store: this.store_lista_transformacion,
+    loadMask:true,
+    autoHeight:true,
+    tbar:[
+<?php if( in_array( array( 'de_privilegio' => 'ac.ae.actividad.metafin.agregar', 'in_habilitado' => true), $_SESSION['spe_session'][0][0] )){ ?>
+        this.nuevo_transformacion,'-',
+<?php } ?>
+<?php if( in_array( array( 'de_privilegio' => 'ac.ae.actividad.metafin.quitar', 'in_habilitado' => true), $_SESSION['spe_session'][0][0] )){ ?>
+	this.eliminar_transformacion
+<?php } ?>
+    ],
+    columns: [
+    new Ext.grid.RowNumberer(),
+    {header: 'co_metas_linea_transformacion',hidden:true, menuDisabled:true,dataIndex: 'co_metas_linea_transformacion'},
+    {header: 'id_transformacion',hidden:true, menuDisabled:true,dataIndex: 'id_transformacion'},
+    {header: 'id_eje_alineacion',hidden:true, menuDisabled:true,dataIndex: 'id_eje_alineacion'},
+    {header: 'id_linea_impulso',hidden:true, menuDisabled:true,dataIndex: 'id_linea_impulso'},
+    {header: 'id_foco_accion',hidden:true, menuDisabled:true,dataIndex: 'id_foco_accion'},    
+    {header: 'LINEA TRANSFORMACION', width:160,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'tx_transformacion'},
+    {header: 'EJE DE ALINEACION', width:160,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'tx_eje_alineacion'},
+    {header: 'LINEA DE IMPULSO', width:160,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'tx_linea_impulso'},
+    {header: 'FOCO DE ACCION', width:160,  menuDisabled:true, sortable: true, renderer: textoLargo, dataIndex: 'tx_foco_accion'},
+    ],
+    stripeRows: true,
+    autoScroll:true,
+    stateful: true,
+    listeners:{cellclick:function(Grid, rowIndex, columnIndex,e ){metaEditar.main.eliminar_transformacion.enable();}}
+});
+
+this.JsonDetalleTrans = new Ext.form.Hidden({
+	name:'json_detalle_trans',
+	value:''
+});
+
+this.panelDatos3 = new Ext.Panel({
+    title: '7 Grandes Transformaciones 2025-2031',
+    bodyStyle:'padding:5px;',
+    height:300,
+    autoScroll:true,
+    items:[
+	this.gridPanelTrans_
+	]
+});
+
 this.panel = new Ext.TabPanel({
     activeTab:0,
     height:300,
@@ -341,7 +450,8 @@ this.panel = new Ext.TabPanel({
     deferredRender: false,
     items:[
 	this.panelDatos1,
-	this.panelDatos2
+	this.panelDatos2,
+        this.panelDatos3
 	]
 });
 
@@ -359,11 +469,16 @@ this.guardar = new Ext.Button({
 		store:metaEditar.main.gridPanel_.getStore()
 	});
         
+	listado_trans = paqueteComunJS.funcion.getJsonByObjStore({
+		store:metaEditar.main.gridPanelTrans_.getStore()
+	});        
+        
         if (metaEditar.main.store_lista.getCount() == 0) {
             Ext.Msg.alert("Alerta", "Debe agregar las metas financieras");
             return false;
         } 
 	metaEditar.main.JsonDetalle.setValue(listado);
+        metaEditar.main.JsonDetalleTrans.setValue(listado_trans);
 //**************************//
         metaEditar.main.formPanel_.getForm().submit({
             method:'POST',
@@ -417,7 +532,8 @@ this.formPanel_ = new Ext.form.FormPanel({
                 this.id_tab_t47_ac_accion_especifica,
 		this.co_ac_acc_espec,
 		this.panel,
-		this.JsonDetalle
+		this.JsonDetalle,
+                this.JsonDetalleTrans
 	]
 });
 
@@ -451,6 +567,13 @@ eliminarRequerimiento:function(){
                 var s = metaEditar.main.gridPanel_.getSelectionModel().getSelections();
                 for(var i = 0, r; r = s[i]; i++){
                       metaEditar.main.store_lista.remove(r);
+                }
+
+},
+eliminarRequerimientoTrans:function(){
+                var s = metaEditar.main.gridPanelTrans_.getSelectionModel().getSelections();
+                for(var i = 0, r; r = s[i]; i++){
+                      metaEditar.main.store_lista_transformacion.remove(r);
                 }
 
 },

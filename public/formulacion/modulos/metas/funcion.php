@@ -394,7 +394,24 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 				$variable1["edo_reg"] = 'TRUE';
 				$co_metas_detalle = $comunes->InsertConID($tabla1,$variable1,$primaryKey1);
 			}
-
+                        
+                        
+			$sql5 = "DELETE FROM public.t84_metas_linea_transformacion WHERE co_metas = $codigo;";
+			$comunes->EjecutarQuery($sql5);                        
+                        
+                        $detalle_trans = json_decode($_POST['json_detalle_trans'],true);                         
+                        
+			foreach ($detalle_trans as $listaTrans){
+				$tabla1="t84_metas_linea_transformacion";
+				$primaryKey2="co_metas_linea_transformacion";
+				$variable2["co_metas"] = decode($codigo);
+				$variable2["id_transformacion"] = decode($listaTrans['id_transformacion']);
+				$variable2["id_eje_alineacion"] = decode($listaTrans['id_eje_alineacion']);
+				$variable2["id_linea_impulso"] = decode($listaTrans['id_linea_impulso']);
+				$variable2["id_foco_accion"] = decode($listaTrans['id_foco_accion']);
+				$co_metas_linea_transformacion = $comunes->InsertConID($tabla1,$variable2,$primaryKey2);
+			}
+                        
 			if ($co_metas){
 				$paraTransaccion->CommitTrans();
 				echo json_encode(array(
@@ -459,7 +476,23 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 				$variable1["edo_reg"] = 'TRUE';
 				$co_metas_detalle = $comunes->InsertConID($tabla1,$variable1,$primaryKey1);
 			}
+                        
+			$sql5 = "DELETE FROM public.t84_metas_linea_transformacion WHERE co_metas = $codigo;";
+			$comunes->EjecutarQuery($sql5);                         
 
+                        $detalle_trans = json_decode($_POST['json_detalle_trans'],true);                         
+                        
+			foreach ($detalle_trans as $listaTrans){
+				$tabla1="t84_metas_linea_transformacion";
+				$primaryKey2="co_metas_linea_transformacion";
+				$variable2["co_metas"] = decode($codigo);
+				$variable2["id_transformacion"] = decode($listaTrans['id_transformacion']);
+				$variable2["id_eje_alineacion"] = decode($listaTrans['id_eje_alineacion']);
+				$variable2["id_linea_impulso"] = decode($listaTrans['id_linea_impulso']);
+				$variable2["id_foco_accion"] = decode($listaTrans['id_foco_accion']);
+				$co_metas_linea_transformacion = $comunes->InsertConID($tabla1,$variable2,$primaryKey2);
+			}                        
+                        
 			if ($co_metas){
 				$paraTransaccion->CommitTrans();
 				echo json_encode(array(
@@ -600,6 +633,102 @@ where t56.id_tab_t47_ac_accion_especifica = ".$_POST['id_tab_t47_ac_accion_espec
 		array_push($data,array(
 			"id"		=> $row["id"],
 			"de_nombre"	=> $row["de_nombre"], 
+		));
+	}
+	echo json_encode(
+		array(  
+		"success"	=> true,
+		"data"		=> $data
+	));
+}elseif($_GET['op']==15){
+	$sql = "SELECT * FROM t84_metas_linea_transformacion as t84
+	left join t80_transformaciones as t80 on t80.id=t84.id_transformacion
+	left join t81_eje_alineacion as t81 on t81.id=t84.id_eje_alineacion
+        left join t82_linea_impulso as t82 on t82.id=t84.id_linea_impulso
+        left join t83_foco_accion as t83 on t83.id=t84.id_foco_accion
+	WHERE co_metas=".$_POST['co_metas']." ORDER BY id_foco_accion ASC";
+
+	$cantidadTotal = $comunes->getFilas($sql);
+
+	$start = ($_POST["start"] == null)? 0 : $_POST["start"];
+	$limit = ($_POST["limit"] == null)? 20: $_POST["limit"];
+	if($_POST['paginar']=='si'){$sql.= " ORDER BY id_foco_accion ASC LIMIT ".$limit." OFFSET ".$start;}
+
+	$result = $comunes->ObtenerFilasBySqlSelect($sql);
+
+	$data= array();
+	foreach($result as $key => $row){
+		$data[] = array(
+		    "co_metas_linea_transformacion"     => trim($row["co_metas_linea_transformacion"]),
+		    "co_metas"     => trim($row["co_metas"]),
+		    "id_transformacion"     => trim($row["id_transformacion"]),
+		    "id_eje_alineacion"     => trim($row["id_eje_alineacion"]),
+		    "id_linea_impulso"     => trim($row["id_linea_impulso"]),
+		    "id_foco_accion"     => trim($row["id_foco_accion"]),
+		    "tx_transformacion"     => trim($row["nu_transformacion"]).' - '.trim($row["tx_transformacion"]),
+		    "tx_eje_alineacion"     => trim($row["nu_eje_alineacion"]).' - '.trim($row["tx_eje_alineacion"]),
+		    "tx_linea_impulso"     => trim($row["nu_linea_impulso"]).' - '.trim($row["tx_linea_impulso"]),
+		    "tx_foco_accion"     => trim($row["nu_foco_accion"]).' - '.trim($row["tx_foco_accion"]),
+		);
+	}
+	echo json_encode(array(
+		"success"   =>  true,
+		"total"     =>  $cantidadTotal,
+		"data"      =>  $data
+	));
+}elseif($_GET['op']==16){
+	$sql = "SELECT * FROM t80_transformaciones;";
+	$result = $comunes->ObtenerFilasBySqlSelect($sql);
+	$data= array();
+	foreach($result as $key => $row){
+		array_push($data,array(
+			"co_transformaciones"		=> $row["id"],
+			"tx_transformacion"	=> $row["nu_transformacion"].' - '.$row["tx_transformacion"], 
+		));
+	}
+	echo json_encode(
+		array(  
+		"success"	=> true,
+		"data"		=> $data
+	));
+}elseif($_GET['op']==17){
+	$sql = "SELECT * FROM t81_eje_alineacion where id_transformacion='".$_POST['co_transformaciones']."' ORDER BY id ASC;";
+	$result = $comunes->ObtenerFilasBySqlSelect($sql);
+	$data= array();
+	foreach($result as $key => $row){
+		array_push($data,array(
+			"co_alineacion"		=> $row["id"],
+			"tx_eje_alineacion"	=> $row["nu_eje_alineacion"].' - '.$row["tx_eje_alineacion"], 
+		));
+	}
+	echo json_encode(
+		array(  
+		"success"	=> true,
+		"data"		=> $data
+	));
+}elseif($_GET['op']==18){
+	$sql = "SELECT * FROM t82_linea_impulso where id_eje_alineacion=".$_POST['co_alineacion']." ORDER BY id ASC;";
+	$result = $comunes->ObtenerFilasBySqlSelect($sql);
+	$data= array();
+	foreach($result as $key => $row){
+		array_push($data,array(
+			"co_impulso"		=> $row["id"],
+			"tx_linea_impulso"	=> $row["nu_linea_impulso"].' - '.$row["tx_linea_impulso"], 
+		));
+	}
+	echo json_encode(
+		array(  
+		"success"	=> true,
+		"data"		=> $data
+	));
+}elseif($_GET['op']==19){
+	$sql = "SELECT * FROM t83_foco_accion where id_linea_impulso=".$_POST['co_impulso']." ORDER BY id ASC;";
+	$result = $comunes->ObtenerFilasBySqlSelect($sql);
+	$data= array();
+	foreach($result as $key => $row){
+		array_push($data,array(
+			"co_foco"		=> $row["id"],
+			"tx_foco_accion"	=> $row["nu_foco_accion"].' - '.$row["tx_foco_accion"], 
 		));
 	}
 	echo json_encode(
