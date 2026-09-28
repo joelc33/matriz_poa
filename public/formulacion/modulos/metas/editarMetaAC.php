@@ -477,6 +477,11 @@ this.guardar = new Ext.Button({
             Ext.Msg.alert("Alerta", "Debe agregar las metas financieras");
             return false;
         } 
+        
+        if (metaEditar.main.store_lista_transformacion.getCount() == 0) {
+            Ext.Msg.alert("Alerta", "Debe agregar al menos una linea de Transformacion");
+            return false;
+        }         
 	metaEditar.main.JsonDetalle.setValue(listado);
         metaEditar.main.JsonDetalleTrans.setValue(listado_trans);
 //**************************//
